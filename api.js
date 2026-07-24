@@ -1,17 +1,17 @@
-// **************
-// CHANGE THIS
-// **************
-
-const API_URL = "https://script.google.com/macros/s/AKfycbwxJB8AX32wXqwVZq7l6RZXfGSUKqiGR0XbCjWFI6WTKQb12xInk3Ruf_u15wsLb_fQsQ/exec";
+const API_URL = "YOUR_WEB_APP_URL";
 
 async function getBosses() {
 
+    console.log("Fetching API...");
+
     const response = await fetch(API_URL);
 
-    if (!response.ok) {
-        throw new Error("Unable to connect to API.");
-    }
+    console.log(response);
 
-    return await response.json();
+    const data = await response.json();
+
+    console.log(data);
+
+    return data;
 
 }
