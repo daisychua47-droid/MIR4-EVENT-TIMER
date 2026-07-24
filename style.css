@@ -5,89 +5,81 @@
 }
 
 body{
-
     background:#0d1117;
     color:white;
     font-family:Segoe UI;
-
 }
 
 .topbar{
-
     display:flex;
     gap:15px;
     padding:20px;
     background:#111827;
-
 }
 
 .logo{
-
     height:55px;
-
 }
 
 .topbar input,
 .topbar select{
-
     padding:12px;
     background:#1f2937;
     color:white;
     border:none;
     border-radius:8px;
-
 }
 
 .container{
-
     padding:20px;
-
 }
 
 .card{
-
     background:#161b22;
     border-radius:15px;
     overflow:hidden;
-
 }
 
 .card-header{
-
     display:flex;
     justify-content:space-between;
     align-items:center;
-
     padding:15px 20px;
-
     border-bottom:1px solid #2d333b;
-
 }
 
 table{
-
     width:100%;
     border-collapse:collapse;
-
 }
 
 th{
-
     background:#1f2937;
     padding:15px;
-
 }
 
 td{
-
     padding:15px;
-
     border-top:1px solid #2d333b;
-
 }
 
 tr:hover{
-
     background:#1d2430;
+}
 
+.status{
+    width:14px;
+    height:14px;
+    border-radius:50%;
+    display:inline-block;
+}
+
+.alive{
+    background:#18d742;
+    box-shadow:0 0 10px #18d742;
+}
+
+.dead{
+    background:#ff4747;
+    box-shadow:0 0 10px #ff4747;
 }
