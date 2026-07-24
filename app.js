@@ -26,7 +26,9 @@ function renderBosses() {
             <td>${boss["Spawn Time"]}</td>
             <td>${getTimeLeft(boss["Spawn Time"])}</td>
             <td>
-                <button>Defeated</button>
+                <button>Defeated</button><button class="btn-defeat">
+                    ✓ Defeated
+                </button>
             </td>
         </tr>
         `;
