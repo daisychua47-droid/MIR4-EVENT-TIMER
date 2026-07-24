@@ -78,6 +78,10 @@ table{
     white-space:nowrap;
 }
 
+#bossTable td:first-child{
+    text-align:center;
+}
+
 th{
     background:#1f2937;
     padding:15px;
@@ -93,10 +97,10 @@ tr:hover{
 }
 
 .status{
-    width:14px;
-    height:14px;
+    width:16px;
+    height:16px;
     border-radius:50%;
-    display:inline-block;
+    margin:auto;
 }
 
 .alive{
