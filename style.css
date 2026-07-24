@@ -83,3 +83,19 @@ tr:hover{
     background:#ff4747;
     box-shadow:0 0 10px #ff4747;
 }
+
+.btn-defeat{
+    background:#ff4d4d;
+    color:white;
+    border:none;
+    padding:8px 14px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:600;
+    transition:.2s;
+}
+
+.btn-defeat:hover{
+    background:#ff2222;
+    transform:scale(1.05);
+}
