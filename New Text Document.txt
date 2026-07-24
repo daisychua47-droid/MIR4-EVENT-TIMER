@@ -1,0 +1,10 @@
+js/
+│
+├── api.js          ← Google Apps Script communication
+├── boss.js         ← Add/Edit/Delete boss
+├── timer.js        ← Countdown timers
+├── dashboard.js    ← Render tables
+├── popup.js        ← Modals
+├── filter.js       ← Search & filters
+├── reset.js        ← Midnight reset
+└── app.js          ← Initialize everything
