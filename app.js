@@ -1,24 +1,48 @@
-document.getElementById("btnLoad").addEventListener("click", loadBosses);
+document.getElementById("btnLoad")?.remove();
 
-async function loadBosses() {
+loadBosses();
 
-    console.log("Button clicked");
+async function loadBosses(){
 
-    try {
+    const bosses = await getBosses();
 
-        const bosses = await getBosses();
+    const tbody = document.querySelector("#bossTable tbody");
 
-        console.log(bosses);
+    tbody.innerHTML = "";
 
-        document.getElementById("output").textContent =
-            JSON.stringify(bosses, null, 2);
+    document.getElementById("aliveCount").innerHTML =
+        bosses.length + " Alive";
 
-    } catch (err) {
+    bosses.forEach(boss=>{
 
-        console.error(err);
+        tbody.innerHTML += `
 
-        alert(err.message);
+        <tr>
 
-    }
+            <td>🟢</td>
+
+            <td>${boss.Boss}</td>
+
+            <td>World ${boss.World}</td>
+
+            <td>${boss.Map}</td>
+
+            <td>${boss.Layer}</td>
+
+            <td>${boss["Spawn Time"]}</td>
+
+            <td>--:--:--</td>
+
+            <td>
+
+                <button>Defeated</button>
+
+            </td>
+
+        </tr>
+
+        `;
+
+    });
 
 }
