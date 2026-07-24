@@ -16,7 +16,9 @@ function renderBosses() {
     bosses.forEach(boss => {
         tbody.innerHTML += `
         <tr>
-            <td>🟢</td>
+            <td>
+                <span class="status alive"></span>
+            </td>
             <td>${boss.Boss}</td>
             <td>World ${boss.World}</td>
             <td>${boss.Map}</td>
