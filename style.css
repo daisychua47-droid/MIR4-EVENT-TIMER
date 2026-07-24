@@ -85,17 +85,18 @@ tr:hover{
 }
 
 .btn-defeat{
-    background:#ff4d4d;
-    color:white;
+    background:#ff5252;
+    color:#fff;
     border:none;
-    padding:8px 14px;
     border-radius:8px;
+    padding:8px 14px;
     cursor:pointer;
+    font-size:13px;
     font-weight:600;
     transition:.2s;
 }
 
 .btn-defeat:hover{
-    background:#ff2222;
+    background:#ff2424;
     transform:scale(1.05);
 }
