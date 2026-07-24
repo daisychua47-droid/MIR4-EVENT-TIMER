@@ -53,6 +53,31 @@ table{
     border-collapse:collapse;
 }
 
+#bossTable{
+    width:100%;
+    border-collapse:collapse;
+}
+
+#bossTable th,
+#bossTable td{
+    text-align:center;
+    vertical-align:middle;
+}
+
+#bossTable th:last-child,
+#bossTable td:last-child{
+    width:160px;
+}
+
+#bossTable th:first-child,
+#bossTable td:first-child{
+    width:70px;
+}
+
+#bossTable td{
+    white-space:nowrap;
+}
+
 th{
     background:#1f2937;
     padding:15px;
