@@ -144,3 +144,10 @@ tr:hover{
     transform:none;
     box-shadow:none;
 }
+
+
+.bottom-grid{
+    display:grid;
+    grid-template-columns:300px 1fr;
+    gap:20px;
+}
