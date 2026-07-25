@@ -5,7 +5,9 @@ let liveBosses = [];
 let liveSoonBosses = [];
 let upcomingBosses = [];
 let defeatedBosses = [];
+
 let countdownTimer = null;
+let storageData = {};
 
 const STORAGE_KEY = "mir4BossTracker";
 
@@ -84,7 +86,7 @@ function renderDefeatedBosses() {
             </div>
     `;
 
-            const storage = loadStorage();
+            const storage = storageData;
             
             defeatedBosses.forEach(boss => {
                 const data = storage[boss.ID];
@@ -133,8 +135,7 @@ function isBossAvailableToday(boss) {
 
 function getBossState(boss) {
     const now = new Date();
-    const storage = loadStorage();
-    const defeated = storage[boss.ID];
+    const defeated = storageData[boss.ID];
     const parts = String(boss["Spawn Time"]).split(":");
     
     const hour = Number(parts[0]);
@@ -249,7 +250,7 @@ function categorizeBosses(){
     });
 
        // Recently Defeated (Newest First)
-        const storage = loadStorage();
+        const storage = storageData;
         
         defeatedBosses.sort((a,b)=>{
             const da = new Date(storage[a.ID]?.lastDefeated || 0);
@@ -348,11 +349,12 @@ function renderLiveBosses() {
 }
 
 function renderBosses() {
+    storageData = loadStorage();
     categorizeBosses();
     renderLiveBosses();
     renderDefeatedBosses();
     document.getElementById("aliveCount").textContent =
-        liveBosses.length + " Bosses";
+        `${liveBosses.length} Bosses`;
 }
 
 
