@@ -201,22 +201,23 @@ LIVE TABLE
     width:100%;
 }
 
-grid-template-columns:
-    70px          /* Status */
-    minmax(180px, 2fr)   /* Boss */
-    minmax(70px, .7fr)   /* World */
-    minmax(180px, 1.5fr) /* Map */
-    70px          /* Layer */
-    110px         /* Time Left */
-    110px         /* Action */
-    50px;         /* Favorite */
+.boss-head,
+.boss-row{
 
-.boss-head{
-    background:#1f2937;
-    color:#9ca3af;
-    font-size:13px;
-    font-weight:600;
-    padding:14px 20px;
+    display:grid;
+
+    grid-template-columns:
+        70px     /* Status */
+        250px    /* Boss */
+        200px     /* World */
+        220px    /* Map */
+        200px     /* Layer */
+        230px    /* Time */
+        120px    /* Action */
+        100px;    /* Favorite */
+
+    align-items:center;
+
 }
 
 .boss-row{
