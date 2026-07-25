@@ -69,10 +69,10 @@ function getBossState(boss) {
 
     
     const now = new Date();
-  const parts = String(boss["Spawn Time"]).split(":");
-
-const hour = Number(parts[0]);
-const minute = Number(parts[1]);
+    const parts = String(boss["Spawn Time"]).split(":");
+    
+    const hour = Number(parts[0]);
+    const minute = Number(parts[1]);
 
     let spawn = new Date();
     spawn.setHours(hour, minute, 0, 0);
@@ -82,6 +82,14 @@ const minute = Number(parts[1]);
 
     const aliveMs =
         Number(boss["Alive Duration (Min)"]) * 60000;
+
+    console.log({
+        boss: boss.Boss,
+        hour,
+        minute,
+        respawnMs,
+        aliveMs
+    });
 
     while (spawn > now) {
         spawn = new Date(spawn.getTime() - respawnMs);
