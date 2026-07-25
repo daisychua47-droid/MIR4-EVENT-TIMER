@@ -127,25 +127,10 @@ function getTodayName() {
 
 function isBossAvailableToday(boss) {
     const today = getTodayName();
-    console.log(
-        boss.Boss,
-        today,
-        boss[today],
-        typeof boss[today]
-    );
     return boss[today];
 }
 
 function getBossState(boss) {
-
-        console.log(
-        boss.Boss,
-        boss["Spawn Time"],
-        boss["Respawn (Min)"],
-        boss["Alive Duration (Min)"]
-    );
-
-    
     const now = new Date();
     const storage = loadStorage();
     const defeated = storage[boss.ID];
@@ -162,14 +147,6 @@ function getBossState(boss) {
 
     const aliveMs =
         Number(boss["Alive Duration (Min)"]) * 60000;
-
-    console.log({
-        boss: boss.Boss,
-        hour,
-        minute,
-        respawnMs,
-        aliveMs
-    });
 
     while (spawn > now) {
         spawn = new Date(spawn.getTime() - respawnMs);
@@ -226,10 +203,9 @@ function getBossState(boss) {
 }
 
 async function loadBosses() {
-   bosses = await getBosses();
-   console.table(bosses);
-   renderBosses();
-   setInterval(updateCountdowns, 1000);
+    bosses = await getBosses();
+    renderBosses();
+    setInterval(updateCountdowns, 1000);
 }
 
 function categorizeBosses(){
