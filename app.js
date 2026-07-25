@@ -33,6 +33,19 @@ function getBossData(id) {
     return data[id];
 }
 
+function defeatBoss(id) {
+    console.log("Finish clicked:", id);
+    const data = loadStorage();
+
+    if (!data[id]) {
+        data[id] = {};
+    }
+
+    data[id].lastDefeated = new Date().toISOString();
+    saveStorage(data);
+    renderBosses();
+}
+
 function getDefeatedBosses() {
     const storage = loadStorage();
     return bosses
