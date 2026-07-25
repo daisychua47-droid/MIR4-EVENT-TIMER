@@ -67,34 +67,53 @@ function getDefeatedBosses() {
 }
 
 function renderDefeatedBosses() {
-    const container = document.getElementById("defeatedList");
-    container.innerHTML = "";
-    const defeated = getDefeatedBosses();
 
-    if (defeated.length === 0) {
-        container.innerHTML =
-            '<div class="empty-state">No defeated bosses</div>';
+    const container = document.getElementById("defeatedList");
+
+    if (defeatedBosses.length === 0) {
+
+        container.innerHTML = `
+            <div class="empty-state">
+                No recently defeated bosses.
+            </div>
+        `;
+
         return;
     }
 
-     defeated.forEach(boss => {
-    
-        const defeatedTime =
-            loadStorage()[boss.ID].lastDefeated;
-    
-        container.innerHTML += `
-    
-        <div class="defeated-item">
-            <div class="defeated-name">
-                ${boss.Boss}
+    let html = `
+        <div class="boss-table defeated-table">
+
+            <div class="boss-head defeated-head">
+                <div>Boss</div>
+                <div>Defeated</div>
+                <div>Next Spawn</div>
             </div>
-    
-            <div class="defeated-time">
-                ${timeAgo(defeatedTime)}
-            </div>  
-        </div>
+    `;
+
+    defeatedBosses.forEach(boss => {
+
+        const storage = loadStorage()[boss.ID];
+
+        html += `
+            <div class="boss-row defeated-row">
+
+                <div>${boss.Boss}</div>
+
+                <div>${timeAgo(storage.lastDefeated)}</div>
+
+                <div>${formatCountdown(boss.state.nextSpawnIn)}</div>
+
+            </div>
         `;
     });
+
+    html += `
+        </div>
+    `;
+
+    container.innerHTML = html;
+
 }
 
 function timeAgo(date) {
