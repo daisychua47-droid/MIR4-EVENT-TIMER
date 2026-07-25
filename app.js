@@ -32,41 +32,52 @@ async function loadBosses() {
 
 
 function renderBosses() {
+
     const tbody = document.querySelector("#bossTable tbody");
 
     tbody.innerHTML = "";
+
     document.getElementById("aliveCount").innerHTML =
-        bosses.filter(isBossAvailableToday).length + " Alive";
+        bosses.filter(isBossAvailableToday).length + " Bosses";
+
     bosses
         .filter(isBossAvailableToday)
         .forEach(boss => {
 
-            const state = getBossState(boss);
             tbody.innerHTML += `
             <tr>
+
                 <td>
-                    <span class="status ${state.color}"></span>
-                    ${state.status}
+                    <span class="status orange"></span>
+                    Waiting
                 </td>
+
                 <td>${boss.Boss}</td>
+
                 <td>World ${boss.World}</td>
+
                 <td>${boss.Map}</td>
+
                 <td>${boss.Layer}</td>
+
                 <td>${boss["Spawn Time"]}</td>
-                <td>${state.timer}</td>
+
+                <td>${getTimeLeft(boss["Spawn Time"])}</td>
+
                 <td>
-                    <button
-                        class="btn-defeat"
-                        ${state.action==="Waiting"?"disabled":""}
-                        onclick="defeatBoss(${boss.ID})"
-                    >
-                        ${state.action}
+                    <button class="btn-defeat" disabled>
+                        Waiting
                     </button>
                 </td>
+
             </tr>
             `;
+
         });
+
 }
+
+
 function updateCountdowns() {
     renderBosses();
 }
