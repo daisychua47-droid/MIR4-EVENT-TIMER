@@ -127,6 +127,64 @@ function renderDefeatedBosses() {
 
 }
 
+function renderUpcomingBosses() {
+
+    const container = document.getElementById("upcomingList");
+
+    if (upcomingBosses.length === 0) {
+
+        container.innerHTML = `
+            <div class="empty-state">
+                No upcoming bosses.
+            </div>
+        `;
+
+        return;
+    }
+
+    let html = `
+        <div class="boss-table">
+
+            <div class="boss-head">
+
+                <div>Boss</div>
+                <div>World</div>
+                <div>Map</div>
+                <div>Spawn In</div>
+
+            </div>
+    `;
+
+    upcomingBosses.forEach(boss => {
+
+        html += `
+            <div class="boss-row">
+
+                <div>${boss.Boss}</div>
+
+                <div>W${boss.World}</div>
+
+                <div>${boss.Map}</div>
+
+                <div class="countdown">
+                    ${formatCountdown(boss.state.nextSpawnIn)}
+                </div>
+
+            </div>
+        `;
+
+    });
+
+    html += `
+        </div>
+    `;
+
+    container.innerHTML = html;
+
+}
+
+
+
 function timeAgo(date) {
     const seconds =
         Math.floor((Date.now() - new Date(date)) / 1000);
