@@ -56,15 +56,7 @@ function defeatBoss(id){
     renderBosses();
 }
 
-function getDefeatedBosses() {
-    const storage = loadStorage();
-    return bosses
-        .filter(boss => storage[boss.ID]?.lastDefeated)
-        .sort((a, b) => {
-            return new Date(storage[b.ID].lastDefeated)
-                 - new Date(storage[a.ID].lastDefeated);
-        });
-}
+
 
 function renderDefeatedBosses() {
 
@@ -91,22 +83,18 @@ function renderDefeatedBosses() {
             </div>
     `;
 
-    defeatedBosses.forEach(boss => {
-
-        const storage = loadStorage()[boss.ID];
-
-        html += `
-            <div class="boss-row defeated-row">
-
-                <div>${boss.Boss}</div>
-
-                <div>${timeAgo(storage.lastDefeated)}</div>
-
-                <div>${formatCountdown(boss.state.nextSpawnIn)}</div>
-
-            </div>
-        `;
-    });
+            const storage = loadStorage();
+            
+            defeatedBosses.forEach(boss => {
+                const data = storage[boss.ID];
+                html += `
+                    <div class="boss-row defeated-row">     
+                        <div>${boss.Boss}</div>
+                        <div>${timeAgo(data.lastDefeated)}</div>
+                        <div>${formatCountdown(boss.state.nextSpawnIn)}</div>
+                    </div>
+                `;
+            });
 
     html += `
         </div>
@@ -280,14 +268,13 @@ function categorizeBosses(){
 
     });
 
-        // Recently Defeated (Newest First)
+       // Recently Defeated (Newest First)
+        const storage = loadStorage();
+        
         defeatedBosses.sort((a,b)=>{
-        
-            const da = new Date(loadStorage()[a.ID]?.lastDefeated || 0);
-            const db = new Date(loadStorage()[b.ID]?.lastDefeated || 0);
-        
+            const da = new Date(storage[a.ID]?.lastDefeated || 0);
+            const db = new Date(storage[b.ID]?.lastDefeated || 0);
             return db - da;
-        
         });
         
         // Upcoming & Live Soon (Nearest Spawn First)
