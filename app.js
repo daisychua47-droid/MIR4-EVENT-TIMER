@@ -212,84 +212,118 @@ function isBossAvailableToday(boss) {
 }
 
 function getBossState(boss) {
-    const now = new Date();
-    const defeated = storageData[boss.ID];
-    const parts = String(boss["Spawn Time"]).split(":");
-    
-    const hour = Number(parts[0]);
-    const minute = Number(parts[1]);
 
-    const respawnMs = Number(boss["Respawn (Min)"]) * 60000;
-    const aliveMs = Number(boss["Alive Duration (Min)"]) * 60000;
-    
+    const now = new Date();
+
+    const defeated = storageData[boss.ID];
+
+    const spawnParts = String(boss["Spawn Time"]).split(":");
+
+    const spawnHour = Number(spawnParts[0]);
+    const spawnMinute = Number(spawnParts[1]);
+
+    const respawnMs =
+        Number(boss["Respawn (Min)"]) * 60000;
+
+    const aliveMs =
+        Number(boss["Alive Duration (Min)"]) * 60000;
+
     // First scheduled spawn today
     const firstSpawn = new Date(now);
-    firstSpawn.setHours(hour, minute, 0, 0);
-    
-    // Difference from first spawn
-    let diff = now.getTime() - firstSpawn.getTime();
-    
-    // If first spawn hasn't happened today,
-    // use yesterday as the starting point
-    if (diff < 0) {
-        diff += 24 * 60 * 60 * 1000;
+    firstSpawn.setHours(spawnHour, spawnMinute, 0, 0);
+
+    // If spawn is still in the future,
+    // use yesterday as the first cycle
+    while (firstSpawn > now) {
+        firstSpawn.setDate(firstSpawn.getDate() - 1);
     }
-    
-    const cycles = Math.floor(diff / respawnMs);
-    
-    const spawn = new Date(
-        firstSpawn.getTime() + cycles * respawnMs
-    );
-    
+
+    // Find the latest spawn cycle
+    let spawn = new Date(firstSpawn);
+
+    while (spawn.getTime() + respawnMs <= now.getTime()) {
+        spawn = new Date(spawn.getTime() + respawnMs);
+    }
+
     const aliveUntil = new Date(
         spawn.getTime() + aliveMs
     );
-    
+
     const nextSpawn = new Date(
         spawn.getTime() + respawnMs
     );
 
-    // Boss was manually/automatically defeated
+    // Manual defeat
     if (
         defeated &&
         defeated.nextSpawn &&
         now < new Date(defeated.nextSpawn)
     ) {
-    
+
         return {
+
             status: "DEFEATED",
-            color: "gray",
+
             spawn,
+
             aliveUntil,
+
             nextSpawn: new Date(defeated.nextSpawn),
+
             timeLeft: 0,
+
             nextSpawnIn:
                 new Date(defeated.nextSpawn) - now
+
         };
-    
+
     }
-    
-    if (now < aliveUntil) {
+
+    // Boss currently alive
+    if (
+        now >= spawn &&
+        now < aliveUntil
+    ) {
+
         return {
+
             status: "LIVE",
-            color: "green",
+
             spawn,
+
             aliveUntil,
+
             nextSpawn,
-            timeLeft: aliveUntil - now,
+
+            timeLeft:
+                aliveUntil - now,
+
             nextSpawnIn: 0
+
         };
+
     }
+
+    // Waiting for next spawn
     return {
+
         status: "UPCOMING",
-        color: "orange",
+
         spawn,
+
         aliveUntil,
+
         nextSpawn,
+
         timeLeft: 0,
-        nextSpawnIn: nextSpawn - now
+
+        nextSpawnIn:
+            nextSpawn - now
+
     };
+
 }
+ 
 
 async function loadBosses() {
     bosses = await getBosses();
