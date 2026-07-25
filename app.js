@@ -23,10 +23,9 @@ function getBossState(boss) {
     const [hour, minute] = boss["Spawn Time"].split(":").map(Number);
 
     const spawn = new Date();
-
     spawn.setHours(hour, minute, 0, 0);
 
-    // If today's spawn hasn't happened yet
+    // Today's spawn not reached
     if (now < spawn) {
 
         return {
@@ -38,12 +37,34 @@ function getBossState(boss) {
 
     }
 
-    // Spawn already happened today
+    // Calculate when boss disappears
+    const aliveUntil = new Date(spawn);
+
+    aliveUntil.setMinutes(
+        aliveUntil.getMinutes() +
+        Number(boss["Alive Duration (Min)"])
+    );
+
+    // Boss is alive
+    if (now < aliveUntil) {
+
+        return {
+            status: "Spawned",
+            color: "green",
+            action: "Defeat",
+            timer: getAliveTime(spawn)
+        };
+
+    }
+
+    // Boss already disappeared
     return {
-        status: "Spawned",
-        color: "green",
-        action: "Defeat",
-        timer: "LIVE"
+
+        status: "Waiting",
+        color: "orange",
+        action: "Waiting",
+        timer: getNextSpawn(spawn, Number(boss["Respawn (Min)"]))
+
     };
 
 }
@@ -126,5 +147,38 @@ function getTimeLeft(spawnTime) {
         String(s).padStart(2, "0")
     );
 }
+
+function getAliveTime(spawn){
+
+    const diff = new Date() - spawn;
+
+    const h = Math.floor(diff / 3600000);
+
+    const m = Math.floor((diff % 3600000) / 60000);
+
+    const s = Math.floor((diff % 60000) / 1000);
+
+    return (
+        String(h).padStart(2,"0")+":"+
+        String(m).padStart(2,"0")+":"+
+        String(s).padStart(2,"0")
+    );
+
+}
+
+function getNextSpawn(spawn, respawnMinutes){
+    const next = new Date(spawn);
+    next.setMinutes(next.getMinutes() + respawnMinutes);
+    const diff = next - new Date();
+    const h = Math.floor(diff / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    return (
+        String(Math.max(0,h)).padStart(2,"0")+":"+
+        String(Math.max(0,m)).padStart(2,"0")+":"+
+        String(Math.max(0,s)).padStart(2,"0")
+    );
+}
+
 
 loadBosses();
