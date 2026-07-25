@@ -2,6 +2,14 @@ document.getElementById("btnLoad")?.remove();
 
 let bosses = [];
 
+function getTodayName() {
+    return ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][new Date().getDay()];
+}
+
+function isBossAvailableToday(boss) {
+    return boss[getTodayName()] === true;
+}
+
 async function loadBosses() {
     bosses = await getBosses();
     renderBosses();
@@ -13,7 +21,9 @@ function renderBosses() {
     tbody.innerHTML = "";
     document.getElementById("aliveCount").innerHTML =
         bosses.length + " Alive";
-    bosses.forEach(boss => {
+    bosses
+    .filter(isBossAvailableToday)
+    .forEach(boss => {
         tbody.innerHTML += `
         <tr>
             <td>
