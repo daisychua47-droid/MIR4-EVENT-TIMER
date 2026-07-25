@@ -207,18 +207,35 @@ LIVE TABLE
     display:grid;
 
     grid-template-columns:
-        100px     /* Status */
-        250px    /* Boss */
-        300px     /* World */
-        250px    /* Map */
-        200px     /* Layer */
-        230px    /* Time */
-        120px    /* Action */
-        150px;    /* Favorite */
+        70px           /* Status */
+        2fr            /* Boss */
+        1fr            /* World */
+        2fr            /* Map */
+        .8fr           /* Layer */
+        1.2fr          /* Time Left */
+        1.2fr          /* Action */
+        .5fr;          /* Favorite */
 
     align-items:center;
-
 }
+
+
+.boss-table{
+    width:100%;
+}
+
+.boss-head,
+.boss-row{
+    width:100%;
+}
+
+.boss-head > div,
+.boss-row > div{
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
 
 .boss-row{
     padding:16px 20px;
