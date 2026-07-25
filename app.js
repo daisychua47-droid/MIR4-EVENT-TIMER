@@ -33,15 +33,24 @@ function getBossData(id) {
     return data[id];
 }
 
-function defeatBoss(id) {
-    console.log("Finish clicked:", id);
+function defeatBoss(id){
+    const boss = bosses.find(b => String(b.ID) === String(id));
+
+    if(!boss) return;
     const data = loadStorage();
 
-    if (!data[id]) {
+    if(!data[id]){
         data[id] = {};
     }
 
-    data[id].lastDefeated = new Date().toISOString();
+    const now = new Date();
+    const nextSpawn = new Date(
+        now.getTime() + Number(boss["Respawn (Min)"]) * 60000
+    );
+
+    data[id].lastDefeated = now.toISOString();
+    data[id].nextSpawn = nextSpawn.toISOString();
+
     saveStorage(data);
     renderBosses();
 }
