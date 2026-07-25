@@ -170,9 +170,24 @@ tr:hover{
 
 /* Mobile */
 @media (max-width:900px){
-
     .bottom-grid{
         grid-template-columns:1fr;
     }
+}
 
+/* LIVE CARD */
+.live-card{
+    min-height:420px;
+}
+.small-card{
+    min-height:300px;
+}
+.bottom-grid .card:last-child{
+    min-height:300px;
+}
+
+.boss-list,
+.mini-list{
+    padding:15px;
+    min-height:250px;
 }
