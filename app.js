@@ -122,6 +122,14 @@ function categorizeBosses() {
         .filter(isBossAvailableToday)
         .forEach(boss => {
             const state = getBossState(boss);
+
+            console.log(
+            boss.Boss,
+            state.status,
+            state.timeLeft,
+            state.nextSpawnIn
+                );
+            
             boss.state = state;
             if (state.status === "LIVE") {
                 liveBosses.push(boss);
