@@ -443,6 +443,7 @@ function renderBosses() {
     categorizeBosses();
     renderLiveBosses();
     renderDefeatedBosses();
+    renderUpcomingBosses();
     document.getElementById("aliveCount").textContent =
         `${liveBosses.length} Bosses`;
 }
