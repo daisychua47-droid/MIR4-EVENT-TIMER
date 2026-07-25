@@ -207,21 +207,21 @@ LIVE TABLE
     display:grid;
 
     grid-template-columns:
-        70px     /* Status */
+        100px     /* Status */
         250px    /* Boss */
-        200px     /* World */
-        220px    /* Map */
+        300px     /* World */
+        250px    /* Map */
         200px     /* Layer */
         230px    /* Time */
         120px    /* Action */
-        100px;    /* Favorite */
+        150px;    /* Favorite */
 
     align-items:center;
 
 }
 
 .boss-row{
-    padding:14px 20px;
+    padding:16px 20px;
     border-top:1px solid #2d333b;
     transition:.2s;
 }
