@@ -25,6 +25,10 @@ function saveStorage(data) {
 }
 
 function getBossData(id) {
+    console.log(
+    boss.Boss,
+    storageData[boss.ID]
+);
     const data = loadStorage();
 
     if (!data[id]) {
