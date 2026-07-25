@@ -33,15 +33,46 @@ function getBossData(id) {
     return data[id];
 }
 
-function defeatBoss(id) {
-    const data = loadStorage();
-    if (!data[id]) {
-        data[id] = {};
-    }
-    data[id].lastDefeated = new Date().toISOString();
-    saveStorage(data);
-    renderBosses();
+function getDefeatedBosses() {
+    const storage = loadStorage();
+    return bosses
+        .filter(boss => storage[boss.ID]?.lastDefeated)
+        .sort((a, b) => {
+            return new Date(storage[b.ID].lastDefeated)
+                 - new Date(storage[a.ID].lastDefeated);
+        });
 }
+
+function renderDefeatedBosses() {
+    const container = document.getElementById("defeatedList");
+    container.innerHTML = "";
+    const defeated = getDefeatedBosses();
+
+    if (defeated.length === 0) {
+        container.innerHTML =
+            '<div class="empty-state">No defeated bosses</div>';
+        return;
+    }
+
+    defeated.forEach(boss => {
+        const defeatedTime =
+            loadStorage()[boss.ID].lastDefeated;
+        container.innerHTML += `
+
+        <div class="defeated-item">
+            <div>
+                <div class="boss-name">
+                    ${boss.Boss}
+                </div>
+                <small>
+                    ${new Date(defeatedTime).toLocaleString()}
+                </small>
+            </div>
+        </div>
+        `;
+    });
+}
+
 
 function getTodayName() {
     return ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][new Date().getDay()];
@@ -249,6 +280,7 @@ function renderLiveBosses() {
 function renderBosses() {
     categorizeBosses();
     renderLiveBosses();
+    renderDefeatedBosses();
     document.getElementById("aliveCount").textContent =
         liveBosses.length + " Bosses";
 }
