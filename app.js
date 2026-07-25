@@ -211,43 +211,75 @@ function isBossAvailableToday(boss) {
     return boss[today];
 }
 
-function getBossState(boss) {
 
-    const now = new Date();
-    const defeated = storageData[boss.ID];
+function getBaseSpawn(boss, now) {
 
     const [hour, minute] = String(boss["Spawn Time"])
         .split(":")
         .map(Number);
 
-    const respawnMs = Number(boss["Respawn (Min)"]) * 60000;
-    const aliveMs = Number(boss["Alive Duration (Min)"]) * 60000;
+    const base = new Date(now);
 
-    // Base spawn today
-    let baseSpawn = new Date(now);
-    baseSpawn.setHours(hour, minute, 0, 0);
+    base.setHours(hour, minute, 0, 0);
 
-    // If today's base spawn hasn't happened yet,
-    // use yesterday's base spawn.
-    if (baseSpawn > now) {
-        baseSpawn.setDate(baseSpawn.getDate() - 1);
+    return base;
+
+}
+
+function getCurrentSpawn(boss, now) {
+
+    const respawnMs =
+        Number(boss["Respawn (Min)"]) * 60000;
+
+    let base = getBaseSpawn(boss, now);
+
+    // Move to yesterday if today's first spawn
+    // hasn't happened yet.
+    if (base > now) {
+        base.setDate(base.getDate() - 1);
     }
 
-    // Number of completed respawn cycles
-    const elapsed = now.getTime() - baseSpawn.getTime();
-    const cycles = Math.floor(elapsed / respawnMs);
+    while (base.getTime() + respawnMs <= now.getTime()) {
+        base = new Date(base.getTime() + respawnMs);
+    }
 
-    // Current spawn
-    const spawn = new Date(
-        baseSpawn.getTime() + cycles * respawnMs
+    return base;
+
+}
+
+
+function getNextSpawn(boss, spawn) {
+
+    return new Date(
+
+        spawn.getTime() +
+
+        Number(boss["Respawn (Min)"]) * 60000
+
     );
+
+}
+
+function getBossState(boss) {
+
+    const now = new Date();
+
+    const defeated = storageData[boss.ID];
+
+    const spawn = getCurrentSpawn(boss, now);
+
+    console.log(
+    boss.Boss,
+    "NOW:", now.toLocaleTimeString(),
+    "SPAWN:", spawn.toLocaleTimeString(),
+    "NEXT:", nextSpawn.toLocaleTimeString()
+);
+
+    const nextSpawn = getNextSpawn(boss, spawn);
 
     const aliveUntil = new Date(
-        spawn.getTime() + aliveMs
-    );
-
-    const nextSpawn = new Date(
-        spawn.getTime() + respawnMs
+        spawn.getTime() +
+        Number(boss["Alive Duration (Min)"]) * 60000
     );
 
     // Manual defeat
@@ -256,37 +288,65 @@ function getBossState(boss) {
         defeated.nextSpawn &&
         now < new Date(defeated.nextSpawn)
     ) {
+
         return {
+
             status: "DEFEATED",
+
             spawn,
+
             aliveUntil,
+
             nextSpawn: new Date(defeated.nextSpawn),
+
             timeLeft: 0,
+
             nextSpawnIn:
                 new Date(defeated.nextSpawn) - now
+
         };
+
     }
 
     // LIVE
     if (now >= spawn && now < aliveUntil) {
+
         return {
+
             status: "LIVE",
+
             spawn,
+
             aliveUntil,
+
             nextSpawn,
-            timeLeft: aliveUntil - now,
+
+            timeLeft:
+                aliveUntil - now,
+
             nextSpawnIn: 0
+
         };
+
     }
 
     // UPCOMING
+
     return {
+
         status: "UPCOMING",
+
         spawn,
+
         aliveUntil,
+
         nextSpawn,
+
         timeLeft: 0,
-        nextSpawnIn: nextSpawn - now
+
+        nextSpawnIn:
+            nextSpawn - now
+
     };
 
 }
