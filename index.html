@@ -36,42 +36,52 @@
 
 <main class="container">
 
-    <section class="card">
+    <!-- LIVE NOW -->
+    <section class="card live-card">
 
         <div class="card-header">
-
-            <h2>🟢 ACTIVE BOSSES</h2>
-
-            <span id="aliveCount">0 Alive</span>
-
+            <h2>🟢 LIVE NOW</h2>
+            <span id="aliveCount">0 Bosses</span>
         </div>
 
-        <table id="bossTable">
-
-            <thead>
-
-                <tr>
-
-                    <th>Status</th>
-                    <th>Boss</th>
-                    <th>World</th>
-                    <th>Map</th>
-                    <th>Layer</th>
-                    <th>Spawn</th>
-                    <th>Time Left</th>
-                    <th>Action</th>
-
-                </tr>
-
-            </thead>
-
-            <tbody>
-
-            </tbody>
-
-        </table>
+        <div id="liveBossList" class="boss-list">
+            <!-- JS -->
+        </div>
 
     </section>
+
+
+    <!-- DEFEATED + UPCOMING -->
+    <div class="bottom-grid">
+
+        <!-- Recently Defeated -->
+        <section class="card small-card">
+
+            <div class="card-header">
+                <h2>⚫ Recently Defeated</h2>
+            </div>
+
+            <div id="defeatedList" class="mini-list">
+                <!-- JS -->
+            </div>
+
+        </section>
+
+
+        <!-- Upcoming -->
+        <section class="card">
+
+            <div class="card-header">
+                <h2>🕒 Upcoming Bosses</h2>
+            </div>
+
+            <div id="upcomingList" class="boss-list">
+                <!-- JS -->
+            </div>
+
+        </section>
+
+    </div>
 
 </main>
 
