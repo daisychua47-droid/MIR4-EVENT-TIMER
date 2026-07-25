@@ -1,6 +1,10 @@
 document.getElementById("btnLoad")?.remove();
 
 let bosses = [];
+let liveBosses = [];
+let upcomingBosses = [];
+let defeatedBosses = [];
+
 const STORAGE_KEY = "mir4BossTracker";
 
 function loadStorage() {
@@ -102,8 +106,29 @@ async function loadBosses() {
    setInterval(updateCountdowns, 1000);
 }
 
+function categorizeBosses() {
+    liveBosses = [];
+    upcomingBosses = [];
+    defeatedBosses = [];
+
+    bosses
+        .filter(isBossAvailableToday)
+        .forEach(boss => {
+            const state = getBossState(boss);
+            boss.state = state;
+            if (state.status === "LIVE") {
+                liveBosses.push(boss);
+            } else {
+                upcomingBosses.push(boss);
+            }
+        });
+}
 
 function renderBosses() {
+    categorizeBosses();
+
+    console.log("Live:", liveBosses.length);
+    console.log("Upcoming:", upcomingBosses.length);
     const tbody = document.querySelector("#bossTable tbody");
     tbody.innerHTML = "";
     let aliveCount = 0;
