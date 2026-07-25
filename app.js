@@ -268,12 +268,7 @@ function getBossState(boss) {
 
     const spawn = getCurrentSpawn(boss, now);
 
-    console.log(
-    boss.Boss,
-    "NOW:", now.toLocaleTimeString(),
-    "SPAWN:", spawn.toLocaleTimeString(),
-    "NEXT:", nextSpawn.toLocaleTimeString()
-);
+  
 
     const nextSpawn = getNextSpawn(boss, spawn);
 
@@ -281,6 +276,13 @@ function getBossState(boss) {
         spawn.getTime() +
         Number(boss["Alive Duration (Min)"]) * 60000
     );
+
+      console.log(
+    boss.Boss,
+    "NOW:", now.toLocaleTimeString(),
+    "SPAWN:", spawn.toLocaleTimeString(),
+    "NEXT:", nextSpawn.toLocaleTimeString()
+);
 
     // Manual defeat
     if (
