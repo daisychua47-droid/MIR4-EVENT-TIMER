@@ -114,29 +114,39 @@ async function loadBosses() {
 }
 
 function categorizeBosses() {
+
     liveBosses = [];
     upcomingBosses = [];
     defeatedBosses = [];
 
+    console.clear();
+
     bosses
         .filter(isBossAvailableToday)
         .forEach(boss => {
+
             const state = getBossState(boss);
 
-            console.log(
-            boss.Boss,
-            state.status,
-            state.timeLeft,
-            state.nextSpawnIn
-                );
-            
             boss.state = state;
+
+            console.log({
+                boss: boss.Boss,
+                status: state.status,
+                timeLeft: state.timeLeft,
+                nextSpawnIn: state.nextSpawnIn
+            });
+
             if (state.status === "LIVE") {
                 liveBosses.push(boss);
             } else {
                 upcomingBosses.push(boss);
             }
+
         });
+
+    console.log("LIVE:", liveBosses.length);
+    console.log("UPCOMING:", upcomingBosses.length);
+
 }
 
 function renderLiveBosses() {
