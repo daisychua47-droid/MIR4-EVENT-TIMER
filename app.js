@@ -1,6 +1,20 @@
 document.getElementById("btnLoad")?.remove();
 
 let bosses = [];
+const STORAGE_KEY = "mir4BossTracker";
+
+function loadStorage() {
+    return JSON.parse(
+        localStorage.getItem(STORAGE_KEY) || "{}"
+    );
+}
+
+function saveStorage(data) {
+    localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(data)
+    );
+}
 
 function getTodayName() {
     return ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][new Date().getDay()];
