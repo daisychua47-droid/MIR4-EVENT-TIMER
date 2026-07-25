@@ -12,15 +12,11 @@ function isBossAvailableToday(boss) {
 
 async function defeatBoss(id){
     try{
-        await fetch(API_URL,{
-            method:"POST",
-            headers:{
-                "Content-Type":"application/json"
-            },
-            body:JSON.stringify({
-                id:id
-            })
-        });
+        await fetch(
+            API_URL +
+            "?action=defeat&id=" +
+            id
+        );
         bosses = await getBosses();
         renderBosses();
     }catch(err){
