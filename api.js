@@ -2,16 +2,28 @@ const API_URL = "https://script.google.com/macros/s/AKfycbwxJB8AX32wXqwVZq7l6RZX
 
 async function getBosses() {
 
-    console.log("Fetching API...");
+    try {
 
-    const response = await fetch(API_URL);
+        console.log("Fetching API...");
 
-    console.log(response);
+        const response = await fetch(API_URL);
 
-    const data = await response.json();
+        if (!response.ok) {
+            throw new Error(`HTTP Error ${response.status}`);
+        }
 
-    console.log(data);
+        const data = await response.json();
 
-    return data;
+        console.log("Bosses Loaded:", data);
+
+        return data;
+
+    } catch (err) {
+
+        console.error("API Error:", err);
+
+        return [];
+
+    }
 
 }
