@@ -69,9 +69,10 @@ function getBossState(boss) {
 
     
     const now = new Date();
-    const [hour, minute] = boss["Spawn Time"]
-        .split(":")
-        .map(Number);
+  const parts = String(boss["Spawn Time"]).split(":");
+
+const hour = Number(parts[0]);
+const minute = Number(parts[1]);
 
     let spawn = new Date();
     spawn.setHours(hour, minute, 0, 0);
