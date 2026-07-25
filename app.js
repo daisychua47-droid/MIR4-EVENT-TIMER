@@ -60,6 +60,22 @@ function defeatBoss(id){
 }
 
 
+function toggleFavorite(id) {
+    const data = loadStorage();
+    if (!data[id]) {
+        data[id] = {
+            favorite: false,
+            lastDefeated: null,
+            nextSpawn: null
+        };
+    }
+
+    data[id].favorite = !data[id].favorite;
+    saveStorage(data);
+    renderBosses();
+}
+
+
 
 function renderDefeatedBosses() {
 
@@ -338,8 +354,11 @@ function renderLiveBosses() {
                             Finish
                         </button>
                     </div>
-                    <div>
-                        ☆
+                      <div
+                        class="favorite"
+                        onclick="toggleFavorite(${boss.ID})">
+                    
+                        ${storageData[boss.ID]?.favorite ? "★" : "☆"}
                     </div>
                 </div>
                 `;
