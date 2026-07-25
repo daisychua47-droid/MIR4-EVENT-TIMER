@@ -345,6 +345,13 @@ function categorizeBosses(){
 
         boss.state = getBossState(boss);
 
+console.log({
+    boss: boss.Boss,
+    status: boss.state.status,
+    timeLeft: formatCountdown(boss.state.timeLeft),
+    nextSpawn: formatCountdown(boss.state.nextSpawnIn)
+});
+
         switch(boss.state.status){
 
             case "LIVE":
