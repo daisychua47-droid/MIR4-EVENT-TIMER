@@ -191,3 +191,64 @@ tr:hover{
     padding:15px;
     min-height:250px;
 }
+
+
+/*==============================
+LIVE TABLE
+==============================*/
+
+.boss-table{
+    width:100%;
+}
+
+.boss-head,
+.boss-row{
+    display:grid;
+    grid-template-columns:
+        70px
+        2fr
+        80px
+        180px
+        80px
+        120px
+        120px
+        60px;
+
+    align-items:center;
+}
+
+.boss-head{
+    background:#1f2937;
+    color:#9ca3af;
+    font-size:13px;
+    font-weight:600;
+    padding:14px 20px;
+}
+
+.boss-row{
+    padding:14px 20px;
+    border-top:1px solid #2d333b;
+    transition:.2s;
+}
+
+.boss-row:hover{
+
+    background:#1b2230;
+
+}
+
+.boss-name{
+    font-weight:700;
+    color:#fff;
+}
+
+.countdown{ 
+    font-weight:700;
+    color:#22c55e;
+}
+
+.empty-state{
+    padding:50px;
+    text-align:center;
+    color:#888;
+}
