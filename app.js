@@ -157,26 +157,35 @@ function getBossState(boss) {
     const hour = Number(parts[0]);
     const minute = Number(parts[1]);
 
-    let spawn = new Date();
-    spawn.setHours(hour, minute, 0, 0);
+    const respawnMs = Number(boss["Respawn (Min)"]) * 60000;
+    const aliveMs = Number(boss["Alive Duration (Min)"]) * 60000;
     
-    const respawnMs =
-        Number(boss["Respawn (Min)"]) * 60000;
-
-    const aliveMs =
-        Number(boss["Alive Duration (Min)"]) * 60000;
-
-    while (spawn > now) {
-        spawn = new Date(spawn.getTime() - respawnMs);
+    // First scheduled spawn today
+    const firstSpawn = new Date(now);
+    firstSpawn.setHours(hour, minute, 0, 0);
+    
+    // Difference from first spawn
+    let diff = now.getTime() - firstSpawn.getTime();
+    
+    // If first spawn hasn't happened today,
+    // use yesterday as the starting point
+    if (diff < 0) {
+        diff += 24 * 60 * 60 * 1000;
     }
-    while (spawn.getTime() + respawnMs <= now.getTime()) {
-        spawn = new Date(spawn.getTime() + respawnMs);
-    }
-    const aliveUntil =
-        new Date(spawn.getTime() + aliveMs);
-    const nextSpawn =
-        new Date(spawn.getTime() + respawnMs);
-
+    
+    const cycles = Math.floor(diff / respawnMs);
+    
+    const spawn = new Date(
+        firstSpawn.getTime() + cycles * respawnMs
+    );
+    
+    const aliveUntil = new Date(
+        spawn.getTime() + aliveMs
+    );
+    
+    const nextSpawn = new Date(
+        spawn.getTime() + respawnMs
+    );
 
     // Boss was manually/automatically defeated
     if (
