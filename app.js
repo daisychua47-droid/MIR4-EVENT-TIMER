@@ -59,6 +59,15 @@ function isBossAvailableToday(boss) {
 }
 
 function getBossState(boss) {
+
+    console.log(
+    boss.Boss,
+    boss["Spawn Time"],
+    boss["Respawn (Min)"],
+    boss["Alive Duration (Min)"]
+);
+
+    
     const now = new Date();
     const [hour, minute] = boss["Spawn Time"]
         .split(":")
