@@ -168,13 +168,6 @@ tr:hover{
     margin:0;
 }
 
-/* Mobile */
-@media (max-width:900px){
-    .bottom-grid{
-        grid-template-columns:1fr;
-    }
-}
-
 /* LIVE CARD */
 .live-card{
     min-height:420px;
@@ -264,3 +257,20 @@ LIVE TABLE
     text-align:center;
     color:#888;
 }
+
+
+/* Mobile */
+@media (max-width:900px){
+    .bottom-grid{
+        grid-template-columns:1fr;
+    }
+
+     .boss-table{
+        min-width:900px;
+    }
+
+    #liveBossList{
+        overflow-x:auto;
+    }
+}
+
