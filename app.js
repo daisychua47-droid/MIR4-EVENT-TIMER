@@ -2,6 +2,7 @@ document.getElementById("btnLoad")?.remove();
 
 let bosses = [];
 let liveBosses = [];
+let liveSoonBosses = [];
 let upcomingBosses = [];
 let defeatedBosses = [];
 
@@ -224,39 +225,60 @@ async function loadBosses() {
    setInterval(updateCountdowns, 1000);
 }
 
-function categorizeBosses() {
+function categorizeBosses(){
 
     liveBosses = [];
+    liveSoonBosses = [];
     upcomingBosses = [];
     defeatedBosses = [];
 
-    console.clear();
+    bosses.forEach(boss=>{
 
-    bosses
-        .filter(isBossAvailableToday)
-        .forEach(boss => {
+        boss.state = getBossState(boss);
 
-            const state = getBossState(boss);
+        switch(boss.state.status){
 
-            boss.state = state;
-
-            console.log({
-                boss: boss.Boss,
-                status: state.status,
-                timeLeft: state.timeLeft,
-                nextSpawnIn: state.nextSpawnIn
-            });
-
-            if (state.status === "LIVE") {
+            case "LIVE":
                 liveBosses.push(boss);
-            } else {
+                break;
+
+            case "DEFEATED":
+                defeatedBosses.push(boss);
                 upcomingBosses.push(boss);
-            }
+                break;
 
+            case "UPCOMING":
+
+                if(boss.state.nextSpawnIn <= 3600000){
+                    liveSoonBosses.push(boss);
+                }else{
+                    upcomingBosses.push(boss);
+                }
+
+                break;
+
+        }
+
+    });
+
+        // Recently Defeated (Newest First)
+        defeatedBosses.sort((a,b)=>{
+        
+            const da = new Date(loadStorage()[a.ID]?.lastDefeated || 0);
+            const db = new Date(loadStorage()[b.ID]?.lastDefeated || 0);
+        
+            return db - da;
+        
         });
-
-    console.log("LIVE:", liveBosses.length);
-    console.log("UPCOMING:", upcomingBosses.length);
+        
+        // Upcoming & Live Soon (Nearest Spawn First)
+        upcomingBosses.sort(
+            (a,b)=>a.state.nextSpawnIn-b.state.nextSpawnIn
+        );
+        
+        liveSoonBosses.sort(
+            (a,b)=>a.state.nextSpawnIn-b.state.nextSpawnIn
+        );
 
 }
 
