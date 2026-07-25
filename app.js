@@ -10,6 +10,25 @@ function isBossAvailableToday(boss) {
     return boss[getTodayName()] === true;
 }
 
+async function defeatBoss(id){
+    try{
+        await fetch(API_URL,{
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify({
+                id:id
+            })
+        });
+        bosses = await getBosses();
+        renderBosses();
+    }catch(err){
+        console.error(err);
+        alert("Unable to update boss.");
+    }
+}
+
 async function loadBosses() {
     bosses = await getBosses();
     renderBosses();
@@ -17,24 +36,19 @@ async function loadBosses() {
 }
 
 function getBossState(boss) {
-
     const now = new Date();
-
     const [hour, minute] = boss["Spawn Time"].split(":").map(Number);
-
     const spawn = new Date();
     spawn.setHours(hour, minute, 0, 0);
 
     // Today's spawn not reached
     if (now < spawn) {
-
         return {
             status: "Waiting",
             color: "orange",
             action: "Waiting",
             timer: getTimeLeft(boss["Spawn Time"])
         };
-
     }
 
     // Calculate when boss disappears
@@ -70,56 +84,40 @@ function getBossState(boss) {
 }
 
 function renderBosses() {
-
     const tbody = document.querySelector("#bossTable tbody");
 
     tbody.innerHTML = "";
-
     document.getElementById("aliveCount").innerHTML =
         bosses.filter(isBossAvailableToday).length + " Alive";
-
     bosses
         .filter(isBossAvailableToday)
         .forEach(boss => {
 
             const state = getBossState(boss);
-
             tbody.innerHTML += `
             <tr>
-
                 <td>
                     <span class="status ${state.color}"></span>
                     ${state.status}
                 </td>
-
                 <td>${boss.Boss}</td>
-
                 <td>World ${boss.World}</td>
-
                 <td>${boss.Map}</td>
-
                 <td>${boss.Layer}</td>
-
                 <td>${boss["Spawn Time"]}</td>
-
                 <td>${state.timer}</td>
-
                 <td>
-
                     <button
                         class="btn-defeat"
-                        ${state.action === "Waiting" ? "disabled" : ""}
+                        ${state.action==="Waiting"?"disabled":""}
+                        onclick="defeatBoss(${boss.ID})"
                     >
                         ${state.action}
                     </button>
-
                 </td>
-
             </tr>
             `;
-
         });
-
 }
 function updateCountdowns() {
     renderBosses();
