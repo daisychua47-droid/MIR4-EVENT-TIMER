@@ -16,6 +16,38 @@ async function loadBosses() {
     setInterval(updateCountdowns, 1000);
 }
 
+function getBossState(boss) {
+
+    const now = new Date();
+
+    const [hour, minute] = boss["Spawn Time"].split(":").map(Number);
+
+    const spawn = new Date();
+
+    spawn.setHours(hour, minute, 0, 0);
+
+    // If today's spawn hasn't happened yet
+    if (now < spawn) {
+
+        return {
+            status: "Waiting",
+            color: "orange",
+            action: "Waiting",
+            timer: getTimeLeft(boss["Spawn Time"])
+        };
+
+    }
+
+    // Spawn already happened today
+    return {
+        status: "Spawned",
+        color: "green",
+        action: "Defeat",
+        timer: "LIVE"
+    };
+
+}
+
 function renderBosses() {
     const tbody = document.querySelector("#bossTable tbody");
     tbody.innerHTML = "";
