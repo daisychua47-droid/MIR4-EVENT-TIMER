@@ -168,37 +168,82 @@ function categorizeBosses() {
 }
 
 function renderLiveBosses() {
+
     const container = document.getElementById("liveBossList");
+
     container.innerHTML = "";
 
-    liveBosses.forEach(boss => {
-        const state = boss.state;
-        container.innerHTML += `
-            <div class="boss-card">
-                <div class="boss-info">
+    if (liveBosses.length === 0) {
+
+        container.innerHTML = `
+            <div class="empty-state">
+                No bosses are currently alive.
+            </div>
+        `;
+
+        return;
+    }
+
+    container.innerHTML = `
+        <div class="boss-table">
+
+            <div class="boss-head">
+
+                <div>Status</div>
+                <div>Boss</div>
+                <div>World</div>
+                <div>Map</div>
+                <div>Layer</div>
+                <div>Time Left</div>
+                <div>Action</div>
+                <div>★</div>
+
+            </div>
+
+            ${liveBosses.map(boss=>{
+
+                return `
+
+                <div class="boss-row">
+
+                    <div>
+                        <span class="status green"></span>
+                    </div>
+
                     <div class="boss-name">
                         ${boss.Boss}
                     </div>
-                    <div class="boss-location">
-                        World ${boss.World} • ${boss.Map} • Layer ${boss.Layer}
-                    </div>
-                </div>
 
-                <div class="boss-right">
-                    <div class="boss-time">
-                        ${formatCountdown(state.timeLeft)}
+                    <div>
+                        W${boss.World}
                     </div>
 
-                    <button
-                        class="btn-defeat"
-                        onclick="defeatBoss(${boss.ID})"
-                    >
-                        Finish
-                    </button>
+                    <div>
+                        ${boss.Map}
+                    </div>
+
+                    <div>
+                        ${boss.Layer}
+                    </div>
+
+                    <div class="countdown">
+                        ${formatCountdown(boss.state.timeLeft)}
+                    </div>
+                    <div>
+                        <button
+                            class="btn-defeat"
+                            onclick="defeatBoss(${boss.ID})">
+                            Finish
+                        </button>
+                    </div>
+                    <div>
+                        ☆
+                    </div>
                 </div>
-            </div>
-        `;
-    });
+                `;
+            }).join("")}
+        </div>
+    `;
 }
 
 function renderBosses() {
