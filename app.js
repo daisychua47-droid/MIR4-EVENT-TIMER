@@ -5,6 +5,7 @@ let liveBosses = [];
 let liveSoonBosses = [];
 let upcomingBosses = [];
 let defeatedBosses = [];
+let countdownTimer = null;
 
 const STORAGE_KEY = "mir4BossTracker";
 
@@ -205,7 +206,10 @@ function getBossState(boss) {
 async function loadBosses() {
     bosses = await getBosses();
     renderBosses();
-    setInterval(updateCountdowns, 1000);
+    if (countdownTimer) {
+        clearInterval(countdownTimer);
+    }
+    countdownTimer = setInterval(updateCountdowns, 1000);
 }
 
 function categorizeBosses(){
