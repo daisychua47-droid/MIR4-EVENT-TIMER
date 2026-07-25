@@ -124,6 +124,40 @@ function categorizeBosses() {
         });
 }
 
+function renderLiveBosses() {
+    const container = document.getElementById("liveBossList");
+    container.innerHTML = "";
+
+    liveBosses.forEach(boss => {
+        const state = boss.state;
+        container.innerHTML += `
+            <div class="boss-card">
+                <div class="boss-info">
+                    <div class="boss-name">
+                        ${boss.Boss}
+                    </div>
+                    <div class="boss-location">
+                        World ${boss.World} • ${boss.Map} • Layer ${boss.Layer}
+                    </div>
+                </div>
+
+                <div class="boss-right">
+                    <div class="boss-time">
+                        ${formatCountdown(state.timeLeft)}
+                    </div>
+
+                    <button
+                        class="btn-defeat"
+                        onclick="defeatBoss(${boss.ID})"
+                    >
+                        Finish
+                    </button>
+                </div>
+            </div>
+        `;
+    });
+}
+
 function renderBosses() {
     categorizeBosses();
 
