@@ -203,18 +203,21 @@ LIVE TABLE
 
 .boss-head,
 .boss-row{
+
     display:grid;
+
     grid-template-columns:
-        70px
-        2fr
-        80px
-        180px
-        80px
-        120px
-        120px
-        60px;
+        70px     /* Status */
+        250px    /* Boss */
+        90px     /* World */
+        220px    /* Map */
+        70px     /* Layer */
+        130px    /* Time */
+        120px    /* Action */
+        60px;    /* Favorite */
 
     align-items:center;
+
 }
 
 .boss-head{
