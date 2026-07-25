@@ -130,15 +130,17 @@ function isBossAvailableToday(boss) {
 
 function getBossState(boss) {
 
-    console.log(
-    boss.Boss,
-    boss["Spawn Time"],
-    boss["Respawn (Min)"],
-    boss["Alive Duration (Min)"]
-);
+        console.log(
+        boss.Boss,
+        boss["Spawn Time"],
+        boss["Respawn (Min)"],
+        boss["Alive Duration (Min)"]
+    );
 
     
     const now = new Date();
+    const storage = loadStorage();
+    const defeated = storage[boss.ID];
     const parts = String(boss["Spawn Time"]).split(":");
     
     const hour = Number(parts[0]);
@@ -172,6 +174,27 @@ function getBossState(boss) {
     const nextSpawn =
         new Date(spawn.getTime() + respawnMs);
 
+
+    // Boss was manually/automatically defeated
+    if (
+        defeated &&
+        defeated.nextSpawn &&
+        now < new Date(defeated.nextSpawn)
+    ) {
+    
+        return {
+            status: "DEFEATED",
+            color: "gray",
+            spawn,
+            aliveUntil,
+            nextSpawn: new Date(defeated.nextSpawn),
+            timeLeft: 0,
+            nextSpawnIn:
+                new Date(defeated.nextSpawn) - now
+        };
+    
+    }
+    
     if (now < aliveUntil) {
         return {
             status: "LIVE",
