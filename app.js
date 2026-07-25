@@ -67,25 +67,42 @@ function renderDefeatedBosses() {
         return;
     }
 
-    defeated.forEach(boss => {
+     defeated.forEach(boss => {
+    
         const defeatedTime =
             loadStorage()[boss.ID].lastDefeated;
+    
         container.innerHTML += `
-
+    
         <div class="defeated-item">
-            <div>
-                <div class="boss-name">
-                    ${boss.Boss}
-                </div>
-                <small>
-                    ${new Date(defeatedTime).toLocaleString()}
-                </small>
+            <div class="defeated-name">
+                ${boss.Boss}
             </div>
+    
+            <div class="defeated-time">
+                ${timeAgo(defeatedTime)}
+            </div>  
         </div>
         `;
     });
 }
 
+function timeAgo(date) {
+    const seconds =
+        Math.floor((Date.now() - new Date(date)) / 1000);
+
+    if (seconds < 60)
+        return seconds + " sec ago";
+
+    if (seconds < 3600)
+        return Math.floor(seconds / 60) + " min ago";
+
+    if (seconds < 86400)
+        return Math.floor(seconds / 3600) + " hr ago";
+
+    return Math.floor(seconds / 86400) + " day ago";
+
+}
 
 function getTodayName() {
     return ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][new Date().getDay()];
