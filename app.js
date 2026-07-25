@@ -129,10 +129,11 @@ function renderBosses() {
                 <td>${boss["Spawn Time"]}</td>
                 <td>${state.timer}</td>
                 <td>
-                    <button
-                        class="btn-defeat"
-                        ${state.action === "Waiting" ? "disabled" : ""}
-                    >
+                        <button
+                            class="btn-defeat"
+                            ${state.action === "Waiting" ? "disabled" : ""}
+                            onclick="defeatBoss(${boss.ID})"
+                        >
                         ${state.action}
                     </button>
                 </td>
