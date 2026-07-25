@@ -141,12 +141,10 @@ body{
 
 
 :root{
-
     --defeated-grid:
-        2fr
-        1fr
-        1fr;
-
+        2.8fr
+        1.4fr
+        1.3fr;
 }
 
 .defeated-head,
