@@ -48,7 +48,14 @@ function getTodayName() {
 }
 
 function isBossAvailableToday(boss) {
-    return boss[getTodayName()] === true;
+    const today = getTodayName();
+    console.log(
+        boss.Boss,
+        today,
+        boss[today],
+        typeof boss[today]
+    );
+    return boss[today];
 }
 
 function getBossState(boss) {
