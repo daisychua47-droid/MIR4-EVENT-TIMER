@@ -97,9 +97,10 @@ function getBossState(boss) {
 }
 
 async function loadBosses() {
-    bosses = await getBosses();
-    renderBosses();
-    setInterval(updateCountdowns, 1000);
+   bosses = await getBosses();
+   console.table(bosses);
+   renderBosses();
+   setInterval(updateCountdowns, 1000);
 }
 
 
