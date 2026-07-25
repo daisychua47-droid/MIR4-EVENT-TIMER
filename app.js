@@ -49,51 +49,50 @@ function isBossAvailableToday(boss) {
 
 function getBossState(boss) {
     const now = new Date();
-    const [hour, minute] = boss["Spawn Time"].split(":").map(Number);
+    const [hour, minute] = boss["Spawn Time"]
+        .split(":")
+        .map(Number);
+
     let spawn = new Date();
     spawn.setHours(hour, minute, 0, 0);
+    
+    const respawnMs =
+        Number(boss["Respawn (Min)"]) * 60000;
 
-    // If today's spawn is still in the future,
-    // use yesterday's spawn to determine the current cycle.
+    const aliveMs =
+        Number(boss["Alive Duration (Min)"]) * 60000;
+
     while (spawn > now) {
-        spawn.setMinutes(
-            spawn.getMinutes() - Number(boss["Respawn (Min)"])
-        );
+        spawn = new Date(spawn.getTime() - respawnMs);
     }
-    // Move to the latest spawn before now.
-    while (
-        spawn.getTime() + Number(boss["Respawn (Min)"]) * 60000 <= now.getTime()
-    ) {
-        spawn.setMinutes(
-            spawn.getMinutes() + Number(boss["Respawn (Min)"])
-        );
+    while (spawn.getTime() + respawnMs <= now.getTime()) {
+        spawn = new Date(spawn.getTime() + respawnMs);
     }
-    const aliveUntil = new Date(
-        spawn.getTime() +
-        Number(boss["Alive Duration (Min)"]) * 60000
-    );
+    const aliveUntil =
+        new Date(spawn.getTime() + aliveMs);
+    const nextSpawn =
+        new Date(spawn.getTime() + respawnMs);
 
     if (now < aliveUntil) {
         return {
-            status: "Spawned",
+            status: "LIVE",
             color: "green",
-            action: "Defeat",
-            timer: formatCountdown(aliveUntil - now)
+            spawn,
+            aliveUntil,
+            nextSpawn,
+            timeLeft: aliveUntil - now,
+            nextSpawnIn: 0
         };
     }
-
-    const nextSpawn = new Date(
-        spawn.getTime() +
-        Number(boss["Respawn (Min)"]) * 60000
-    );
-
     return {
-        status: "Waiting",
+        status: "UPCOMING",
         color: "orange",
-        action: "Waiting",
-        timer: formatCountdown(nextSpawn - now)
+        spawn,
+        aliveUntil,
+        nextSpawn,
+        timeLeft: 0,
+        nextSpawnIn: nextSpawn - now
     };
-
 }
 
 async function loadBosses() {
