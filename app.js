@@ -16,6 +16,19 @@ function saveStorage(data) {
     );
 }
 
+function getBossData(id) {
+    const data = loadStorage();
+
+    if (!data[id]) {
+        data[id] = {
+            favorite: false,
+            lastDefeated: null
+        };
+        saveStorage(data);
+    }
+    return data[id];
+}
+
 function getTodayName() {
     return ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][new Date().getDay()];
 }
