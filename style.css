@@ -48,54 +48,6 @@ body{
     border-bottom:1px solid #2d333b;
 }
 
-table{
-    width:100%;
-    border-collapse:collapse;
-}
-
-#bossTable{
-    width:100%;
-    border-collapse:collapse;
-}
-
-#bossTable th,
-#bossTable td{
-    text-align:center;
-    vertical-align:middle;
-}
-
-#bossTable th:last-child,
-#bossTable td:last-child{
-    width:160px;
-}
-
-#bossTable th:first-child,
-#bossTable td:first-child{
-    width:70px;
-}
-
-#bossTable td{
-    white-space:nowrap;
-}
-
-#bossTable td:first-child{
-    text-align:center;
-}
-
-th{
-    background:#1f2937;
-    padding:15px;
-}
-
-td{
-    padding:15px;
-    border-top:1px solid #2d333b;
-}
-
-tr:hover{
-    background:#1d2430;
-}
-
 .status{
     display:inline-block;
     width:14px;
@@ -194,22 +146,31 @@ LIVE TABLE
     width:100%;
 }
 
+:root{
+    --boss-grid:
+        70px
+        2fr
+        1fr
+        2fr
+        .8fr
+        1.2fr
+        1.2fr
+        .5fr;
+}
 .boss-head,
 .boss-row{
-
     display:grid;
-
-    grid-template-columns:
-        70px           /* Status */
-        2fr            /* Boss */
-        1fr            /* World */
-        2fr            /* Map */
-        .8fr           /* Layer */
-        1.2fr          /* Time Left */
-        1.2fr          /* Action */
-        .5fr;          /* Favorite */
-
+    grid-template-columns:var(--boss-grid);
     align-items:center;
+}
+
+.boss-head{
+    background:#1f2937;
+    padding:14px 20px;
+    font-size:13px;
+    font-weight:600;
+    color:#9ca3af;
+    border-bottom:1px solid #2d333b;
 }
 
 
@@ -231,20 +192,40 @@ LIVE TABLE
 
 
 .boss-row{
-    padding:16px 20px;
+    padding:14px 20px;
     border-top:1px solid #2d333b;
     transition:.2s;
 }
 
 .boss-row:hover{
-
     background:#1b2230;
-
 }
 
 .boss-name{
     font-weight:700;
     color:#fff;
+}
+
+.boss-head > div:nth-child(1),
+.boss-row > div:nth-child(1),
+
+.boss-head > div:nth-child(3),
+.boss-row > div:nth-child(3),
+
+.boss-head > div:nth-child(5),
+.boss-row > div:nth-child(5),
+
+.boss-head > div:nth-child(6),
+.boss-row > div:nth-child(6),
+
+.boss-head > div:nth-child(7),
+.boss-row > div:nth-child(7),
+
+.boss-head > div:nth-child(8),
+.boss-row > div:nth-child(8){
+
+    text-align:center;
+
 }
 
 .countdown{ 
