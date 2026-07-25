@@ -29,6 +29,16 @@ function getBossData(id) {
     return data[id];
 }
 
+function defeatBoss(id) {
+    const data = loadStorage();
+    if (!data[id]) {
+        data[id] = {};
+    }
+    data[id].lastDefeated = new Date().toISOString();
+    saveStorage(data);
+    renderBosses();
+}
+
 function getTodayName() {
     return ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][new Date().getDay()];
 }
