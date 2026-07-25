@@ -253,6 +253,16 @@ function categorizeBosses(){
 
         boss.state = getBossState(boss);
 
+
+        console.log(
+    boss.Boss,
+    boss.state.status,
+    boss.state.spawn.toLocaleTimeString(),
+    boss.state.aliveUntil.toLocaleTimeString()
+);
+
+        
+
         switch(boss.state.status){
 
             case "LIVE":
