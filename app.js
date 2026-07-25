@@ -160,47 +160,9 @@ function renderLiveBosses() {
 
 function renderBosses() {
     categorizeBosses();
-
-    console.log("Live:", liveBosses.length);
-    console.log("Upcoming:", upcomingBosses.length);
-    const tbody = document.querySelector("#bossTable tbody");
-    tbody.innerHTML = "";
-    let aliveCount = 0;
-    bosses
-        .filter(isBossAvailableToday)
-        .forEach(boss => {
-            const state = getBossState(boss);
-
-            if (state.status === "Spawned") {
-                aliveCount++;
-            }
-
-            tbody.innerHTML += `
-            <tr>
-                <td>
-                    <span class="status ${state.color}"></span>
-                    ${state.status}
-                </td>
-                <td>${boss.Boss}</td>
-                <td>World ${boss.World}</td>
-                <td>${boss.Map}</td>
-                <td>${boss.Layer}</td>
-                <td>${boss["Spawn Time"]}</td>
-                <td>${state.timer}</td>
-                <td>
-                        <button
-                            class="btn-defeat"
-                            ${state.action === "Waiting" ? "disabled" : ""}
-                            onclick="defeatBoss(${boss.ID})"
-                        >
-                        ${state.action}
-                    </button>
-                </td>
-            </tr>
-            `;
-        });
-    document.getElementById("aliveCount").innerHTML =
-        aliveCount + " Alive";
+    renderLiveBosses();
+    document.getElementById("aliveCount").textContent =
+        liveBosses.length + " Bosses";
 }
 
 
