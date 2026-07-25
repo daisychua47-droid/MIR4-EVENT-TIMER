@@ -142,42 +142,29 @@ body{
 
 :root{
     --defeated-grid:
-        2.8fr
-        1.4fr
-        1.3fr;
+        45%
+        27%
+        28%;
 }
 
 .defeated-head,
 .defeated-row{
-
     display:grid;
-
     grid-template-columns:var(--defeated-grid);
-
     align-items:center;
-
 }
 
 .defeated-head{
-
     background:#1f2937;
-
     padding:14px 20px;
-
     font-size:13px;
-
     font-weight:600;
-
     color:#9ca3af;
-
 }
 
 .defeated-row{
-
     padding:14px 20px;
-
     border-top:1px solid #2d333b;
-
 }
 
 .defeated-head>div:nth-child(2),
