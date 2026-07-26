@@ -249,6 +249,50 @@ body{
 
 }
 
+/* ===========================
+   SPAWNING SOON
+=========================== */
+
+.boss-divider{
+    grid-column:1/-1;
+    background:#3b3213;
+    border-top:1px solid #5a4c18;
+    border-bottom:1px solid #5a4c18;
+    padding:10px 18px;
+    margin-top:8px;
+}
+
+.divider-title{
+    color:#ffd54a;
+    font-size:13px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:1px;
+}
+
+.soon-row{
+    background:rgba(255,193,7,.06);
+}
+
+.soon-row:hover{
+    background:rgba(255,193,7,.12);
+}
+
+.status.soon{
+    background:#ffc107;
+    box-shadow:0 0 10px #ffc107;
+}
+
+.soon-text{
+    display:inline-block;
+    padding:4px 10px;
+    border-radius:20px;
+    background:#ffc107;
+    color:#222;
+    font-size:11px;
+    font-weight:700;
+}
+
 /* ======================================================
    RECENTLY DEFEATED TABLE
 ====================================================== */
