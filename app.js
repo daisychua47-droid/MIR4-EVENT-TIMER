@@ -230,17 +230,21 @@ function getCurrentSpawn(boss, now) {
 
     let base = getBaseSpawn(boss, now);
 
-    // Move to yesterday if today's first spawn
-    // hasn't happened yet.
+    // If today's first spawn hasn't happened,
+    // start from yesterday.
     if (base > now) {
         base.setDate(base.getDate() - 1);
     }
 
-    while (base.getTime() + respawnMs <= now.getTime()) {
-        base = new Date(base.getTime() + respawnMs);
-    }
+    const elapsed =
+        now.getTime() - base.getTime();
 
-    return base;
+    const cycles =
+        Math.floor(elapsed / respawnMs);
+
+    return new Date(
+        base.getTime() + cycles * respawnMs
+    );
 
 }
 
