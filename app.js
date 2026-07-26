@@ -225,8 +225,11 @@ function getBaseSpawn(boss, now) {
 
 function getCurrentSpawn(boss, now) {
 
+   const respawnMin =
+    Number(boss["Respawn (Min)"]) || 1440;
+
     const respawnMs =
-        Number(boss["Respawn (Min)"]) * 60000;
+        respawnMin * 60000;
 
     let base = getBaseSpawn(boss, now);
 
