@@ -347,6 +347,37 @@ function getBossState(boss) {
 
     }
 
+    // AUTO FINISH
+        if (
+        
+            boss["Auto Finish"] === true &&
+            now >= aliveUntil
+        
+        ) {
+        
+            const data = loadStorage();
+        
+            if (!data[boss.ID]) {
+                data[boss.ID] = {};
+            }
+        
+            // don't overwrite every second
+            if (!data[boss.ID].lastDefeated) {
+        
+                data[boss.ID].lastDefeated =
+                    aliveUntil.toISOString();
+        
+                data[boss.ID].nextSpawn =
+                    nextSpawn.toISOString();
+        
+                saveStorage(data);
+        
+                storageData = data;
+        
+            }
+        
+        }
+
     // UPCOMING
 
    return {
