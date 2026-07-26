@@ -447,10 +447,19 @@ function categorizeBosses(){
        // Recently Defeated (Newest First)
         const storage = storageData;
         
-        defeatedBosses.sort((a,b)=>{
-            const da = new Date(storage[a.ID]?.lastDefeated || 0);
-            const db = new Date(storage[b.ID]?.lastDefeated || 0);
-            return db - da;
+       defeatedBosses.sort((a,b)=>{
+
+            const fav =
+                (storageData[b.ID]?.favorite?1:0) -
+                (storageData[a.ID]?.favorite?1:0);
+        
+            if(fav!==0) return fav;
+        
+            const da = new Date(storageData[a.ID]?.lastDefeated || 0);
+            const db = new Date(storageData[b.ID]?.lastDefeated || 0);
+        
+            return db-da;
+        
         });
         
         // Upcoming & Live Soon (Nearest Spawn First)
@@ -461,6 +470,20 @@ function categorizeBosses(){
         liveSoonBosses.sort(
             (a,b)=>a.state.nextSpawnIn-b.state.nextSpawnIn
         );
+
+        const favoriteSort = (a, b) => {
+            
+                const fa = storageData[a.ID]?.favorite ? 1 : 0;
+                const fb = storageData[b.ID]?.favorite ? 1 : 0;
+            
+                return fb - fa;
+            
+            };
+            
+            liveBosses.sort(favoriteSort);
+            liveSoonBosses.sort(favoriteSort);
+            upcomingBosses.sort(favoriteSort);
+            defeatedBosses.sort(favoriteSort);
 
 }
 
