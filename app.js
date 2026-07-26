@@ -295,8 +295,8 @@ function getBossState(boss) {
 
             timeLeft: 0,
 
-            nextSpawnIn:
-                new Date(defeated.nextSpawn) - now
+           nextSpawnIn:
+                new Date(defeated.nextSpawn).getTime() - now.getTime()
 
         };
 
@@ -326,21 +326,21 @@ function getBossState(boss) {
 
     // UPCOMING
 
-    return {
+   return {
 
         status: "UPCOMING",
-
+    
         spawn,
-
+    
         aliveUntil,
-
+    
         nextSpawn,
-
+    
         timeLeft: 0,
-
+    
         nextSpawnIn:
-            nextSpawn - now
-
+            nextSpawn.getTime() - now.getTime()
+    
     };
 
 }
@@ -377,15 +377,11 @@ function categorizeBosses(){
                 upcomingBosses.push(boss);
                 break;
 
-            case "UPCOMING":
+          case "UPCOMING":
 
-                if(boss.state.nextSpawnIn <= 3600000){
-                    liveSoonBosses.push(boss);
-                }else{
-                    upcomingBosses.push(boss);
-                }
-
-                break;
+            upcomingBosses.push(boss);
+        
+            break;
 
         }
 
