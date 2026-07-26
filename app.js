@@ -49,10 +49,27 @@ function defeatBoss(id){
     }
 
     const now = new Date();
-    const nextSpawn = new Date(
-        now.getTime() + Number(boss["Respawn (Min)"]) * 60000
-    );
+    
+     const spawnType = String(boss["Spawn Type"] || "Daily");
 
+            let nextSpawn;
+            
+            if (spawnType === "Daily") {
+            
+                nextSpawn = getNextSpawn(
+                    boss,
+                    getCurrentSpawn(boss, now)
+                );
+            
+            } else {
+            
+                nextSpawn = new Date(
+                    now.getTime() +
+                    Number(boss["Respawn (Min)"]) * 60000
+                );
+            
+            }
+     
     data[id].lastDefeated = now.toISOString();
     data[id].nextSpawn = nextSpawn.toISOString();
 
