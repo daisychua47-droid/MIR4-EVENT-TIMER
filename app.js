@@ -218,40 +218,53 @@ function getBaseSpawn(boss, now) {
 
 function getCurrentSpawn(boss, now) {
 
-   const respawnMin =
-    Number(boss["Respawn (Min)"]) || 1440;
-
-    const respawnMs =
-        respawnMin * 60000;
+    const spawnType = String(boss["Spawn Type"] || "Daily");
 
     let base = getBaseSpawn(boss, now);
 
-    // If today's first spawn hasn't happened,
-    // start from yesterday.
+    // DAILY BOSSES
+    if (spawnType === "Daily") {
+
+        if (base > now) {
+            base.setDate(base.getDate() - 1);
+        }
+
+        return base;
+    }
+
+    // INTERVAL BOSSES
+    const respawnMin = Number(boss["Respawn (Min)"]);
+    const respawnMs = respawnMin * 60000;
+
     if (base > now) {
         base.setDate(base.getDate() - 1);
     }
 
-    const elapsed =
-        now.getTime() - base.getTime();
+    const elapsed = now - base;
+    const cycles = Math.floor(elapsed / respawnMs);
 
-    const cycles =
-        Math.floor(elapsed / respawnMs);
-
-    return new Date(
-        base.getTime() + cycles * respawnMs
-    );
+    return new Date(base.getTime() + cycles * respawnMs);
 
 }
 
 
 function getNextSpawn(boss, spawn) {
-    const respawnMin =
-        Number(boss["Respawn (Min)"]) || 1440;
+
+    const spawnType = String(boss["Spawn Type"] || "Daily");
+
+    if (spawnType === "Daily") {
+
+        const next = new Date(spawn);
+        next.setDate(next.getDate() + 1);
+
+        return next;
+    }
 
     return new Date(
-        spawn.getTime() + respawnMin * 60000
+        spawn.getTime() +
+        Number(boss["Respawn (Min)"]) * 60000
     );
+
 }
 
 function getBossState(boss) {
