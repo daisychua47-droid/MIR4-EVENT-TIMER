@@ -117,6 +117,7 @@ function renderDefeatedBosses() {
                 <div>Boss</div>
                 <div>Defeated</div>
                 <div>Next Spawn</div>
+                <div>★</div>
             </div>
     `;
 
@@ -125,10 +126,17 @@ function renderDefeatedBosses() {
             defeatedBosses.forEach(boss => {
                 const data = storage[boss.ID];
                 html += `
-                    <div class="boss-row defeated-row">     
+                   <div class="boss-row defeated-row">
                         <div>${boss.Boss}</div>
                         <div>${timeAgo(data.lastDefeated)}</div>
                         <div>${formatCountdown(boss.state.nextSpawnIn)}</div>
+                    
+                        <div
+                            class="favorite"
+                            onclick="toggleFavorite(${boss.ID})">
+                            ${storageData[boss.ID]?.favorite ? "★" : "☆"}
+                        </div>
+                    
                     </div>
                 `;
             });
@@ -167,19 +175,27 @@ function renderUpcomingBosses() {
                 <div>World</div>
                 <div>Map</div>
                 <div>Spawn In</div>
+                <div>★</div>
             </div>
     `;
 
     list.forEach(boss => {
 
         html += `
-            <div class="boss-row">
+           <div class="boss-row">
+
                 <div>${boss.Boss}</div>
                 <div>W${boss.World}</div>
                 <div>${boss.Map}</div>
                 <div class="countdown">
                     ${formatCountdown(boss.state.nextSpawnIn)}
                 </div>
+                <div
+                    class="favorite"
+                    onclick="toggleFavorite(${boss.ID})">
+                    ${storageData[boss.ID]?.favorite ? "★" : "☆"}
+                </div>
+            
             </div>
         `;
 
@@ -608,7 +624,13 @@ function renderLiveBosses() {
                                             </span>
                                         </div>
                             
-                                        <div></div>
+                                        <div
+                                            class="favorite"
+                                            onclick="toggleFavorite(${boss.ID})">
+                                        
+                                            ${storageData[boss.ID]?.favorite ? "★" : "☆"}
+                                        
+                                        </div>
                             
                                     </div>
                             
