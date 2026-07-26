@@ -253,15 +253,12 @@ function getCurrentSpawn(boss, now) {
 
 
 function getNextSpawn(boss, spawn) {
+    const respawnMin =
+        Number(boss["Respawn (Min)"]) || 1440;
 
     return new Date(
-
-        spawn.getTime() +
-
-        Number(boss["Respawn (Min)"]) * 60000
-
+        spawn.getTime() + respawnMin * 60000
     );
-
 }
 
 function getBossState(boss) {
