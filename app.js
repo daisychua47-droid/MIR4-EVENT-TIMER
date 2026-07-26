@@ -128,7 +128,11 @@ function renderUpcomingBosses() {
 
     const container = document.getElementById("upcomingList");
 
-    if (upcomingBosses.length === 0) {
+    const list = upcomingBosses.filter(
+            boss => !liveSoonBosses.some(x => x.ID == boss.ID)
+            );
+            
+            if (list.length === 0) {
 
         container.innerHTML = `
             <div class="empty-state">
@@ -152,7 +156,11 @@ function renderUpcomingBosses() {
             </div>
     `;
 
-    upcomingBosses.forEach(boss => {
+    const list = upcomingBosses.filter(
+        boss => !liveSoonBosses.some(x => x.ID == boss.ID)
+    );
+    
+    list.forEach(boss => {
 
         html += `
             <div class="boss-row">
