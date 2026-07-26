@@ -4,6 +4,7 @@ let bosses = [];
 let liveBosses = [];
 let liveSoonBosses = [];
 let upcomingBosses = [];
+
 let defeatedBosses = [];
 
 let countdownTimer = null;
@@ -264,21 +265,12 @@ function getBossState(boss) {
 
     const spawn = getCurrentSpawn(boss, now);
 
-  
-
     const nextSpawn = getNextSpawn(boss, spawn);
 
     const aliveUntil = new Date(
         spawn.getTime() +
         Number(boss["Alive Duration (Min)"]) * 60000
     );
-
-      console.log(
-    boss.Boss,
-    "NOW:", now.toLocaleTimeString(),
-    "SPAWN:", spawn.toLocaleTimeString(),
-    "NEXT:", nextSpawn.toLocaleTimeString()
-);
 
     // Manual defeat
     if (
@@ -369,13 +361,6 @@ function categorizeBosses(){
     bosses.forEach(boss=>{
 
         boss.state = getBossState(boss);
-
-console.log({
-    boss: boss.Boss,
-    status: boss.state.status,
-    timeLeft: formatCountdown(boss.state.timeLeft),
-    nextSpawn: formatCountdown(boss.state.nextSpawnIn)
-});
 
         switch(boss.state.status){
 
