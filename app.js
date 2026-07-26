@@ -379,9 +379,12 @@ function categorizeBosses(){
 
           case "UPCOMING":
 
-            upcomingBosses.push(boss);
-        
-            break;
+                if (boss.state.nextSpawnIn <= 3600000) {
+                    liveSoonBosses.push(boss);
+                } else {
+                    upcomingBosses.push(boss);
+                }
+                break;
 
         }
 
