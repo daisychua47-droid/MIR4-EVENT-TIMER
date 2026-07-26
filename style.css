@@ -149,7 +149,7 @@ body{
 
     --boss-grid:
         70px
-        2fr
+        2.8fr
         1fr
         2fr
         .8fr
@@ -210,13 +210,15 @@ body{
 
 .boss-head>div,
 .boss-row>div{
-
     overflow:hidden;
+}
 
-    text-overflow:ellipsis;
+.boss-row>div:nth-child(2){
+    overflow:visible;
+}
 
+.favorite-name{
     white-space:nowrap;
-
 }
 
 .boss-name{
@@ -388,6 +390,24 @@ body{
 
 .favorite:hover{
     transform:scale(1.2);
+}
+
+.favorite-name{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    cursor:pointer;
+    font-weight:600;
+
+    width:100%;
+}
+
+.favorite-icon{
+    width:18px;
+    min-width:18px;
+    text-align:center;
+    color:#FFC107;
+    font-size:15px;
 }
 
 /* ======================================================
