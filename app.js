@@ -129,10 +129,10 @@ function renderUpcomingBosses() {
     const container = document.getElementById("upcomingList");
 
     const list = upcomingBosses.filter(
-            boss => !liveSoonBosses.some(x => x.ID == boss.ID)
-            );
-            
-            if (list.length === 0) {
+        boss => !liveSoonBosses.some(x => x.ID == boss.ID)
+    );
+
+    if (list.length === 0) {
 
         container.innerHTML = `
             <div class="empty-state">
@@ -145,47 +145,32 @@ function renderUpcomingBosses() {
 
     let html = `
         <div class="boss-table">
-
             <div class="boss-head">
-
                 <div>Boss</div>
                 <div>World</div>
                 <div>Map</div>
                 <div>Spawn In</div>
-
             </div>
     `;
 
-    const list = upcomingBosses.filter(
-        boss => !liveSoonBosses.some(x => x.ID == boss.ID)
-    );
-    
     list.forEach(boss => {
 
         html += `
             <div class="boss-row">
-
                 <div>${boss.Boss}</div>
-
                 <div>W${boss.World}</div>
-
                 <div>${boss.Map}</div>
-
                 <div class="countdown">
                     ${formatCountdown(boss.state.nextSpawnIn)}
                 </div>
-
             </div>
         `;
 
     });
 
-    html += `
-        </div>
-    `;
+    html += `</div>`;
 
     container.innerHTML = html;
-
 }
 
 
