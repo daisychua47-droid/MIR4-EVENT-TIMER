@@ -117,7 +117,6 @@ function renderDefeatedBosses() {
                 <div>Boss</div>
                 <div>Defeated</div>
                 <div>Next Spawn</div>
-                <div>★</div>
             </div>
     `;
 
@@ -126,15 +125,26 @@ function renderDefeatedBosses() {
             defeatedBosses.forEach(boss => {
                 const data = storage[boss.ID];
                 html += `
-                   <div class="boss-row defeated-row">
-                        <div>${boss.Boss}</div>
-                        <div>${timeAgo(data.lastDefeated)}</div>
-                        <div>${formatCountdown(boss.state.nextSpawnIn)}</div>
+                  <div class="boss-row defeated-row">
                     
                         <div
-                            class="favorite"
+                            class="favorite-name"
                             onclick="toggleFavorite(${boss.ID})">
-                            ${storageData[boss.ID]?.favorite ? "★" : "☆"}
+                    
+                            <span class="favorite-icon">
+                                ${storageData[boss.ID]?.favorite ? "⭐" : "☆"}
+                            </span>
+                    
+                            ${boss.Boss}
+                    
+                        </div>
+                    
+                        <div>
+                            ${timeAgo(data.lastDefeated)}
+                        </div>
+                    
+                        <div>
+                            ${formatCountdown(boss.state.nextSpawnIn)}
                         </div>
                     
                     </div>
@@ -175,28 +185,35 @@ function renderUpcomingBosses() {
                 <div>World</div>
                 <div>Map</div>
                 <div>Spawn In</div>
-                <div>★</div>
             </div>
     `;
 
     list.forEach(boss => {
 
         html += `
-           <div class="boss-row">
+        <div class="boss-row">
 
-                <div>${boss.Boss}</div>
-                <div>W${boss.World}</div>
-                <div>${boss.Map}</div>
-                <div class="countdown">
-                    ${formatCountdown(boss.state.nextSpawnIn)}
-                </div>
-                <div
-                    class="favorite"
-                    onclick="toggleFavorite(${boss.ID})">
-                    ${storageData[boss.ID]?.favorite ? "★" : "☆"}
-                </div>
-            
+            <div
+                class="favorite-name"
+                onclick="toggleFavorite(${boss.ID})">
+        
+                <span class="favorite-icon">
+                    ${storageData[boss.ID]?.favorite ? "⭐" : "☆"}
+                </span>
+        
+                ${boss.Boss}
+        
             </div>
+        
+            <div>W${boss.World}</div>
+        
+            <div>${boss.Map}</div>
+        
+            <div class="countdown">
+                ${formatCountdown(boss.state.nextSpawnIn)}
+            </div>
+        
+        </div>
         `;
 
     });
@@ -262,6 +279,8 @@ function getCurrentSpawn(boss, now) {
             base.setDate(base.getDate() - 1);
         }
 
+
+        
         return base;
     }
 
@@ -532,7 +551,6 @@ function renderLiveBosses() {
                 <div>Layer</div>
                 <div>Time Left</div>
                 <div>Action</div>
-                <div>★</div>
 
             </div>
 
@@ -546,8 +564,16 @@ function renderLiveBosses() {
                         <span class="status green"></span>
                     </div>
 
-                    <div class="boss-name">
+                   <div
+                        class="boss-name favorite-name"
+                        onclick="toggleFavorite(${boss.ID})">
+                    
+                        <span class="favorite-icon">
+                            ${storageData[boss.ID]?.favorite ? "⭐" : "☆"}
+                        </span>
+                    
                         ${boss.Boss}
+                    
                     </div>
 
                     <div>
@@ -571,12 +597,6 @@ function renderLiveBosses() {
                             onclick="defeatBoss(${boss.ID})">
                             Finish
                         </button>
-                    </div>
-                      <div
-                        class="favorite"
-                        onclick="toggleFavorite(${boss.ID})">
-                    
-                        ${storageData[boss.ID]?.favorite ? "★" : "☆"}
                     </div>
                 </div>
                 `;
