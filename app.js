@@ -485,6 +485,56 @@ function renderLiveBosses() {
                 </div>
                 `;
             }).join("")}
+
+                            ${liveSoonBosses.length > 0 ? `
+                            
+                                <div class="boss-divider">
+                                    <div class="divider-title">
+                                        🟡 SPAWNING SOON (Next 60 Minutes)
+                                    </div>
+                                </div>
+                            
+                                ${liveSoonBosses.map(boss=>`
+                            
+                                    <div class="boss-row soon-row">
+                            
+                                        <div>
+                                            <span class="status soon"></span>
+                                        </div>
+                            
+                                        <div class="boss-name">
+                                            ${boss.Boss}
+                                        </div>
+                            
+                                        <div>
+                                            W${boss.World}
+                                        </div>
+                            
+                                        <div>
+                                            ${boss.Map}
+                                        </div>
+                            
+                                        <div>
+                                            ${boss.Layer}
+                                        </div>
+                            
+                                        <div class="countdown">
+                                            ${formatCountdown(boss.state.nextSpawnIn)}
+                                        </div>
+                            
+                                        <div>
+                                            <span class="soon-text">
+                                                Spawn In
+                                            </span>
+                                        </div>
+                            
+                                        <div></div>
+                            
+                                    </div>
+                            
+                                `).join("")}
+                            
+                            ` : ""}
         </div>
     `;
 }
