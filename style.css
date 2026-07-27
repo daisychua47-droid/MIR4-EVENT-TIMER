@@ -180,9 +180,7 @@ body{
    LIVE / UPCOMING TABLE
 ====================================================== */
 
-.boss-table{
-    width:100%;
-}
+
 
 .boss-head,
 .boss-row{
@@ -264,8 +262,6 @@ body{
 
 }
 
-
-
 .upcoming-head,
 .upcoming-row{
     display:grid;
@@ -293,18 +289,6 @@ body{
 
 .upcoming-row:hover{
     background:#1b2230;
-}
-
-.boss-table{
-    min-width:1000px;
-}
-
-.upcoming-table{
-    min-width:650px;
-}
-
-.defeated-table{
-    min-width:650px;
 }
 
 /* ===========================
