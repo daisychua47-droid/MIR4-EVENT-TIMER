@@ -159,14 +159,21 @@ body{
         .5fr;
 
     --defeated-grid:
-        45%
-        27%
-        28%;
-    --upcoming-grid:
-        3fr
-        1fr
-        2fr
-        2fr;
+       220px
+       110px
+       110px;
+   --upcoming-grid:
+       220px
+       70px
+       140px
+       110px;
+}
+
+.upcoming-head > div:nth-child(2),
+.upcoming-row > div:nth-child(2),
+.upcoming-head > div:nth-child(4),
+.upcoming-row > div:nth-child(4){
+    text-align:center;
 }
 
 /* ======================================================
