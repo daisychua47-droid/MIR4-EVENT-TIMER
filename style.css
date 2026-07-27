@@ -83,7 +83,7 @@ body{
 .mini-list{
     padding:15px;
     min-height:250px;
-    overflow-x:auto;
+    overflow-x:hidden;
 }
 
 /* ======================================================
@@ -494,12 +494,12 @@ body{
 
     .boss-list,
     .mini-list{
-        overflow-x:auto;
+        overflow-x:hidden;
     }
 
    .table-wrapper{
     width:100%;
-    overflow-x:auto;
+    overflow-x:hidden;
     overflow-y:hidden;
     -webkit-overflow-scrolling:touch;
    }
