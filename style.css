@@ -590,4 +590,15 @@ body{
         padding:4px 6px;
     }
 
+   /* Hide World column on phones */
+   .upcoming-head,
+   .upcoming-row{
+       grid-template-columns: 1.8fr 1.4fr 90px;
+   }
+   
+   .upcoming-head > div:nth-child(2),
+   .upcoming-row > div:nth-child(2){
+       display:none;
+   }
+
 }
