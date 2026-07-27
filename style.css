@@ -427,9 +427,8 @@ body{
     font-weight:700;
 }
 
-.upcoming-countdown{
-    color:#38bdf8;      /* Cyan */
-    font-weight:700;
+.upcoming-row .countdown{
+    color:#38bdf8 !important;
 }
 
 .empty-state{
