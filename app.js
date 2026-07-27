@@ -407,23 +407,31 @@ function getBossState(boss) {
         }
 
     // UPCOMING
-
-   return {
-
-        status: "UPCOMING",
-    
-        spawn,
-    
-        aliveUntil,
-    
-        nextSpawn,
-    
-        timeLeft: 0,
-    
-        nextSpawnIn:
-            nextSpawn.getTime() - now.getTime()
-    
-    };
+        let upcomingSpawn;
+        
+        if (now < spawn) {
+            // Today's spawn hasn't happened yet
+            upcomingSpawn = spawn;
+        } else {
+            // Today's spawn already passed
+            upcomingSpawn = nextSpawn;
+        }
+        
+        return {
+        
+            status: "UPCOMING",
+        
+            spawn,
+        
+            aliveUntil,
+        
+            nextSpawn: upcomingSpawn,
+        
+            timeLeft: 0,
+        
+            nextSpawnIn: upcomingSpawn.getTime() - now.getTime()
+        
+        };
 
 }
  
