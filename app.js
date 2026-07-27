@@ -180,7 +180,7 @@ function renderUpcomingBosses() {
 
     let html = `
         <div class="boss-table">
-            <div class="boss-head">
+            <div class="upcoming-head">
                 <div>Boss</div>
                 <div>World</div>
                 <div>Map</div>
@@ -191,28 +191,21 @@ function renderUpcomingBosses() {
     list.forEach(boss => {
 
         html += `
-        <div class="boss-row">
-
+        <div class="upcoming-row">
             <div
                 class="favorite-name"
                 onclick="toggleFavorite(${boss.ID})">
-        
                 <span class="favorite-icon">
                     ${storageData[boss.ID]?.favorite ? "⭐" : "☆"}
                 </span>
-        
                 ${boss.Boss}
-        
             </div>
         
             <div>W${boss.World}</div>
-        
             <div>${boss.Map}</div>
-        
             <div class="countdown">
                 ${formatCountdown(boss.state.nextSpawnIn)}
             </div>
-        
         </div>
         `;
 
