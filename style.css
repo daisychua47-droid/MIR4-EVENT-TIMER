@@ -489,6 +489,19 @@ body{
         grid-template-columns:1fr;
     }
 
+       .bottom-grid{
+        display:flex;
+        flex-direction:column;
+       }
+   
+       .bottom-grid .card:first-child{
+           order:2;   /* Recently Defeated */
+       }
+   
+       .bottom-grid .card:last-child{
+           order:1;   /* Upcoming */
+       }
+
     .live-card{
         min-height:auto;
     }
