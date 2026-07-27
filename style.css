@@ -506,4 +506,20 @@ body{
         overflow-x:auto;
     }
 
+   .table-wrapper{
+    width:100%;
+    overflow-x:auto;
+    overflow-y:hidden;
+    -webkit-overflow-scrolling:touch;
+   }
+   
+   .table-wrapper::-webkit-scrollbar{
+       height:8px;
+   }
+   
+   .table-wrapper::-webkit-scrollbar-thumb{
+       background:#3b4455;
+       border-radius:10px;
+   }
+
 }
