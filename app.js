@@ -560,9 +560,21 @@ function categorizeBosses(){
 
     storageData = loadStorage();
 
+    
+
     bosses.forEach(boss => {
 
         boss.state = getBossState(boss);
+
+
+        if (boss.state.nextSpawnIn <= 3600000) {
+    console.log(
+        boss.Boss,
+        boss.state.status,
+        boss.state.nextSpawnIn,
+        "LIVE SOON"
+    );
+}
 
         switch (boss.state.status) {
 
