@@ -547,27 +547,6 @@ body{
 
     /* LIVE NOW */
 
-    .boss-head,
-    .boss-row{
-        grid-template-columns:
-            45px
-            2fr
-            1.3fr
-            .9fr
-            .9fr;
-    }
-
-    /* hide World */
-    .boss-head > div:nth-child(3),
-    .boss-row > div:nth-child(3){
-        display:none;
-    }
-
-    /* hide Layer */
-    .boss-head > div:nth-child(5),
-    .boss-row > div:nth-child(5){
-        display:none;
-    }
 
     /* UPCOMING */
 
