@@ -310,10 +310,7 @@ body{
     background:#1b2230;
 }
 
-.upcoming-countdown{
-    color:#38bdf8;      /* Cyan */
-    font-weight:700;
-}
+
 
 /* ===========================
    SPAWNING SOON
@@ -430,14 +427,15 @@ body{
     font-weight:700;
 }
 
+.upcoming-countdown{
+    color:#38bdf8;      /* Cyan */
+    font-weight:700;
+}
+
 .empty-state{
-
     padding:50px;
-
     text-align:center;
-
     color:#888;
-
 }
 
 /* ======================================================
