@@ -521,14 +521,14 @@ function renderLiveBosses() {
 
     container.innerHTML = "";
 
-    if (liveBosses.length === 0) {
-
+    if (liveBosses.length === 0 && liveSoonBosses.length === 0) {
+    
         container.innerHTML = `
             <div class="empty-state">
                 No bosses are currently alive.
             </div>
         `;
-
+    
         return;
     }
 
