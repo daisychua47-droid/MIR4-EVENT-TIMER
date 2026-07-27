@@ -570,7 +570,7 @@ function renderLiveBosses() {
                     </div>
 
                     <div>
-                        W${boss.World}
+                        ${boss.World}
                     </div>
 
                     <div>
@@ -624,7 +624,7 @@ function renderLiveBosses() {
                                         </div>
                             
                                         <div>
-                                            W${boss.World}
+                                            ${boss.World}
                                         </div>
                             
                                         <div>
