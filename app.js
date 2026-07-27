@@ -201,7 +201,7 @@ function renderUpcomingBosses() {
                 ${boss.Boss}
             </div>
         
-            <div>W${boss.World}</div>
+            <div>${boss.World}</div>
             <div>${boss.Map}</div>
             <div class="countdown">
                 ${formatCountdown(boss.state.nextSpawnIn)}
