@@ -267,13 +267,6 @@ function getCurrentSpawn(boss, now) {
 
     // DAILY BOSSES
     if (spawnType === "Daily") {
-
-        if (base > now) {
-            base.setDate(base.getDate() - 1);
-        }
-
-
-        
         return base;
     }
 
@@ -316,22 +309,85 @@ function getBossState(boss) {
 
     const now = new Date();
 
-    const defeated = storageData[boss.ID];
+    const storage = storageData[boss.ID];
 
-    const spawn = getCurrentSpawn(boss, now);
+    const spawnType = String(boss["Spawn Type"] || "Daily");
 
-    const nextSpawn = getNextSpawn(boss, spawn);
+    const aliveMinutes = Number(boss["Alive Duration (Min)"] || 30);
 
-    const aliveUntil = new Date(
-        spawn.getTime() +
-        Number(boss["Alive Duration (Min)"]) * 60000
+    // --------------------------
+    // Today's scheduled spawn
+    // --------------------------
+    const [hour, minute] = String(boss["Spawn Time"])
+        .split(":")
+        .map(Number);
+
+    let spawn = new Date(now);
+
+    spawn.setHours(hour, minute, 0, 0);
+
+    // ==========================
+    // INTERVAL BOSSES
+    // ==========================
+    if (spawnType !== "Daily") {
+
+        const respawnMin = Number(boss["Respawn (Min)"] || 0);
+
+        const respawnMs = respawnMin * 60000;
+
+        while (spawn > now) {
+            spawn.setDate(spawn.getDate() - 1);
+        }
+
+        while (
+            spawn.getTime() + respawnMs <= now.getTime()
+        ) {
+            spawn = new Date(spawn.getTime() + respawnMs);
+        }
+
+    }
+
+    // --------------------------
+    // Alive Until
+    // --------------------------
+    let aliveUntil = new Date(
+        spawn.getTime() + aliveMinutes * 60000
     );
 
-    // Manual defeat
+    // --------------------------
+    // Next Spawn
+    // --------------------------
+    let nextSpawn;
+
+    if (spawnType === "Daily") {
+
+        if (now < spawn) {
+
+            nextSpawn = new Date(spawn);
+
+        } else {
+
+            nextSpawn = new Date(spawn);
+            nextSpawn.setDate(nextSpawn.getDate() + 1);
+
+        }
+
+    } else {
+
+        nextSpawn = new Date(
+            spawn.getTime() +
+            Number(boss["Respawn (Min)"]) * 60000
+        );
+
+    }
+
+    // ==========================
+    // MANUAL DEFEAT
+    // ==========================
     if (
-        defeated &&
-        defeated.nextSpawn &&
-        now < new Date(defeated.nextSpawn)
+        storage &&
+        storage.nextSpawn &&
+        now < new Date(storage.nextSpawn)
     ) {
 
         return {
@@ -342,19 +398,77 @@ function getBossState(boss) {
 
             aliveUntil,
 
-            nextSpawn: new Date(defeated.nextSpawn),
+            nextSpawn: new Date(storage.nextSpawn),
 
             timeLeft: 0,
 
-           nextSpawnIn:
-                new Date(defeated.nextSpawn).getTime() - now.getTime()
+            nextSpawnIn:
+                new Date(storage.nextSpawn).getTime() -
+                now.getTime()
 
         };
 
     }
 
-    // LIVE
-    if (now >= spawn && now < aliveUntil) {
+    // ==========================
+    // DAILY BOSSES
+    // ==========================
+    if (spawnType === "Daily") {
+
+        // Upcoming Today
+        if (now < spawn) {
+
+            return {
+
+                status: "UPCOMING",
+
+                spawn,
+
+                aliveUntil,
+
+                nextSpawn: spawn,
+
+                timeLeft: 0,
+
+                nextSpawnIn:
+                    spawn.getTime() - now.getTime()
+
+            };
+
+        }
+
+        // Live
+        if (now < aliveUntil) {
+
+            return {
+
+                status: "LIVE",
+
+                spawn,
+
+                aliveUntil,
+
+                nextSpawn,
+
+                timeLeft:
+                    aliveUntil.getTime() - now.getTime(),
+
+                nextSpawnIn: 0
+
+            };
+
+        }
+
+    }
+
+    // ==========================
+    // INTERVAL LIVE
+    // ==========================
+    if (
+        spawnType !== "Daily" &&
+        now >= spawn &&
+        now < aliveUntil
+    ) {
 
         return {
 
@@ -367,7 +481,7 @@ function getBossState(boss) {
             nextSpawn,
 
             timeLeft:
-                aliveUntil - now,
+                aliveUntil.getTime() - now.getTime(),
 
             nextSpawnIn: 0
 
@@ -375,63 +489,55 @@ function getBossState(boss) {
 
     }
 
+    // ==========================
     // AUTO FINISH
-        if (
-        
-            boss["Auto Finish"] === true &&
-            now >= aliveUntil
-        
-        ) {
-        
-            const data = loadStorage();
-        
-            if (!data[boss.ID]) {
-                data[boss.ID] = {};
-            }
-        
-            // don't overwrite every second
-            if (!data[boss.ID].lastDefeated) {
-        
-                data[boss.ID].lastDefeated =
-                    aliveUntil.toISOString();
-        
-                data[boss.ID].nextSpawn =
-                    nextSpawn.toISOString();
-        
-                saveStorage(data);
-        
-                storageData = data;
-        
-            }
-        
+    // ==========================
+    if (
+        boss["Auto Finish"] === true &&
+        now >= aliveUntil
+    ) {
+
+        const data = loadStorage();
+
+        if (!data[boss.ID]) {
+            data[boss.ID] = {};
         }
 
-    // UPCOMING
-        let upcomingSpawn;
-        
-        if (now < spawn) {
-            // Today's spawn hasn't happened yet
-            upcomingSpawn = spawn;
-        } else {
-            // Today's spawn already passed
-            upcomingSpawn = nextSpawn;
+        if (!data[boss.ID].lastDefeated) {
+
+            data[boss.ID].lastDefeated =
+                aliveUntil.toISOString();
+
+            data[boss.ID].nextSpawn =
+                nextSpawn.toISOString();
+
+            saveStorage(data);
+
+            storageData = data;
+
         }
-        
-        return {
-        
-            status: "UPCOMING",
-        
-            spawn,
-        
-            aliveUntil,
-        
-            nextSpawn: upcomingSpawn,
-        
-            timeLeft: 0,
-        
-            nextSpawnIn: upcomingSpawn.getTime() - now.getTime()
-        
-        };
+
+    }
+
+    // ==========================
+    // UPCOMING
+    // ==========================
+    return {
+
+        status: "UPCOMING",
+
+        spawn,
+
+        aliveUntil,
+
+        nextSpawn,
+
+        timeLeft: 0,
+
+        nextSpawnIn:
+            nextSpawn.getTime() - now.getTime()
+
+    };
 
 }
  
