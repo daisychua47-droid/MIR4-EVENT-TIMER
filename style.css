@@ -310,6 +310,11 @@ body{
     background:#1b2230;
 }
 
+.upcoming-countdown{
+    color:#38bdf8;      /* Cyan */
+    font-weight:700;
+}
+
 /* ===========================
    SPAWNING SOON
 =========================== */
