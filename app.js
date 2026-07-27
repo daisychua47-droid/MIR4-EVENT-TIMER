@@ -240,8 +240,23 @@ function getTodayName() {
 }
 
 function isBossAvailableToday(boss) {
-    const today = getTodayName();
-    return boss[today];
+
+    const spawnType = String(boss["Spawn Type"] || "Daily");
+
+    // Daily & Interval are always available
+    if (spawnType === "Daily" || spawnType === "Interval") {
+        return true;
+    }
+
+    // Weekly depends on checked weekday
+    const today = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][new Date().getDay()];
+
+    return (
+        String(boss[today]).toLowerCase() === "true" ||
+        boss[today] === true ||
+        boss[today] == 1
+    );
+
 }
 
 
@@ -265,23 +280,64 @@ function getCurrentSpawn(boss, now) {
 
     let base = getBaseSpawn(boss, now);
 
-    // DAILY BOSSES
+    // ==========================
+    // DAILY
+    // ==========================
     if (spawnType === "Daily") {
+
+        if (base > now) {
+            base.setDate(base.getDate() - 1);
+        }
+
         return base;
+
     }
 
-    // INTERVAL BOSSES
-    const respawnMin = Number(boss["Respawn (Min)"]);
+    // ==========================
+    // WEEKLY
+    // ==========================
+    if (spawnType === "Weekly") {
+
+        for (let i = 0; i < 7; i++) {
+
+            const check = new Date(base);
+            check.setDate(base.getDate() - i);
+
+            const dayName =
+                ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][check.getDay()];
+
+            const enabled =
+                String(boss[dayName]).toLowerCase() === "true" ||
+                boss[dayName] === true ||
+                boss[dayName] == 1;
+
+            if (enabled && check <= now) {
+                return check;
+            }
+
+        }
+
+        // fallback
+        return base;
+
+    }
+
+    // ==========================
+    // INTERVAL
+    // ==========================
+    const respawnMin = Number(boss["Respawn (Min)"] || 0);
     const respawnMs = respawnMin * 60000;
 
-    if (base > now) {
+    while (base > now) {
         base.setDate(base.getDate() - 1);
     }
 
     const elapsed = now - base;
     const cycles = Math.floor(elapsed / respawnMs);
 
-    return new Date(base.getTime() + cycles * respawnMs);
+    return new Date(
+        base.getTime() + cycles * respawnMs
+    );
 
 }
 
@@ -290,17 +346,76 @@ function getNextSpawn(boss, spawn) {
 
     const spawnType = String(boss["Spawn Type"] || "Daily");
 
+    // ==========================
+    // DAILY
+    // ==========================
     if (spawnType === "Daily") {
 
-        const next = new Date(spawn);
-        next.setDate(next.getDate() + 1);
+        const now = new Date();
+
+        const next = new Date(now);
+
+        const [hour, minute] =
+            String(boss["Spawn Time"])
+            .split(":")
+            .map(Number);
+
+        next.setHours(hour, minute, 0, 0);
+
+        if (next <= now) {
+            next.setDate(next.getDate() + 1);
+        }
 
         return next;
     }
 
+    // ==========================
+    // WEEKLY
+    // ==========================
+    if (spawnType === "Weekly") {
+
+        const now = new Date();
+
+        for (let i = 0; i <= 7; i++) {
+
+            const check = new Date(now);
+            check.setDate(now.getDate() + i);
+
+            const dayName =
+                ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][check.getDay()];
+
+            const enabled =
+                String(boss[dayName]).toLowerCase() === "true" ||
+                boss[dayName] === true ||
+                boss[dayName] == 1;
+
+            if (!enabled) continue;
+
+            const [hour, minute] =
+                String(boss["Spawn Time"])
+                .split(":")
+                .map(Number);
+
+            check.setHours(hour, minute, 0, 0);
+
+            if (check > now) {
+                return check;
+            }
+
+        }
+
+        const next = new Date(now);
+        next.setDate(next.getDate() + 7);
+
+        return next;
+    }
+
+    // ==========================
+    // INTERVAL
+    // ==========================
     return new Date(
         spawn.getTime() +
-        Number(boss["Respawn (Min)"]) * 60000
+        Number(boss["Respawn (Min)"] || 0) * 60000
     );
 
 }
@@ -308,86 +423,44 @@ function getNextSpawn(boss, spawn) {
 function getBossState(boss) {
 
     const now = new Date();
-
     const storage = storageData[boss.ID];
 
-    const spawnType = String(boss["Spawn Type"] || "Daily");
-
-    const aliveMinutes = Number(boss["Alive Duration (Min)"] || 30);
-
-    // --------------------------
-    // Today's scheduled spawn
-    // --------------------------
-    const [hour, minute] = String(boss["Spawn Time"])
-        .split(":")
-        .map(Number);
-
-    let spawn = new Date(now);
-
-    spawn.setHours(hour, minute, 0, 0);
-
-    // ==========================
-    // INTERVAL BOSSES
-    // ==========================
-    if (spawnType !== "Daily") {
-
-        const respawnMin = Number(boss["Respawn (Min)"] || 0);
-
-        const respawnMs = respawnMin * 60000;
-
-        while (spawn > now) {
-            spawn.setDate(spawn.getDate() - 1);
-        }
-
-        while (
-            spawn.getTime() + respawnMs <= now.getTime()
-        ) {
-            spawn = new Date(spawn.getTime() + respawnMs);
-        }
-
-    }
-
-    // --------------------------
-    // Alive Until
-    // --------------------------
-    let aliveUntil = new Date(
-        spawn.getTime() + aliveMinutes * 60000
-    );
-
-    // --------------------------
-    // Next Spawn
-    // --------------------------
-    let nextSpawn;
-
-    if (spawnType === "Daily") {
-
-        if (now < spawn) {
-
-            nextSpawn = new Date(spawn);
-
-        } else {
-
-            nextSpawn = new Date(spawn);
-            nextSpawn.setDate(nextSpawn.getDate() + 1);
-
-        }
-
-    } else {
-
-        nextSpawn = new Date(
-            spawn.getTime() +
-            Number(boss["Respawn (Min)"]) * 60000
-        );
-
-    }
-
-    // ==========================
-    // MANUAL DEFEAT
-    // ==========================
+    // Remove expired manual defeat
     if (
         storage &&
         storage.nextSpawn &&
-        now < new Date(storage.nextSpawn)
+        new Date(storage.nextSpawn) <= now
+    ) {
+
+        const data = loadStorage();
+
+        delete data[boss.ID].lastDefeated;
+        delete data[boss.ID].nextSpawn;
+
+        saveStorage(data);
+
+        storageData = data;
+
+    }
+
+    const spawn = getCurrentSpawn(boss, now);
+
+    const nextSpawn = getNextSpawn(boss, spawn);
+
+    const aliveUntil = new Date(
+        spawn.getTime() +
+        Number(boss["Alive Duration (Min)"]) * 60000
+    );
+
+    // -------------------------
+    // MANUAL FINISH
+    // -------------------------
+    const latestStorage = storageData[boss.ID];
+
+    if (
+        latestStorage &&
+        latestStorage.nextSpawn &&
+        now < new Date(latestStorage.nextSpawn)
     ) {
 
         return {
@@ -398,74 +471,22 @@ function getBossState(boss) {
 
             aliveUntil,
 
-            nextSpawn: new Date(storage.nextSpawn),
+            nextSpawn: new Date(latestStorage.nextSpawn),
 
             timeLeft: 0,
 
             nextSpawnIn:
-                new Date(storage.nextSpawn).getTime() -
+                new Date(latestStorage.nextSpawn).getTime() -
                 now.getTime()
 
         };
 
     }
 
-    // ==========================
-    // DAILY BOSSES
-    // ==========================
-    if (spawnType === "Daily") {
-
-        // Upcoming Today
-        if (now < spawn) {
-
-            return {
-
-                status: "UPCOMING",
-
-                spawn,
-
-                aliveUntil,
-
-                nextSpawn: spawn,
-
-                timeLeft: 0,
-
-                nextSpawnIn:
-                    spawn.getTime() - now.getTime()
-
-            };
-
-        }
-
-        // Live
-        if (now < aliveUntil) {
-
-            return {
-
-                status: "LIVE",
-
-                spawn,
-
-                aliveUntil,
-
-                nextSpawn,
-
-                timeLeft:
-                    aliveUntil.getTime() - now.getTime(),
-
-                nextSpawnIn: 0
-
-            };
-
-        }
-
-    }
-
-    // ==========================
-    // INTERVAL LIVE
-    // ==========================
+    // -------------------------
+    // LIVE
+    // -------------------------
     if (
-        spawnType !== "Daily" &&
         now >= spawn &&
         now < aliveUntil
     ) {
@@ -489,9 +510,9 @@ function getBossState(boss) {
 
     }
 
-    // ==========================
+    // -------------------------
     // AUTO FINISH
-    // ==========================
+    // -------------------------
     if (
         boss["Auto Finish"] === true &&
         now >= aliveUntil
@@ -503,7 +524,7 @@ function getBossState(boss) {
             data[boss.ID] = {};
         }
 
-        if (!data[boss.ID].lastDefeated) {
+        if (!data[boss.ID].nextSpawn) {
 
             data[boss.ID].lastDefeated =
                 aliveUntil.toISOString();
@@ -519,9 +540,9 @@ function getBossState(boss) {
 
     }
 
-    // ==========================
+    // -------------------------
     // UPCOMING
-    // ==========================
+    // -------------------------
     return {
 
         status: "UPCOMING",
