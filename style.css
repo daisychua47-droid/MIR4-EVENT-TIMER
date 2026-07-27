@@ -575,7 +575,14 @@ body{
 
     .favorite-name{
         font-size:10px;
+        gap:4px;
     }
+
+    .favorite-icon{
+       width:10px;
+       min-width:10px;
+       font-size:10px;
+   }  
 
     .boss-name{
         font-size:11px;
@@ -599,6 +606,32 @@ body{
    .upcoming-head > div:nth-child(2),
    .upcoming-row > div:nth-child(2){
        display:none;
+   }
+
+   /* Upcoming */
+   .upcoming-head,
+   .upcoming-row{
+       grid-template-columns:
+           42%
+           12%
+           21%
+           25%;
+   }
+   
+   /* Defeated */
+   .defeated-head,
+   .defeated-row{
+       grid-template-columns:
+           45%
+           25%
+           30%;
+   }
+
+   .upcoming-head,
+   .upcoming-row,
+   .defeated-head,
+   .defeated-row{
+       padding:10px 8px;
    }
 
 }
