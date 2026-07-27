@@ -83,6 +83,7 @@ body{
 .mini-list{
     padding:15px;
     min-height:250px;
+    overflow-x:auto;
 }
 
 /* ======================================================
@@ -287,6 +288,18 @@ body{
     background:#1b2230;
 }
 
+.boss-table{
+    min-width:1000px;
+}
+
+.upcoming-table{
+    min-width:650px;
+}
+
+.defeated-table{
+    min-width:650px;
+}
+
 /* ===========================
    SPAWNING SOON
 =========================== */
@@ -452,16 +465,44 @@ body{
 
 @media (max-width:900px){
 
+    .container{
+        padding:12px;
+    }
+
+    .topbar{
+        flex-wrap:wrap;
+        gap:10px;
+        padding:12px;
+    }
+
+    .logo{
+        height:42px;
+    }
+
+    .topbar input{
+        flex:1 1 100%;
+        width:100%;
+    }
+
+    .topbar select{
+        flex:1;
+        min-width:140px;
+    }
+
     .bottom-grid{
         grid-template-columns:1fr;
     }
 
-    .boss-table{
-        min-width:900px;
+    .live-card{
+        min-height:auto;
     }
 
-    #liveBossList,
-    #upcomingBossList{
+    .card{
+        overflow:hidden;
+    }
+
+    .boss-list,
+    .mini-list{
         overflow-x:auto;
     }
 
