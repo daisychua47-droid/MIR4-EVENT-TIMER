@@ -161,6 +161,11 @@ body{
         45%
         27%
         28%;
+    --upcoming-grid:
+        3fr
+        1fr
+        2fr
+        2fr;
 }
 
 /* ======================================================
@@ -249,6 +254,37 @@ body{
 
     text-align:center;
 
+}
+
+
+
+.upcoming-head,
+.upcoming-row{
+    display:grid;
+    grid-template-columns:var(--upcoming-grid);
+    align-items:center;
+}
+
+.upcoming-head{
+    background:#1f2937;
+    padding:14px 20px;
+    font-size:13px;
+    font-weight:600;
+    color:#9ca3af;
+    border-bottom:1px solid #2d333b;
+}
+
+.upcoming-row{
+    display:grid;
+    grid-template-columns:var(--upcoming-grid);
+    align-items:center;
+    padding:14px 20px;
+    border-top:1px solid #2d333b;
+    transition:.2s;
+}
+
+.upcoming-row:hover{
+    background:#1b2230;
 }
 
 /* ===========================
