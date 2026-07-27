@@ -514,3 +514,78 @@ body{
    }
 
 }
+
+/* ==========================
+   Mobile Table
+========================== */
+
+.boss-head,
+.boss-row,
+.upcoming-head,
+.upcoming-row,
+.defeated-head,
+.defeated-row{
+    font-size:10px;
+}
+
+.favorite-name{
+    font-size:11px;
+}
+
+.boss-name{
+    font-size:12px;
+}
+
+.countdown{
+    font-size:11px;
+    font-weight:700;
+}
+
+.favorite-icon{
+    font-size:12px;
+    width:14px;
+    min-width:14px;
+}
+
+.btn-defeat{
+    padding:5px 8px;
+    font-size:10px;
+}
+
+.card-header h2{
+    font-size:18px;
+}
+
+.card-header span{
+    font-size:14px;
+}
+
+@media (max-width:480px){
+
+    .boss-head,
+    .boss-row,
+    .upcoming-head,
+    .upcoming-row,
+    .defeated-head,
+    .defeated-row{
+        font-size:10px;
+    }
+
+    .favorite-name{
+        font-size:10px;
+    }
+
+    .boss-name{
+        font-size:11px;
+    }
+
+    .countdown{
+        font-size:10px;
+    }
+
+    .btn-defeat{
+        font-size:9px;
+        padding:4px 6px;
+    }
+
+}
