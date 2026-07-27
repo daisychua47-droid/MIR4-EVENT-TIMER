@@ -513,9 +513,7 @@ body{
        border-radius:10px;
    }
 
-}
-
-/* ==========================
+   /* ==========================
    Mobile Table
 ========================== */
 
@@ -559,6 +557,10 @@ body{
 .card-header span{
     font-size:14px;
 }
+
+}
+
+
 
 @media (max-width:480px){
 
