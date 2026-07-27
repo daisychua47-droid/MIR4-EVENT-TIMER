@@ -558,11 +558,13 @@ function categorizeBosses(){
     upcomingBosses = [];
     defeatedBosses = [];
 
-    bosses.forEach(boss=>{
+    storageData = loadStorage();
+
+    bosses.forEach(boss => {
 
         boss.state = getBossState(boss);
 
-        switch(boss.state.status){
+        switch (boss.state.status) {
 
             case "LIVE":
                 liveBosses.push(boss);
@@ -573,59 +575,93 @@ function categorizeBosses(){
                 upcomingBosses.push(boss);
                 break;
 
-          case "UPCOMING":
+            case "UPCOMING":
 
-                if (boss.state.nextSpawnIn <= 3600000) {
+                if (
+                    boss.state.nextSpawnIn > 0 &&
+                    boss.state.nextSpawnIn <= 60 * 60 * 1000
+                ) {
+
                     liveSoonBosses.push(boss);
-                } else {
-                    upcomingBosses.push(boss);
-                }
-                break;
 
+                } else {
+
+                    upcomingBosses.push(boss);
+
+                }
+
+                break;
         }
 
     });
 
-       // Recently Defeated (Newest First)
-        const storage = storageData;
-        
-       defeatedBosses.sort((a,b)=>{
+    // ==========================
+    // SORT FUNCTION
+    // Favorites first
+    // Then nearest countdown
+    // ==========================
 
-            const fav =
-                (storageData[b.ID]?.favorite?1:0) -
-                (storageData[a.ID]?.favorite?1:0);
-        
-            if(fav!==0) return fav;
-        
-            const da = new Date(storageData[a.ID]?.lastDefeated || 0);
-            const db = new Date(storageData[b.ID]?.lastDefeated || 0);
-        
-            return db-da;
-        
-        });
-        
-        // Upcoming & Live Soon (Nearest Spawn First)
-        upcomingBosses.sort(
-            (a,b)=>a.state.nextSpawnIn-b.state.nextSpawnIn
-        );
-        
-        liveSoonBosses.sort(
-            (a,b)=>a.state.nextSpawnIn-b.state.nextSpawnIn
-        );
+    const sortByFavoriteThenCountdown = (a, b) => {
 
-        const favoriteSort = (a, b) => {
-            
-                const fa = storageData[a.ID]?.favorite ? 1 : 0;
-                const fb = storageData[b.ID]?.favorite ? 1 : 0;
-            
-                return fb - fa;
-            
-            };
-            
-            liveBosses.sort(favoriteSort);
-            liveSoonBosses.sort(favoriteSort);
-            upcomingBosses.sort(favoriteSort);
-            defeatedBosses.sort(favoriteSort);
+        const fa = storageData[a.ID]?.favorite ? 1 : 0;
+        const fb = storageData[b.ID]?.favorite ? 1 : 0;
+
+        if (fa !== fb) {
+            return fb - fa;
+        }
+
+        return a.state.nextSpawnIn - b.state.nextSpawnIn;
+
+    };
+
+    // ==========================
+    // LIVE
+    // ==========================
+
+    liveBosses.sort((a, b) => {
+
+        const fa = storageData[a.ID]?.favorite ? 1 : 0;
+        const fb = storageData[b.ID]?.favorite ? 1 : 0;
+
+        if (fa !== fb) {
+            return fb - fa;
+        }
+
+        return a.state.timeLeft - b.state.timeLeft;
+
+    });
+
+    // ==========================
+    // LIVE SOON
+    // ==========================
+
+    liveSoonBosses.sort(sortByFavoriteThenCountdown);
+
+    // ==========================
+    // UPCOMING
+    // ==========================
+
+    upcomingBosses.sort(sortByFavoriteThenCountdown);
+
+    // ==========================
+    // RECENTLY DEFEATED
+    // ==========================
+
+    defeatedBosses.sort((a, b) => {
+
+        const fa = storageData[a.ID]?.favorite ? 1 : 0;
+        const fb = storageData[b.ID]?.favorite ? 1 : 0;
+
+        if (fa !== fb) {
+            return fb - fa;
+        }
+
+        const da = new Date(storageData[a.ID]?.lastDefeated || 0);
+        const db = new Date(storageData[b.ID]?.lastDefeated || 0);
+
+        return db - da;
+
+    });
 
 }
 
