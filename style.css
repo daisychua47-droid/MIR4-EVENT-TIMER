@@ -535,7 +535,7 @@ body{
 }
 
 .countdown{
-    font-size:11px;
+    font-size:15px;
     font-weight:700;
 }
 
@@ -551,11 +551,28 @@ body{
 }
 
 .card-header h2{
-    font-size:18px;
+    font-size:16px;
 }
 
 .card-header span{
     font-size:14px;
+}
+
+.boss-row,
+.upcoming-row,
+.defeated-row{
+    padding:10px 12px;
+}
+
+.topbar input,
+.topbar select{
+    height:44px;
+    font-size:15px;
+}
+
+   .logo{
+    height:48px;
+    margin-bottom:8px;
 }
 
 }
