@@ -451,7 +451,7 @@ body{
 }
 
 /* ======================================================
-   MOBILE
+   TABLET
 ====================================================== */
 
 @media (max-width:900px){
@@ -467,17 +467,22 @@ body{
     }
 
     .logo{
-        height:42px;
+        height:48px;
+        margin-bottom:8px;
     }
 
     .topbar input{
-        flex:1 1 100%;
         width:100%;
+        flex:1 1 100%;
+        height:44px;
+        font-size:15px;
     }
 
     .topbar select{
         flex:1;
         min-width:140px;
+        height:44px;
+        font-size:15px;
     }
 
     .bottom-grid{
@@ -488,98 +493,13 @@ body{
         min-height:auto;
     }
 
-    .card{
-        overflow:hidden;
+    .card-header h2{
+        font-size:18px;
     }
 
-    .boss-list,
-    .mini-list{
-        overflow-x:hidden;
+    .card-header span{
+        font-size:14px;
     }
-
-   .table-wrapper{
-    width:100%;
-    overflow-x:hidden;
-    overflow-y:hidden;
-    -webkit-overflow-scrolling:touch;
-   }
-   
-   .table-wrapper::-webkit-scrollbar{
-       height:8px;
-   }
-   
-   .table-wrapper::-webkit-scrollbar-thumb{
-       background:#3b4455;
-       border-radius:10px;
-   }
-
-   /* ==========================
-   Mobile Table
-========================== */
-
-.boss-head,
-.boss-row,
-.upcoming-head,
-.upcoming-row,
-.defeated-head,
-.defeated-row{
-    font-size:10px;
-}
-
-.favorite-name{
-    font-size:11px;
-}
-
-.boss-name{
-    font-size:12px;
-}
-
-.countdown{
-    font-size:15px;
-    font-weight:700;
-}
-
-.favorite-icon{
-    font-size:12px;
-    width:14px;
-    min-width:14px;
-}
-
-.btn-defeat{
-    padding:5px 8px;
-    font-size:10px;
-}
-
-.card-header h2{
-    font-size:16px;
-}
-
-.card-header span{
-    font-size:14px;
-}
-
-.boss-row,
-.upcoming-row,
-.defeated-row{
-    padding:10px 12px;
-}
-
-.topbar input,
-.topbar select{
-    height:44px;
-    font-size:15px;
-}
-
-   .logo{
-    height:48px;
-    margin-bottom:8px;
-}
-
-}
-
-
-
-@media (max-width:480px){
 
     .boss-head,
     .boss-row,
@@ -587,7 +507,108 @@ body{
     .upcoming-row,
     .defeated-head,
     .defeated-row{
+        font-size:11px;
+    }
+
+    .boss-row,
+    .upcoming-row,
+    .defeated-row{
+        padding:10px 12px;
+    }
+
+    .favorite-name{
+        font-size:11px;
+        gap:6px;
+    }
+
+    .favorite-icon{
+        width:14px;
+        min-width:14px;
+        font-size:12px;
+    }
+
+    .countdown{
+        font-size:13px;
+        font-weight:700;
+    }
+
+    .btn-defeat{
+        padding:6px 10px;
         font-size:10px;
+    }
+
+}
+
+/* ======================================================
+   PHONE
+====================================================== */
+
+@media (max-width:480px){
+
+    /* LIVE NOW */
+
+    .boss-head,
+    .boss-row{
+        grid-template-columns:
+            45px
+            2fr
+            1.3fr
+            .9fr
+            .9fr;
+    }
+
+    /* hide World */
+    .boss-head > div:nth-child(3),
+    .boss-row > div:nth-child(3){
+        display:none;
+    }
+
+    /* hide Layer */
+    .boss-head > div:nth-child(5),
+    .boss-row > div:nth-child(5){
+        display:none;
+    }
+
+    /* UPCOMING */
+
+    .upcoming-head,
+    .upcoming-row{
+        grid-template-columns:
+            48%
+            22%
+            30%;
+    }
+
+    /* hide World */
+
+    .upcoming-head > div:nth-child(2),
+    .upcoming-row > div:nth-child(2){
+        display:none;
+    }
+
+    /* DEFEATED */
+
+    .defeated-head,
+    .defeated-row{
+        grid-template-columns:
+            42%
+            28%
+            30%;
+    }
+
+    /* fonts */
+
+    .boss-head,
+    .upcoming-head,
+    .defeated-head{
+        font-size:9px;
+    }
+
+    .boss-row,
+    .upcoming-row,
+    .defeated-row{
+        font-size:10px;
+        padding:10px 8px;
     }
 
     .favorite-name{
@@ -596,59 +617,19 @@ body{
     }
 
     .favorite-icon{
-       width:10px;
-       min-width:10px;
-       font-size:10px;
-   }  
-
-    .boss-name{
-        font-size:11px;
+        width:10px;
+        min-width:10px;
+        font-size:10px;
     }
 
     .countdown{
-        font-size:10px;
+        font-size:12px;
+        font-weight:700;
     }
 
     .btn-defeat{
         font-size:9px;
-        padding:4px 6px;
+        padding:4px 8px;
     }
-
-   /* Hide World column on phones */
-   .upcoming-head,
-   .upcoming-row{
-       grid-template-columns: 1.8fr 1.4fr 90px;
-   }
-   
-   .upcoming-head > div:nth-child(2),
-   .upcoming-row > div:nth-child(2){
-       display:none;
-   }
-
-   /* Upcoming */
-   .upcoming-head,
-   .upcoming-row{
-       grid-template-columns:
-           42%
-           12%
-           21%
-           25%;
-   }
-   
-   /* Defeated */
-   .defeated-head,
-   .defeated-row{
-       grid-template-columns:
-           45%
-           25%
-           30%;
-   }
-
-   .upcoming-head,
-   .upcoming-row,
-   .defeated-head,
-   .defeated-row{
-       padding:10px 8px;
-   }
 
 }
