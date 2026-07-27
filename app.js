@@ -611,8 +611,16 @@ function renderLiveBosses() {
                                             <span class="status soon"></span>
                                         </div>
                             
-                                        <div class="boss-name">
+                                        <div
+                                            class="boss-name favorite-name"
+                                            onclick="toggleFavorite(${boss.ID})">
+                                        
+                                            <span class="favorite-icon">
+                                                ${storageData[boss.ID]?.favorite ? "⭐" : "☆"}
+                                            </span>
+                                        
                                             ${boss.Boss}
+                                        
                                         </div>
                             
                                         <div>
@@ -636,15 +644,7 @@ function renderLiveBosses() {
                                                 Spawn In
                                             </span>
                                         </div>
-                            
-                                        <div
-                                            class="favorite"
-                                            onclick="toggleFavorite(${boss.ID})">
-                                        
-                                            ${storageData[boss.ID]?.favorite ? "★" : "☆"}
-                                        
-                                        </div>
-                            
+                        
                                     </div>
                             
                                 `).join("")}
