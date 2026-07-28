@@ -702,21 +702,36 @@ function categorizeBosses(){
 
     };
 
-    // ==========================
+   // ==========================
     // LIVE
     // ==========================
-
+    
     liveBosses.sort((a, b) => {
-
+    
+        // ⭐ Favorites first
         const fa = storageData[a.ID]?.favorite ? 1 : 0;
         const fb = storageData[b.ID]?.favorite ? 1 : 0;
-
+    
         if (fa !== fb) {
             return fb - fa;
         }
-
-        return a.state.timeLeft - b.state.timeLeft;
-
+    
+        // 🌍 Sort by World
+        const wa = parseInt(String(a.World).replace(/\D/g, "")) || 999;
+        const wb = parseInt(String(b.World).replace(/\D/g, "")) || 999;
+    
+        if (wa !== wb) {
+            return wa - wb;
+        }
+    
+        // 🆕 Newest spawned boss first
+        if (a.state.spawn.getTime() !== b.state.spawn.getTime()) {
+            return b.state.spawn.getTime() - a.state.spawn.getTime();
+        }
+    
+        // 🔤 Boss name
+        return a.Boss.localeCompare(b.Boss);
+    
     });
 
     // ==========================
@@ -776,6 +791,14 @@ function renderLiveHeader() {
             </div>
     `;
 
+}
+
+function renderWorldHeader(world) {
+    return `
+        <div class="world-divider">
+            🌍 ${world}
+        </div>
+    `;
 }
 
 function renderLiveRow(boss) {
@@ -880,11 +903,26 @@ function renderLiveBosses() {
         return;
     }
 
-    container.innerHTML = `
-         ${renderLiveHeader()}
-         ${liveBosses.map(renderLiveRow).join("")}
-        </div>
-    `;
+    let html = renderLiveHeader();
+    let currentWorld = "";
+    
+    liveBosses.forEach(boss => {
+    
+        if (boss.World !== currentWorld) {
+    
+            currentWorld = boss.World;
+    
+            html += renderWorldHeader(currentWorld);
+    
+        }
+    
+        html += renderLiveRow(boss);
+    
+    });
+    
+    html += "</div>";
+    
+    container.innerHTML = html;
 }
 
 function renderBosses() {
