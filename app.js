@@ -616,6 +616,12 @@ function categorizeBosses(){
     });
 
 }
+        
+        console.log(
+            boss.Boss,
+            boss.state.status,
+            Math.floor(boss.state.nextSpawnIn / 60000)
+        );
 
         switch (boss.state.status) {
 
