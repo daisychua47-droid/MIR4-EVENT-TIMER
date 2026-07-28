@@ -906,41 +906,56 @@ function renderBosses() {
 
 function updateCountdowns() {
 
-    const now = getServerNow();
-
-    bosses.forEach(boss => {
-        boss.state = getBossState(boss);
-    });
-
-    // Update Live countdowns
+    // LIVE
     document.querySelectorAll("#liveBossList .countdown").forEach((el, i) => {
-        if (liveBosses[i]) {
-            el.textContent = formatCountdown(liveBosses[i].state.timeLeft);
+        if (!liveBosses[i]) return;
+
+        liveBosses[i].state.timeLeft -= 1000;
+
+        if (liveBosses[i].state.timeLeft < 0) {
+            renderBosses();
+            return;
         }
+
+        el.textContent = formatCountdown(liveBosses[i].state.timeLeft);
     });
 
-    // Update Soon countdowns
+    // SPAWNING SOON
     document.querySelectorAll("#soonBossList .countdown").forEach((el, i) => {
-        if (liveSoonBosses[i]) {
-            el.textContent = formatCountdown(liveSoonBosses[i].state.nextSpawnIn);
+        if (!liveSoonBosses[i]) return;
+
+        liveSoonBosses[i].state.nextSpawnIn -= 1000;
+
+        if (liveSoonBosses[i].state.nextSpawnIn < 0) {
+            renderBosses();
+            return;
         }
+
+        el.textContent = formatCountdown(liveSoonBosses[i].state.nextSpawnIn);
     });
 
-    // Update Upcoming countdowns
+    // UPCOMING
     document.querySelectorAll("#upcomingList .upcoming-countdown").forEach((el, i) => {
-        if (upcomingBosses[i]) {
-            el.textContent = formatCountdown(upcomingBosses[i].state.nextSpawnIn);
-        }
+        if (!upcomingBosses[i]) return;
+
+        upcomingBosses[i].state.nextSpawnIn -= 1000;
+
+        el.textContent = formatCountdown(upcomingBosses[i].state.nextSpawnIn);
     });
 
-    // Only re-render if a boss changed section
-    if (
-        liveBosses.some(b => b.state.status !== "LIVE") ||
-        liveSoonBosses.some(b => b.state.status !== "UPCOMING" && b.state.status !== "DEFEATED") ||
-        upcomingBosses.some(b => b.state.status !== "UPCOMING")
-    ) {
-        renderBosses();
-    }
+    // RECENTLY DEFEATED
+    document.querySelectorAll("#defeatedList .countdown").forEach((el, i) => {
+        if (!defeatedBosses[i]) return;
+
+        defeatedBosses[i].state.nextSpawnIn -= 1000;
+
+        if (defeatedBosses[i].state.nextSpawnIn < 0) {
+            renderBosses();
+            return;
+        }
+
+        el.textContent = formatCountdown(defeatedBosses[i].state.nextSpawnIn);
+    });
 
 }
 
