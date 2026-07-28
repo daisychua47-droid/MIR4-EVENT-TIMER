@@ -617,10 +617,15 @@ function getBossState(boss) {
 async function loadBosses() {
     bosses = await getBosses();
     renderBosses();
+
     if (countdownTimer) {
         clearInterval(countdownTimer);
     }
     countdownTimer = setInterval(updateCountdowns, 1000);
+    // Re-sync server time and boss data every minute
+    setInterval(async () => {
+        bosses = await getBosses();
+    }, 60000);
 }
 
 function categorizeBosses(){
