@@ -10,6 +10,9 @@ let defeatedBosses = [];
 let countdownTimer = null;
 let storageData = {};
 
+let serverTime = null;
+let serverSyncTime = null;
+
 const STORAGE_KEY = "mir4BossTracker";
 
 function loadStorage() {
@@ -48,7 +51,7 @@ function defeatBoss(id){
         data[id] = {};
     }
 
-    const now = new Date();
+    const now = getServerNow();
     
      const spawnType = String(boss["Spawn Type"] || "Daily");
 
@@ -232,7 +235,7 @@ function renderUpcomingBosses() {
 
 function timeAgo(date) {
     const seconds =
-        Math.floor((Date.now() - new Date(date)) / 1000);
+        Math.floor((getServerNow() - new Date(date)) / 1000);
 
     if (seconds < 60)
         return seconds + " sec ago";
@@ -368,7 +371,7 @@ function getNextSpawn(boss, spawn) {
     // ==========================
     if (spawnType === "Daily") {
 
-        const now = new Date();
+        const now = getServerNow();
 
         const next = new Date(now);
 
@@ -437,9 +440,21 @@ function getNextSpawn(boss, spawn) {
 
 }
 
+function getServerNow() {
+
+    if (!serverTime) {
+        return new Date();
+    }
+
+    const elapsed = Date.now() - serverSyncTime;
+
+    return new Date(serverTime.getTime() + elapsed);
+
+}
+
 function getBossState(boss) {
 
-    const now = new Date();
+    const now = getServerNow();
     const storage = storageData[boss.ID];
 
     // Remove expired manual defeat
