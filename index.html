@@ -36,19 +36,35 @@
 
 <main class="container">
 
-    <!-- LIVE NOW -->
-    <section class="card live-card">
+      <!-- LIVE NOW -->
+        <section class="card live-card">
+        
+            <div class="card-header">
+                <h2>🟢 LIVE NOW</h2>
+                <span id="aliveCount">0 Bosses</span>
+            </div>
+        
+            <div class="table-wrapper">
+                <div id="liveBossList" class="boss-list"></div>
+            </div>
+        
+        </section>
 
-        <div class="card-header">
-            <h2>🟢 LIVE NOW</h2>
-            <span id="aliveCount">0 Bosses</span>
-        </div>
 
-        <div class="table-wrapper">
-            <div id="liveBossList" class="boss-list"></div>
-        </div>
+    <!-- SPAWNING SOON -->
+        <section class="card soon-card">
+        
+            <div class="card-header">
+                <h2>🟡 SPAWNING SOON</h2>
+                <span id="soonCount">0 Bosses</span>
+            </div>
+        
+            <div class="table-wrapper">
+                <div id="soonBossList" class="boss-list"></div>
+            </div>
+        
+        </section>
 
-    </section>
 
 
     <!-- DEFEATED + UPCOMING -->
