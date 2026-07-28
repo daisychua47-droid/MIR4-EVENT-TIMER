@@ -106,6 +106,21 @@ function renderFavoriteBoss(boss) {
     `;
 }
 
+function renderSoonHeader() {
+    return `
+        <div class="boss-table">
+            <div class="boss-head">
+                <div>Status</div>
+                <div>Boss</div>
+                <div>World</div>
+                <div>Map</div>
+                <div>Layer</div>
+                <div>Spawn In</div>
+                <div>Action</div>
+            </div>
+    `;
+}
+
 function renderDefeatedHeader() {
     return `
         <div class="boss-table defeated-table">
@@ -791,42 +806,52 @@ function renderLiveRow(boss) {
 }
 
 function renderSoonRow(boss) {
-
     return `
-
         <div class="boss-row soon-row">
-
             <div>
                 <span class="status soon"></span>
             </div>
-
              ${renderFavoriteBoss(boss)}
-
             <div>
                 ${boss.World}
             </div>
-
             <div>
                 ${boss.Map}
             </div>
-
             <div>
                 ${boss.Layer}
             </div>
-
             <div class="countdown">
                 ${formatCountdown(boss.state.nextSpawnIn)}
             </div>
-
             <div>
                 <span class="soon-text">
                     Spawn In
                 </span>
             </div>
-
         </div>
-
     `;
+}
+
+function renderSoonBosses() {
+    const container = document.getElementById("soonBossList");
+    if (liveSoonBosses.length === 0) {
+        container.innerHTML = `
+            <div class="empty-state">
+                No bosses spawning soon.
+            </div>
+        `;
+        document.getElementById("soonCount").textContent = "0 Bosses";
+        return;
+    }
+
+    container.innerHTML = `
+        ${renderSoonHeader()}
+        ${liveSoonBosses.map(renderSoonRow).join("")}
+        </div>
+    `;
+    document.getElementById("soonCount").textContent =
+        `${liveSoonBosses.length} Bosses`;
 
 }
 
@@ -846,7 +871,7 @@ function renderLiveBosses() {
     const container = document.getElementById("liveBossList");
     container.innerHTML = "";
 
-    if (liveBosses.length === 0 && liveSoonBosses.length === 0) {
+    if (liveBosses.length === 0) {
         container.innerHTML = `
             <div class="empty-state">
                 No bosses are currently alive.
@@ -858,11 +883,6 @@ function renderLiveBosses() {
     container.innerHTML = `
          ${renderLiveHeader()}
          ${liveBosses.map(renderLiveRow).join("")}
-
-            ${liveSoonBosses.length > 0 ? `
-                ${renderSoonDivider()}
-                ${liveSoonBosses.map(renderSoonRow).join("")}
-            ` : ""}
         </div>
     `;
 }
@@ -871,6 +891,7 @@ function renderBosses() {
     storageData = loadStorage();
     categorizeBosses();
     renderLiveBosses();
+    renderSoonBosses();
     renderDefeatedBosses();
     renderUpcomingBosses();
     document.getElementById("aliveCount").textContent =
