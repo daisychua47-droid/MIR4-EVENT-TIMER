@@ -460,6 +460,17 @@ function getBossState(boss) {
 
     const nextSpawn = getNextSpawn(boss, spawn);
 
+    if (boss.Boss === "Bulhu") {
+
+    console.log({
+        boss: boss.Boss,
+        spawn: spawn,
+        nextSpawn: nextSpawn,
+        nextSpawnIn: Math.floor((nextSpawn - now) / 60000)
+    });
+
+}
+
     const aliveUntil = new Date(
         spawn.getTime() +
         Number(boss["Alive Duration (Min)"]) * 60000
@@ -599,6 +610,15 @@ function categorizeBosses(){
     bosses.forEach(boss => {
 
         boss.state = getBossState(boss);
+
+        if (boss.Boss === "Bulhu") {
+
+    console.log({
+        status: boss.state.status,
+        nextSpawnIn: boss.state.nextSpawnIn / 60000
+    });
+
+}
 
         switch (boss.state.status) {
 
