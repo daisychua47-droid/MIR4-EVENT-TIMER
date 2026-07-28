@@ -722,6 +722,11 @@ function categorizeBosses(){
 
     });
 
+    console.log("LIVE:", liveBosses.length);
+console.log("SOON:", liveSoonBosses.length);
+console.log("UPCOMING:", upcomingBosses.length);
+
+console.log("Soon Bosses:", liveSoonBosses.map(b => b.Boss));
 }
 
 function renderLiveHeader() {
