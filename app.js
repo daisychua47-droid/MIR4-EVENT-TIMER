@@ -93,7 +93,44 @@ function toggleFavorite(id) {
     renderBosses();
 }
 
+function renderFavoriteBoss(boss) {
+    return `
+        <div
+            class="favorite-name"
+            onclick="toggleFavorite(${boss.ID})">
+            <span class="favorite-icon">
+                ${storageData[boss.ID]?.favorite ? "⭐" : "☆"}
+            </span>
+            ${boss.Boss}
+        </div>
+    `;
+}
 
+function renderDefeatedHeader() {
+    return `
+        <div class="boss-table defeated-table">
+            <div class="boss-head defeated-head">
+                <div>Boss</div>
+                <div>Defeated</div>
+                <div>Next Spawn</div>
+            </div>
+    `;
+}
+
+function renderDefeatedRow(boss) {
+    const data = storageData[boss.ID];
+    return `
+        <div class="boss-row defeated-row">
+           ${renderFavoriteBoss(boss)}
+            <div>
+                ${timeAgo(data.lastDefeated)}
+            </div>
+            <div>
+                ${formatCountdown(boss.state.nextSpawnIn)}
+            </div>
+        </div>
+    `;
+}
 
 function renderDefeatedBosses() {
 
@@ -110,52 +147,41 @@ function renderDefeatedBosses() {
         return;
     }
 
-    let html = `
-        <div class="boss-table defeated-table">
-
-            <div class="boss-head defeated-head">
-                <div>Boss</div>
-                <div>Defeated</div>
-                <div>Next Spawn</div>
-            </div>
-    `;
-
-            const storage = storageData;
-            
-            defeatedBosses.forEach(boss => {
-                const data = storage[boss.ID];
-                html += `
-                  <div class="boss-row defeated-row">
-                    
-                        <div
-                            class="favorite-name"
-                            onclick="toggleFavorite(${boss.ID})">
-                    
-                            <span class="favorite-icon">
-                                ${storageData[boss.ID]?.favorite ? "⭐" : "☆"}
-                            </span>
-                    
-                            ${boss.Boss}
-                    
-                        </div>
-                    
-                        <div>
-                            ${timeAgo(data.lastDefeated)}
-                        </div>
-                    
-                        <div>
-                            ${formatCountdown(boss.state.nextSpawnIn)}
-                        </div>
-                    
-                    </div>
-                `;
-            });
-
+     let html = renderDefeatedHeader();
+        defeatedBosses.forEach(boss => {
+            html += renderDefeatedRow(boss);
+        });
     html += `
         </div>
     `;
-
     container.innerHTML = html;
+}
+
+function renderUpcomingHeader() {
+    return `
+        <div class="boss-table">
+            <div class="upcoming-head">
+                <div>Boss</div>
+                <div>World</div>
+                <div>Map</div>
+                <div>Spawn In</div>
+            </div>
+    `;
+}
+
+function renderUpcomingRow(boss) {
+
+    return `
+        <div class="upcoming-row">
+                ${renderFavoriteBoss(boss)}
+            <div>${boss.World}</div>
+            <div>${boss.Map}</div>
+            <div class="countdown upcoming-countdown">
+                ${formatCountdown(boss.state.nextSpawnIn)}
+            </div>
+
+        </div>
+    `;
 
 }
 
@@ -178,41 +204,12 @@ function renderUpcomingBosses() {
         return;
     }
 
-    let html = `
-        <div class="boss-table">
-            <div class="upcoming-head">
-                <div>Boss</div>
-                <div>World</div>
-                <div>Map</div>
-                <div>Spawn In</div>
-            </div>
-    `;
-
-    list.forEach(boss => {
-
-        html += `
-        <div class="upcoming-row">
-            <div
-                class="favorite-name"
-                onclick="toggleFavorite(${boss.ID})">
-                <span class="favorite-icon">
-                    ${storageData[boss.ID]?.favorite ? "⭐" : "☆"}
-                </span>
-                ${boss.Boss}
-            </div>
-        
-            <div>${boss.World}</div>
-            <div>${boss.Map}</div>
-               <div class="countdown upcoming-countdown">
-                    ${formatCountdown(boss.state.nextSpawnIn)}
-                </div>
-        </div>
-        `;
-
-    });
+   let html = renderUpcomingHeader();
+         list.forEach(boss => {
+            html += renderUpcomingRow(boss);
+        });
 
     html += `</div>`;
-
     container.innerHTML = html;
 }
 
@@ -721,24 +718,9 @@ function categorizeBosses(){
 
 }
 
-function renderLiveBosses() {
+function renderLiveHeader() {
 
-    const container = document.getElementById("liveBossList");
-
-    container.innerHTML = "";
-
-    if (liveBosses.length === 0 && liveSoonBosses.length === 0) {
-    
-        container.innerHTML = `
-            <div class="empty-state">
-                No bosses are currently alive.
-            </div>
-        `;
-    
-        return;
-    }
-
-    container.innerHTML = `
+    return `
         <div class="boss-table">
 
             <div class="boss-head">
@@ -752,110 +734,110 @@ function renderLiveBosses() {
                 <div>Action</div>
 
             </div>
+    `;
 
-            ${liveBosses.map(boss=>{
+}
 
-                return `
+function renderLiveRow(boss) {
+    return `
+       <div class="boss-row">
+        <div>
+            <span class="status green"></span>
+        </div>
+    
+        ${renderFavoriteBoss(boss)}
+    
+        <div>${boss.World}</div>
+        <div>${boss.Map}</div>
+        <div>${boss.Layer}</div>
+        <div class="countdown">
+            ${formatCountdown(boss.state.timeLeft)}
+        </div>
+    
+        <div>
+            <button
+                class="btn-defeat"
+                onclick="defeatBoss(${boss.ID})">
+                Finish
+            </button>
+        </div>
+    </div>
+    `;
+}
 
-                <div class="boss-row">
+function renderSoonRow(boss) {
 
-                    <div>
-                        <span class="status green"></span>
-                    </div>
+    return `
 
-                   <div
-                        class="boss-name favorite-name"
-                        onclick="toggleFavorite(${boss.ID})">
-                    
-                        <span class="favorite-icon">
-                            ${storageData[boss.ID]?.favorite ? "⭐" : "☆"}
-                        </span>
-                    
-                        ${boss.Boss}
-                    
-                    </div>
+        <div class="boss-row soon-row">
 
-                    <div>
-                        ${boss.World}
-                    </div>
+            <div>
+                <span class="status soon"></span>
+            </div>
 
-                    <div>
-                        ${boss.Map}
-                    </div>
+             ${renderFavoriteBoss(boss)}
 
-                    <div>
-                        ${boss.Layer}
-                    </div>
+            <div>
+                ${boss.World}
+            </div>
 
-                    <div class="countdown">
-                        ${formatCountdown(boss.state.timeLeft)}
-                    </div>
-                    <div>
-                        <button
-                            class="btn-defeat"
-                            onclick="defeatBoss(${boss.ID})">
-                            Finish
-                        </button>
-                    </div>
-                </div>
-                `;
-            }).join("")}
+            <div>
+                ${boss.Map}
+            </div>
 
-                            ${liveSoonBosses.length > 0 ? `
-                            
-                                <div class="boss-divider">
-                                    <div class="divider-title">
-                                        🟡 SPAWNING SOON (Next 60 Minutes)
-                                    </div>
-                                </div>
-                            
-                                ${liveSoonBosses.map(boss=>`
-                            
-                                    <div class="boss-row soon-row">
-                            
-                                        <div>
-                                            <span class="status soon"></span>
-                                        </div>
-                            
-                                        <div
-                                            class="boss-name favorite-name"
-                                            onclick="toggleFavorite(${boss.ID})">
-                                        
-                                            <span class="favorite-icon">
-                                                ${storageData[boss.ID]?.favorite ? "⭐" : "☆"}
-                                            </span>
-                                        
-                                            ${boss.Boss}
-                                        
-                                        </div>
-                            
-                                        <div>
-                                            ${boss.World}
-                                        </div>
-                            
-                                        <div>
-                                            ${boss.Map}
-                                        </div>
-                            
-                                        <div>
-                                            ${boss.Layer}
-                                        </div>
-                            
-                                        <div class="countdown">
-                                            ${formatCountdown(boss.state.nextSpawnIn)}
-                                        </div>
-                            
-                                        <div>
-                                            <span class="soon-text">
-                                                Spawn In
-                                            </span>
-                                        </div>
-                        
-                                    </div>
-                            
-                                `).join("")}
-                            
-                            ` : ""}
+            <div>
+                ${boss.Layer}
+            </div>
+
+            <div class="countdown">
+                ${formatCountdown(boss.state.nextSpawnIn)}
+            </div>
+
+            <div>
+                <span class="soon-text">
+                    Spawn In
+                </span>
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+function renderSoonDivider() {
+
+    return `
+        <div class="boss-divider">
+            <div class="divider-title">
+                🟡 SPAWNING SOON (Next 60 Minutes)
+            </div>
+        </div>
+    `;
+
+}
+
+function renderLiveBosses() {
+    const container = document.getElementById("liveBossList");
+    container.innerHTML = "";
+
+    if (liveBosses.length === 0 && liveSoonBosses.length === 0) {
+        container.innerHTML = `
+            <div class="empty-state">
+                No bosses are currently alive.
+            </div>
+        `;
+        return;
+    }
+
+    container.innerHTML = `
+         ${renderLiveHeader()}
+         ${liveBosses.map(renderLiveRow).join("")}
+
+            ${liveSoonBosses.length > 0 ? `
+                ${renderSoonDivider()}
+                ${liveSoonBosses.map(renderSoonRow).join("")}
+            ` : ""}
         </div>
     `;
 }
@@ -869,6 +851,8 @@ function renderBosses() {
     document.getElementById("aliveCount").textContent =
         `${liveBosses.length} Bosses`;
 }
+
+
 
 
 function updateCountdowns() {
