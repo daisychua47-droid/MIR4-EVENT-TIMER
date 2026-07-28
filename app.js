@@ -630,9 +630,23 @@ function categorizeBosses(){
                 break;
 
             case "DEFEATED":
-                defeatedBosses.push(boss);
-                upcomingBosses.push(boss);
-                break;
+
+                    defeatedBosses.push(boss);
+                
+                    if (
+                        boss.state.nextSpawnIn > 0 &&
+                        boss.state.nextSpawnIn <= 60 * 60 * 1000
+                    ) {
+                
+                        liveSoonBosses.push(boss);
+                
+                    } else {
+                
+                        upcomingBosses.push(boss);
+                
+                    }
+                
+                    break;
 
             case "UPCOMING":
 
