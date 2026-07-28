@@ -1,10 +1,8 @@
 document.getElementById("btnLoad")?.remove();
-
 let bosses = [];
 let liveBosses = [];
 let liveSoonBosses = [];
 let upcomingBosses = [];
-
 let defeatedBosses = [];
 
 let countdownTimer = null;
@@ -30,7 +28,6 @@ function saveStorage(data) {
 
 function getBossData(id) {
     const data = loadStorage();
-
     if (!data[id]) {
         data[id] = {
             favorite: false,
@@ -908,7 +905,43 @@ function renderBosses() {
 
 
 function updateCountdowns() {
-    renderBosses();
+
+    const now = getServerNow();
+
+    bosses.forEach(boss => {
+        boss.state = getBossState(boss);
+    });
+
+    // Update Live countdowns
+    document.querySelectorAll("#liveBossList .countdown").forEach((el, i) => {
+        if (liveBosses[i]) {
+            el.textContent = formatCountdown(liveBosses[i].state.timeLeft);
+        }
+    });
+
+    // Update Soon countdowns
+    document.querySelectorAll("#soonBossList .countdown").forEach((el, i) => {
+        if (liveSoonBosses[i]) {
+            el.textContent = formatCountdown(liveSoonBosses[i].state.nextSpawnIn);
+        }
+    });
+
+    // Update Upcoming countdowns
+    document.querySelectorAll("#upcomingList .upcoming-countdown").forEach((el, i) => {
+        if (upcomingBosses[i]) {
+            el.textContent = formatCountdown(upcomingBosses[i].state.nextSpawnIn);
+        }
+    });
+
+    // Only re-render if a boss changed section
+    if (
+        liveBosses.some(b => b.state.status !== "LIVE") ||
+        liveSoonBosses.some(b => b.state.status !== "UPCOMING" && b.state.status !== "DEFEATED") ||
+        upcomingBosses.some(b => b.state.status !== "UPCOMING")
+    ) {
+        renderBosses();
+    }
+
 }
 
 function formatCountdown(ms) {
