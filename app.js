@@ -479,27 +479,7 @@ function getBossState(boss) {
     }
 
     const spawn = getCurrentSpawn(boss, now);
-
-    if (boss.Boss === "sample") {
-        console.log({
-            now,
-            spawn,
-            spawnTime: boss["Spawn Time"]
-        });
-    }
-
     const nextSpawn = getNextSpawn(boss, spawn);
-
-    if (boss.Boss === "Bulhu") {
-
-    console.log({
-        boss: boss.Boss,
-        spawn: spawn,
-        nextSpawn: nextSpawn,
-        nextSpawnIn: Math.floor((nextSpawn - now) / 60000)
-    });
-
-}
 
     const aliveUntil = new Date(
         spawn.getTime() +
@@ -646,21 +626,6 @@ function categorizeBosses(){
 
         boss.state = getBossState(boss);
 
-        if (boss.Boss === "Bulhu") {
-
-    console.log({
-        status: boss.state.status,
-        nextSpawnIn: boss.state.nextSpawnIn / 60000
-    });
-
-}
-        
-        console.log(
-            boss.Boss,
-            boss.state.status,
-            Math.floor(boss.state.nextSpawnIn / 60000)
-        );
-
         switch (boss.state.status) {
 
             case "LIVE":
@@ -789,11 +754,6 @@ function categorizeBosses(){
 
     });
 
-    console.log("LIVE:", liveBosses.length);
-console.log("SOON:", liveSoonBosses.length);
-console.log("UPCOMING:", upcomingBosses.length);
-
-console.log("Soon Bosses:", liveSoonBosses.map(b => b.Boss));
 }
 
 function renderLiveHeader() {
