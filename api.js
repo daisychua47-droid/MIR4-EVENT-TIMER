@@ -12,11 +12,15 @@ async function getBosses() {
             throw new Error(`HTTP Error ${response.status}`);
         }
 
-        const data = await response.json();
-
-        console.log("Bosses Loaded:", data);
-
-        return data;
+       const data = await response.json();
+        // Save server time
+        serverTime = new Date(data.serverTime);
+        serverSyncTime = Date.now();
+        
+        console.log("Server Time:", serverTime);
+        console.log("Bosses Loaded:", data.bosses);
+        
+        return data.bosses;
 
     } catch (err) {
 
