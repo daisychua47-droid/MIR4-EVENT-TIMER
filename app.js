@@ -893,6 +893,12 @@ function renderBosses() {
     renderUpcomingBosses();
     document.getElementById("aliveCount").textContent =
         `${liveBosses.length} Bosses`;
+
+    lastBossState =
+    liveBosses.length + "|" +
+    liveSoonBosses.length + "|" +
+    upcomingBosses.length + "|" +
+    defeatedBosses.length;
 }
 
 
