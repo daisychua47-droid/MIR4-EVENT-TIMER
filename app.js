@@ -280,17 +280,22 @@ function getCurrentSpawn(boss, now) {
 
     let base = getBaseSpawn(boss, now);
 
-    // ==========================
+      // ==========================
     // DAILY
     // ==========================
     if (spawnType === "Daily") {
-
-        if (base > now) {
-            base.setDate(base.getDate() - 1);
+    
+        // Today's spawn
+        if (base <= now) {
+            return base;
         }
-
-        return base;
-
+    
+        // Not yet spawned today
+        const yesterday = new Date(base);
+        yesterday.setDate(yesterday.getDate() - 1);
+    
+        return yesterday;
+    
     }
 
     // ==========================
@@ -444,6 +449,14 @@ function getBossState(boss) {
     }
 
     const spawn = getCurrentSpawn(boss, now);
+
+    if (boss.Boss === "sample") {
+        console.log({
+            now,
+            spawn,
+            spawnTime: boss["Spawn Time"]
+        });
+    }
 
     const nextSpawn = getNextSpawn(boss, spawn);
 
