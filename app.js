@@ -314,32 +314,25 @@ function getCurrentSpawn(boss, now) {
     // ==========================
     // WEEKLY
     // ==========================
-    if (spawnType === "Weekly") {
-
+   if (spawnType === "Weekly") {
         for (let i = 0; i < 7; i++) {
-
-            const now = getServerNow();
+            const check = new Date(base);
             check.setDate(base.getDate() - i);
 
             const dayName =
                 ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][check.getDay()];
-
+    
             const enabled =
                 String(boss[dayName]).toLowerCase() === "true" ||
                 boss[dayName] === true ||
                 boss[dayName] == 1;
-
+    
             if (enabled && check <= now) {
                 return check;
             }
-
         }
-
-        // fallback
         return base;
-
     }
-
     // ==========================
     // INTERVAL
     // ==========================
@@ -395,7 +388,7 @@ function getNextSpawn(boss, spawn) {
     // ==========================
     if (spawnType === "Weekly") {
 
-        const now = new Date();
+        const now = getServerNow();
 
         for (let i = 0; i <= 7; i++) {
 
