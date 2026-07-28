@@ -606,51 +606,36 @@ async function loadBosses() {
     }
     countdownTimer = setInterval(updateCountdowns, 1000);
     // Re-sync server time and boss data every minute
-    setInterval(async () => {
+      setInterval(async () => {
         bosses = await getBosses();
-    }, 60000);
+        renderBosses();
+        }, 60000);
 }
 
 function categorizeBosses(){
-
     liveBosses = [];
     liveSoonBosses = [];
     upcomingBosses = [];
     defeatedBosses = [];
-
     storageData = loadStorage();
 
-    
-
     bosses.forEach(boss => {
-
         boss.state = getBossState(boss);
-
         switch (boss.state.status) {
-
             case "LIVE":
                 liveBosses.push(boss);
                 break;
-
             case "DEFEATED":
-
                     defeatedBosses.push(boss);
-                
                     if (
                         boss.state.nextSpawnIn > 0 &&
                         boss.state.nextSpawnIn <= 60 * 60 * 1000
                     ) {
-                
                         liveSoonBosses.push(boss);
-                
                     } else {
-                
                         upcomingBosses.push(boss);
-                
                     }
-                
                     break;
-
             case "UPCOMING":
 
                 if (
