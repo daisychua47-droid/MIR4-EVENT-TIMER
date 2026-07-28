@@ -320,7 +320,7 @@ function getCurrentSpawn(boss, now) {
 
         for (let i = 0; i < 7; i++) {
 
-            const check = new Date(base);
+            const now = getServerNow();
             check.setDate(base.getDate() - i);
 
             const dayName =
@@ -345,19 +345,22 @@ function getCurrentSpawn(boss, now) {
     // ==========================
     // INTERVAL
     // ==========================
-    const respawnMin = Number(boss["Respawn (Min)"] || 0);
+   const respawnMin = Number(boss["Respawn (Min)"] || 0);
     const respawnMs = respawnMin * 60000;
-
+    
+    // Move base backward until it is before the current time
     while (base > now) {
-        base.setDate(base.getDate() - 1);
+        base = new Date(base.getTime() - 24 * 60 * 60 * 1000);
     }
-
-    const elapsed = now - base;
-    const cycles = Math.floor(elapsed / respawnMs);
-
-    return new Date(
-        base.getTime() + cycles * respawnMs
-    );
+    
+    // Calculate how many respawn cycles have passed
+    let spawn = new Date(base);
+    
+    while (spawn.getTime() + respawnMs <= now.getTime()) {
+        spawn = new Date(spawn.getTime() + respawnMs);
+    }
+    
+    return spawn;
 
 }
 
