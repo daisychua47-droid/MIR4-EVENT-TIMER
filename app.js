@@ -10,6 +10,7 @@ let storageData = {};
 
 let serverTime = null;
 let serverSyncTime = null;
+let lastBossState = "";
 
 const STORAGE_KEY = "mir4BossTracker";
 
@@ -906,56 +907,40 @@ function renderBosses() {
 
 function updateCountdowns() {
 
-    // LIVE
+    // Update countdown text only
     document.querySelectorAll("#liveBossList .countdown").forEach((el, i) => {
-        if (!liveBosses[i]) return;
-
-        liveBosses[i].state.timeLeft -= 1000;
-
-        if (liveBosses[i].state.timeLeft < 0) {
-            renderBosses();
-            return;
+        if (liveBosses[i]) {
+            liveBosses[i].state.timeLeft -= 1000;
+            el.textContent = formatCountdown(liveBosses[i].state.timeLeft);
         }
-
-        el.textContent = formatCountdown(liveBosses[i].state.timeLeft);
     });
 
-    // SPAWNING SOON
     document.querySelectorAll("#soonBossList .countdown").forEach((el, i) => {
-        if (!liveSoonBosses[i]) return;
-
-        liveSoonBosses[i].state.nextSpawnIn -= 1000;
-
-        if (liveSoonBosses[i].state.nextSpawnIn < 0) {
-            renderBosses();
-            return;
+        if (liveSoonBosses[i]) {
+            liveSoonBosses[i].state.nextSpawnIn -= 1000;
+            el.textContent = formatCountdown(liveSoonBosses[i].state.nextSpawnIn);
         }
-
-        el.textContent = formatCountdown(liveSoonBosses[i].state.nextSpawnIn);
     });
 
-    // UPCOMING
     document.querySelectorAll("#upcomingList .upcoming-countdown").forEach((el, i) => {
-        if (!upcomingBosses[i]) return;
-
-        upcomingBosses[i].state.nextSpawnIn -= 1000;
-
-        el.textContent = formatCountdown(upcomingBosses[i].state.nextSpawnIn);
-    });
-
-    // RECENTLY DEFEATED
-    document.querySelectorAll("#defeatedList .countdown").forEach((el, i) => {
-        if (!defeatedBosses[i]) return;
-
-        defeatedBosses[i].state.nextSpawnIn -= 1000;
-
-        if (defeatedBosses[i].state.nextSpawnIn < 0) {
-            renderBosses();
-            return;
+        if (upcomingBosses[i]) {
+            upcomingBosses[i].state.nextSpawnIn -= 1000;
+            el.textContent = formatCountdown(upcomingBosses[i].state.nextSpawnIn);
         }
-
-        el.textContent = formatCountdown(defeatedBosses[i].state.nextSpawnIn);
     });
+
+    // Build a simple snapshot of the current sections
+    const currentState =
+        liveBosses.length + "|" +
+        liveSoonBosses.length + "|" +
+        upcomingBosses.length + "|" +
+        defeatedBosses.length;
+
+    // Only re-render if section counts changed
+    if (currentState !== lastBossState) {
+        lastBossState = currentState;
+        renderBosses();
+    }
 
 }
 
