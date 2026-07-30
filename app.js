@@ -386,7 +386,6 @@ function getBossState(boss) {
         };
     }
 
-    const nextSpawn = getNextSpawn(boss);
    const spawn = getCurrentSpawn(boss, now);
 
 if (!spawn) {
