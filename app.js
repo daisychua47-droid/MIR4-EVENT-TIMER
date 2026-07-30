@@ -14,6 +14,9 @@ let lastBossState = "";
 
 const STORAGE_KEY = "mir4BossTracker";
 
+// 60 minutes
+const SOON_WINDOW = 60 * 60 * 1000;
+
 function loadStorage() {
     return JSON.parse(
         localStorage.getItem(STORAGE_KEY) || "{}"
@@ -52,11 +55,8 @@ function defeatBoss(id) {
     }
 
     const now = getServerNow();
-
-    const nextSpawn = getNextSpawn(
-        boss,
-        getCurrentSpawn(boss, now)
-    );
+    const nextSpawn = getNextSpawn(boss);
+    
     data[id].lastDefeated = now.toISOString();
 
     saveStorage(data);
