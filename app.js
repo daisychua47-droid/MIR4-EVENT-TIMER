@@ -422,8 +422,6 @@ const nextSpawn = getNextSpawn(boss);
                 new Date(info.lastDefeated) >= spawn
             ) {
         
-                const nextSpawn = getNextSpawn(boss);
-        
                 return {
                     status: "UPCOMING",
                     spawn,
@@ -456,8 +454,6 @@ const nextSpawn = getNextSpawn(boss);
             };
         
         }
-
-    const nextSpawn = getNextSpawn(boss, spawn);
 
     return {
         status: "UPCOMING",
