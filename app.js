@@ -14,8 +14,15 @@ let lastBossState = "";
 
 const STORAGE_KEY = "mir4BossTracker";
 
+// ===========================
+// Settings
+// ===========================
+const SETTINGS = {
+    timezone: "Asia/Manila"
+};
 // 60 minutes
 const SOON_WINDOW = 60 * 60 * 1000;
+
 
 function loadStorage() {
     return JSON.parse(
@@ -55,6 +62,7 @@ function defeatBoss(id) {
     }
 
     const now = getServerNow();
+    
     const nextSpawn = getNextSpawn(boss);
     
     data[id].lastDefeated = now.toISOString();
@@ -217,8 +225,8 @@ function renderUpcomingBosses() {
 
 
 function timeAgo(date) {
-    const seconds =
-        Math.floor((getServerNow() - new Date(date)) / 1000);
+      const seconds =
+        Math.floor((getGameNow() - new Date(date)) / 1000);
 
     if (seconds < 60)
         return seconds + " sec ago";
@@ -239,7 +247,7 @@ function getTodayName() {
 
 function isBossAvailableToday(boss) {
     const today = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][
-        getServerNow().getDay()
+        getGameNow().getDay()
     ];
 
     return (
@@ -339,7 +347,7 @@ function getCurrentSpawn(boss, now) {
 
 function getNextSpawn(boss) {
 
-    const now = getServerNow();
+    const now = getGameNow();
     const days = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 
     for (let offset = 0; offset < 7; offset++) {
@@ -393,9 +401,24 @@ function getServerNow() {
 
 }
 
-function getBossState(boss) {
+// ===========================
+// Game Time (Timezone Aware)
+// ===========================
+function getGameNow() {
 
     const now = getServerNow();
+
+    return new Date(
+        now.toLocaleString("en-US", {
+            timeZone: SETTINGS.timezone
+        })
+    );
+
+}
+
+function getBossState(boss) {
+
+    const now = getGameNow();
 
     if (!isBossAvailableToday(boss)) {
         return {
