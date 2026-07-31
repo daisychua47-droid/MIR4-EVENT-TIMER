@@ -255,26 +255,31 @@ function getSpawnTimes(boss, now) {
 
     for (let i = 1; i <= 10; i++) {
 
-        const value = boss[`Spawn Time ${i}`];
+        let value = boss[`Spawn Time ${i}`];
 
-        // Stop once a blank is found
-        if (!value || String(value).trim() === "") {
-            break;
-        }
+        if (!value) continue;
 
-        const [hour, minute] = String(value)
-            .split(":")
-            .map(Number);
+        value = String(value).trim();
+
+        if (value === "") continue;
+
+        const parts = value.split(":");
+
+        if (parts.length < 2) continue;
+
+        const hour = parseInt(parts[0], 10);
+        const minute = parseInt(parts[1], 10);
+
+        if (isNaN(hour) || isNaN(minute)) continue;
 
         const spawn = new Date(now);
-
         spawn.setHours(hour, minute, 0, 0);
 
         times.push(spawn);
 
     }
 
-    return times;
+    return times.sort((a, b) => a - b);
 
 }
 
@@ -329,15 +334,15 @@ function getNextSpawn(boss) {
     const now = getServerNow();
     const days = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 
-    for (let forward = 0; forward < 7; forward++) {
+    for (let offset = 0; offset < 7; offset++) {
 
         const date = new Date(now);
-        date.setDate(date.getDate() + forward);
+        date.setDate(date.getDate() + offset);
 
         const dayName = days[date.getDay()];
 
         if (
-            String(boss[dayName]).toLowerCase() !== "true" &&
+            String(boss[dayName]).toUpperCase() !== "TRUE" &&
             boss[dayName] !== true &&
             boss[dayName] != 1
         ) {
@@ -356,11 +361,6 @@ function getNextSpawn(boss) {
 
     }
 
-    console.log(
-    boss.Boss,
-    "No next spawn found",
-    getServerNow()
-);
     return null;
 
 }
