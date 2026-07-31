@@ -356,6 +356,11 @@ function getNextSpawn(boss) {
 
     }
 
+    console.log(
+    boss.Boss,
+    "No next spawn found",
+    getServerNow()
+);
     return null;
 
 }
@@ -388,17 +393,27 @@ function getBossState(boss) {
 
    const spawn = getCurrentSpawn(boss, now);
 
-if (!spawn) {
+    if (!spawn) {
+        return {
+            status: "INACTIVE",
+            spawn: null,
+            nextSpawn: null,
+            timeLeft: 0,
+            nextSpawnIn: 0
+        };
+    }
+
+const nextSpawn = getNextSpawn(boss);
+
+if (!nextSpawn) {
     return {
         status: "INACTIVE",
-        spawn: null,
+        spawn,
         nextSpawn: null,
         timeLeft: 0,
         nextSpawnIn: 0
     };
 }
-
-const nextSpawn = getNextSpawn(boss);
 
  const aliveMinutes = Number(boss["Alive Duration (Min)"] || 0);
 
