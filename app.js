@@ -253,6 +253,12 @@ function getSpawnTimes(boss, now) {
 
     const times = [];
 
+    console.log(
+    boss.Boss,
+    boss["Spawn Time 1"],
+    typeof boss["Spawn Time 1"]
+);
+
     for (let i = 1; i <= 10; i++) {
 
         let value = boss[`Spawn Time ${i}`];
