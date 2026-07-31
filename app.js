@@ -253,37 +253,45 @@ function getSpawnTimes(boss, now) {
 
     const times = [];
 
-    console.log(
-    boss.Boss,
-    boss["Spawn Time 1"],
-    typeof boss["Spawn Time 1"]
-);
-
     for (let i = 1; i <= 10; i++) {
 
         let value = boss[`Spawn Time ${i}`];
 
         if (!value) continue;
 
-        value = String(value).trim();
+        let hour, minute;
 
-        if (value === "") continue;
+        // ISO datetime string
+        if (typeof value === "string" && value.includes("T")) {
 
-        const parts = value.split(":");
+            const d = new Date(value);
 
-        if (parts.length < 2) continue;
+            hour = d.getUTCHours();
+            minute = d.getUTCMinutes();
 
-        const hour = parseInt(parts[0], 10);
-        const minute = parseInt(parts[1], 10);
+        }
+        else {
 
-        if (isNaN(hour) || isNaN(minute)) continue;
+            const parts = String(value).trim().split(":");
+
+            if (parts.length < 2) continue;
+
+            hour = parseInt(parts[0], 10);
+            minute = parseInt(parts[1], 10);
+
+        }
 
         const spawn = new Date(now);
+
         spawn.setHours(hour, minute, 0, 0);
 
         times.push(spawn);
 
     }
+
+    return times.sort((a, b) => a - b);
+
+}
 
     return times.sort((a, b) => a - b);
 
