@@ -261,7 +261,6 @@ function getSpawnTimes(boss, now) {
 
         let hour, minute;
 
-        // ISO datetime string
         if (typeof value === "string" && value.includes("T")) {
 
             const d = new Date(value);
@@ -269,8 +268,7 @@ function getSpawnTimes(boss, now) {
             hour = d.getUTCHours();
             minute = d.getUTCMinutes();
 
-        }
-        else {
+        } else {
 
             const parts = String(value).trim().split(":");
 
@@ -282,7 +280,6 @@ function getSpawnTimes(boss, now) {
         }
 
         const spawn = new Date(now);
-
         spawn.setHours(hour, minute, 0, 0);
 
         times.push(spawn);
@@ -293,9 +290,6 @@ function getSpawnTimes(boss, now) {
 
 }
 
-    return times.sort((a, b) => a - b);
-
-}
 
 
 
