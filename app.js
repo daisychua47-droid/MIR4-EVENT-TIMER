@@ -350,10 +350,18 @@ function getNextSpawn(boss) {
         }
 
         const spawns = getSpawnTimes(boss, date);
+                console.log(
+            boss.Boss,
+            "Date:", date,
+            "Now:", now,
+            "Spawns:",
+            spawns
+        );
 
         for (const spawn of spawns) {
 
             if (spawn > now) {
+                console.log("NEXT:", boss.Boss, spawn);
                 return spawn;
             }
 
