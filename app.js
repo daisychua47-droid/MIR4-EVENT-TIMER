@@ -370,7 +370,6 @@ function getNextSpawn(boss) {
         for (const spawn of spawns) {
 
             if (spawn > now) {
-                console.log("NEXT:", boss.Boss, spawn);
                 return spawn;
             }
 
