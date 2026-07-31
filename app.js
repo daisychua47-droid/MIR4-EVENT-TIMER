@@ -18,7 +18,7 @@ const STORAGE_KEY = "mir4BossTracker";
 // Settings
 // ===========================
 const SETTINGS = {
-    timezone: "Asia/Manila"
+    timezone: localStorage.getItem("bossTrackerTimezone") || "Asia/Manila"
 };
 // 60 minutes
 const SOON_WINDOW = 60 * 60 * 1000;
@@ -404,16 +404,23 @@ function getServerNow() {
 // ===========================
 // Game Time (Timezone Aware)
 // ===========================
+
 function getGameNow() {
-
     const now = getServerNow();
-
     return new Date(
         now.toLocaleString("en-US", {
             timeZone: SETTINGS.timezone
         })
     );
+}
 
+function setGameTimezone(timezone) {
+    SETTINGS.timezone = timezone;
+    localStorage.setItem(
+        "bossTrackerTimezone",
+        timezone
+    );
+    renderBosses();
 }
 
 function getBossState(boss) {
