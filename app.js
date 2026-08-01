@@ -531,64 +531,18 @@ if (!nextSpawn) {
 }
 
  const aliveMinutes = Number(boss["Alive Duration (Min)"] || 0);
-
-        const autoFinish =
-            String(boss["Auto Finish"]).toLowerCase() === "true" ||
-            boss["Auto Finish"] === true ||
-            boss["Auto Finish"] == 1;
-        
         const endTime = new Date(
-            spawn.getTime() + aliveMinutes * 60000
-        );
-        
-        // Manual finish boss
-        if (!autoFinish) {
-        
-            const info = storageData[boss.ID];
-        
-            if (
-                info &&
-                info.lastDefeated &&
-                new Date(info.lastDefeated) >= spawn
-            ) {
-        
-                return {
-                    status: "UPCOMING",
-                    spawn,
-                    nextSpawn,
-                    timeLeft: 0,
-                    nextSpawnIn: nextSpawn
-                        ? nextSpawn - now
-                        : 0
-                };
-        
-            }
-        
-            return {
-                status: "LIVE",
-                spawn,
-                nextSpawn: null,
-                timeLeft: 0,
-                nextSpawnIn: 0
-            };
-        
-        }
-        
-        // Auto finish boss
-        if (now < endTime) {
-        
-                 return {
-            status: "LIVE",
-            spawn,
-            nextSpawn,
-            timeLeft: endTime - now,
-            nextSpawnIn: nextSpawn
-                ? nextSpawn - now
-                : 0
-        };
-                
-        }
+    spawn.getTime() + aliveMinutes * 60000
+);
 
+const info = storageData[boss.ID];
+
+// Manual finished already?
+if (
+    info &&
+    info.finishedSpawn &&
+    new Date(info.finishedSpawn).getTime() === spawn.getTime()
+) {
     return {
         status: "UPCOMING",
         spawn,
@@ -598,7 +552,61 @@ if (!nextSpawn) {
             ? nextSpawn - now
             : 0
     };
+}
 
+// Alive
+if (now < endTime) {
+
+    return {
+        status: "LIVE",
+        spawn,
+        nextSpawn,
+        timeLeft: endTime - now,
+        nextSpawnIn: nextSpawn
+            ? nextSpawn - now
+            : 0
+    };
+
+}
+
+// Alive duration finished
+// Automatically mark this spawn as completed
+if (
+    !info ||
+    info.finishedSpawn !== spawn.toISOString()
+) {
+
+    const data = loadStorage();
+
+    if (!data[boss.ID]) {
+
+        data[boss.ID] = {
+            favorite: false
+        };
+
+    }
+
+    data[boss.ID].finishedSpawn = spawn.toISOString();
+
+    if (!data[boss.ID].lastDefeated) {
+        data[boss.ID].lastDefeated = now.toISOString();
+    }
+
+    saveStorage(data);
+
+}
+
+return {
+    status: "UPCOMING",
+    spawn,
+    nextSpawn,
+    timeLeft: 0,
+    nextSpawnIn: nextSpawn
+        ? nextSpawn - now
+        : 0
+};
+        
+       
 }
 
 function updateBossTimeline(boss) {
@@ -873,17 +881,11 @@ function renderLiveRow(boss) {
                 ℹ
             </button>
         
-            ${
-                String(boss["Auto Finish"]).toLowerCase() === "true"
-                ? ""
-                : `
-                <button
-                    class="btn-defeat"
-                    onclick="defeatBoss(${boss.ID})">
-                    Finish
-                </button>
-                `
-            }
+           <button
+                class="btn-defeat"
+                onclick="defeatBoss(${boss.ID})">
+                Finish
+            </button>
         
         </div>
     </div>
@@ -1171,19 +1173,13 @@ function showBossDetails(id){
                 
                 </div>
                 
-                ${
-                    String(boss["Auto Finish"]).toLowerCase() === "true"
-                    ? ""
-                    : `
-                        <div style="text-align:center;margin-top:20px;">
-                            <button
-                                class="btn-defeat"
-                                onclick="defeatBoss(${boss.ID}); closeBossModal();">
-                                ✔ Finish Boss
-                            </button>
-                        </div>
-                    `
-                }
+               <div style="text-align:center;margin-top:20px;">
+                    <button
+                        class="btn-defeat"
+                        onclick="defeatBoss(${boss.ID}); closeBossModal();">
+                        ✔ Finish Boss
+                    </button>
+                </div>
 
     `;
 
