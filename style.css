@@ -467,6 +467,150 @@ body{
     font-size:15px;
 }
 
+/* ==========================
+   Boss Details Modal
+========================== */
+
+.boss-modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.75);
+    z-index:9999;
+
+    justify-content:center;
+    align-items:center;
+}
+
+.boss-modal-content{
+
+    width:420px;
+    max-width:90%;
+
+    background:#1d232f;
+
+    border:1px solid #2d3748;
+    border-radius:14px;
+
+    padding:25px;
+
+    color:#fff;
+
+    position:relative;
+
+    box-shadow:0 15px 40px rgba(0,0,0,.5);
+
+    animation:bossPopup .25s ease;
+
+}
+
+@keyframes bossPopup{
+
+    from{
+        transform:scale(.9);
+        opacity:0;
+    }
+
+    to{
+        transform:scale(1);
+        opacity:1;
+    }
+
+}
+
+.boss-close{
+
+    position:absolute;
+
+    top:10px;
+    right:15px;
+
+    font-size:28px;
+
+    cursor:pointer;
+
+    color:#bbb;
+
+}
+
+.boss-close:hover{
+
+    color:#fff;
+
+}
+
+.boss-title{
+
+    font-size:26px;
+
+    font-weight:bold;
+
+    text-align:center;
+
+    margin-bottom:20px;
+
+}
+
+.boss-info{
+
+    display:grid;
+
+    grid-template-columns:110px 1fr;
+
+    row-gap:10px;
+
+    margin-bottom:20px;
+
+}
+
+.boss-info strong{
+
+    color:#ffd54f;
+
+}
+
+.spawn-list{
+
+    display:grid;
+
+    grid-template-columns:repeat(5,1fr);
+
+    gap:8px;
+
+    margin-top:10px;
+
+}
+
+.spawn-time{
+
+    background:#273142;
+
+    padding:8px;
+
+    border-radius:8px;
+
+    text-align:center;
+
+    color:#58c7ff;
+
+    font-weight:bold;
+
+}
+
+.next-spawn{
+
+    margin-top:20px;
+
+    text-align:center;
+
+    font-size:18px;
+
+    color:#00e676;
+
+    font-weight:bold;
+
+}
+
 /* ======================================================
    TABLET
 ====================================================== */
