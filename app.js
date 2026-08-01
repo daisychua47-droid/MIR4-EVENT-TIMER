@@ -447,12 +447,13 @@ function getGameNow() {
     );
 }
 
-function setGameTimezone(timezone) {
+function setGameTimezone(timezone){
     SETTINGS.timezone = timezone;
     localStorage.setItem(
         "bossTrackerTimezone",
         timezone
     );
+    rebuildSpawnCache();
     renderBosses();
 }
 
@@ -523,7 +524,9 @@ if (!nextSpawn) {
                     spawn,
                     nextSpawn,
                     timeLeft: 0,
-                    nextSpawnIn: nextSpawn - now
+                    nextSpawnIn: nextSpawn
+                        ? nextSpawn - now
+                        : 0
                 };
         
             }
@@ -546,7 +549,9 @@ if (!nextSpawn) {
             spawn,
             nextSpawn,
             timeLeft: endTime - now,
-            nextSpawnIn: nextSpawn - now
+            nextSpawnIn: nextSpawn
+                ? nextSpawn - now
+                : 0
         };
                 
         }
@@ -556,7 +561,9 @@ if (!nextSpawn) {
         spawn,
         nextSpawn,
         timeLeft: 0,
-        nextSpawnIn: nextSpawn - now
+        nextSpawnIn: nextSpawn
+            ? nextSpawn - now
+            : 0
     };
 
 }
@@ -598,22 +605,7 @@ function updateBossTimeline(boss) {
 
 async function loadBosses() {
     bosses = await getBosses();
-
-        // =========================
-        // Build Spawn Cache
-        // =========================
-        
-        spawnCache = {};
-        
-        const today = getGameNow();
-        
-        bosses.forEach(boss => {
-        
-            spawnCache[boss.ID] = getSpawnTimes(boss, today);
-        
-        });
-
-    
+    rebuildSpawnCache();
     renderBosses();
 
     if (countdownTimer) {
@@ -621,10 +613,25 @@ async function loadBosses() {
     }
     countdownTimer = setInterval(updateCountdowns, 1000);
     // Re-sync server time and boss data every minute
-      setInterval(async () => {
-        bosses = await getBosses();
-        renderBosses();
+    setInterval(async () => {
+            bosses = await getBosses();
+            rebuildSpawnCache();
+            renderBosses();
         }, 60000);
+}
+
+function rebuildSpawnCache(){
+
+    spawnCache = {};
+
+    const today = getGameNow();
+
+    bosses.forEach(boss=>{
+
+        spawnCache[boss.ID]=getSpawnTimes(boss,today);
+
+    });
+
 }
 
 function categorizeBosses(){
