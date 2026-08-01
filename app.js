@@ -1079,7 +1079,79 @@ function showBossDetails(id){
 
     if(!boss) return;
 
-    document.getElementById("bossModal").style.display = "flex";
+    const todaySpawns = getSpawnTimes(
+        boss,
+        getGameNow()
+    );
+
+    const nextSpawn = getNextSpawn(boss);
+
+    document.getElementById("bossModalBody").innerHTML = `
+
+        <div class="boss-title">
+            ${boss.Boss}
+        </div>
+
+        <div class="boss-info">
+
+            <strong>🌍 World</strong>
+            <div>${boss.World}</div>
+
+            <strong>📍 Map</strong>
+            <div>${boss.Map}</div>
+
+            <strong>Layer</strong>
+            <div>${boss.Layer}</div>
+
+            <strong>Respawn</strong>
+            <div>${boss["Respawn (Min)"] || "-" } Minutes</div>
+
+            <strong>Alive</strong>
+            <div>${boss["Alive Duration (Min)"]} Minutes</div>
+
+        </div>
+
+        <h3>Today's Spawn</h3>
+
+        <div class="spawn-list">
+
+            ${
+                todaySpawns.map(spawn=>`
+
+                    <div class="spawn-time">
+                        ${spawn.toLocaleTimeString([],{
+                            hour:"2-digit",
+                            minute:"2-digit",
+                            hour12:false
+                        })}
+                    </div>
+
+                `).join("")
+            }
+
+        </div>
+
+        <div class="next-spawn">
+
+            Next Spawn
+
+            <br><br>
+
+            ${
+                nextSpawn
+                ? nextSpawn.toLocaleTimeString([],{
+                    hour:"2-digit",
+                    minute:"2-digit",
+                    hour12:false
+                })
+                : "-"
+            }
+
+        </div>
+
+    `;
+
+    document.getElementById("bossModal").style.display="flex";
 
 }
 
