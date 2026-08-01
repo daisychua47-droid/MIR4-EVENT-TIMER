@@ -61,9 +61,7 @@ function defeatBoss(id) {
         data[id] = {};
     }
 
-    const now = getServerNow();
-    
-    const nextSpawn = getNextSpawn(boss);
+    const now = getGameNow();
     
     data[id].lastDefeated = now.toISOString();
 
@@ -257,44 +255,62 @@ function isBossAvailableToday(boss) {
     );
 }
 
-function getSpawnTimes(boss, now) {
+function getSpawnTimes(boss, date) {
 
-    const times = [];
+    const spawns = [];
 
-    for (let i = 1; i <= 10; i++) {
+    const spawnType = String(boss["Spawn Type"] || "").toUpperCase();
+    const respawn = Number(boss["Respawn (Min)"] || 0);
 
-        let value = boss[`Spawn Time ${i}`];
+    let value = boss["Spawn Time"];
 
-        if (!value) continue;
+    if (!value) return spawns;
 
-        let hour, minute;
+    let hour, minute;
 
-        if (typeof value === "string" && value.includes("T")) {
+    // Google Sheets DateTime
+    if (typeof value === "string" && value.includes("T")) {
 
-            const d = new Date(value);
+        const d = new Date(value);
 
-            hour = d.getUTCHours();
-            minute = d.getUTCMinutes();
+        hour = d.getUTCHours();
+        minute = d.getUTCMinutes();
 
-        } else {
+    }
+    else {
 
-            const parts = String(value).trim().split(":");
+        const parts = String(value).trim().split(":");
 
-            if (parts.length < 2) continue;
+        if (parts.length < 2) return spawns;
 
-            hour = parseInt(parts[0], 10);
-            minute = parseInt(parts[1], 10);
-
-        }
-
-        const spawn = new Date(now);
-        spawn.setHours(hour, minute, 0, 0);
-
-        times.push(spawn);
+        hour = parseInt(parts[0], 10);
+        minute = parseInt(parts[1], 10);
 
     }
 
-    return times.sort((a, b) => a - b);
+    // First spawn
+    let spawn = new Date(date);
+    spawn.setHours(hour, minute, 0, 0);
+
+    spawns.push(new Date(spawn));
+
+    // Interval bosses
+    if (spawnType === "INTERVAL" && respawn > 0) {
+
+        while (true) {
+
+            spawn = new Date(spawn.getTime() + respawn * 60000);
+
+            if (spawn.getDate() !== date.getDate())
+                break;
+
+            spawns.push(new Date(spawn));
+
+        }
+
+    }
+
+    return spawns;
 
 }
 
@@ -305,58 +321,17 @@ function getCurrentSpawn(boss, now) {
 
     const days = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 
-    for (let back = 0; back < 7; back++) {
+    let latestSpawn = null;
+
+    // Check today and previous 6 days
+    for (let back = 0; back <= 6; back++) {
 
         const date = new Date(now);
         date.setDate(date.getDate() - back);
 
         const dayName = days[date.getDay()];
 
-        if (
-            String(boss[dayName]).toLowerCase() !== "true" &&
-            boss[dayName] !== true &&
-            boss[dayName] != 1
-        ) {
-            continue;
-        }
-
-        const spawns = getSpawnTimes(boss, date);
-
-        let current = null;
-
-        for (const spawn of spawns) {
-
-            if (back > 0 || spawn <= now) {
-                current = spawn;
-            } else {
-                break;
-            }
-
-        }
-
-        if (current) {
-            return current;
-        }
-
-    }
-
-    return null;
-
-}
-
-
-function getNextSpawn(boss) {
-
-    const now = getGameNow();
-    const days = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
-
-    for (let offset = 0; offset < 7; offset++) {
-
-        const date = new Date(now);
-        date.setDate(date.getDate() + offset);
-
-        const dayName = days[date.getDay()];
-
+        // Boss not available on this day
         if (
             String(boss[dayName]).toUpperCase() !== "TRUE" &&
             boss[dayName] !== true &&
@@ -366,7 +341,50 @@ function getNextSpawn(boss) {
         }
 
         const spawns = getSpawnTimes(boss, date);
-        
+
+        for (const spawn of spawns) {
+
+            if (spawn <= now) {
+
+                if (!latestSpawn || spawn > latestSpawn) {
+                    latestSpawn = spawn;
+                }
+
+            }
+
+        }
+
+    }
+
+    return latestSpawn;
+
+}
+
+
+function getNextSpawn(boss) {
+
+    const now = getGameNow();
+    const days = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+
+    // Check today and next 6 days
+    for (let forward = 0; forward <= 6; forward++) {
+
+        const date = new Date(now);
+        date.setDate(date.getDate() + forward);
+
+        const dayName = days[date.getDay()];
+
+        // Boss not available today
+        if (
+            String(boss[dayName]).toUpperCase() !== "TRUE" &&
+            boss[dayName] !== true &&
+            boss[dayName] != 1
+        ) {
+            continue;
+        }
+
+        const spawns = getSpawnTimes(boss, date);
+
         for (const spawn of spawns) {
 
             if (spawn > now) {
@@ -444,13 +462,15 @@ function getBossState(boss) {
 const nextSpawn = getNextSpawn(boss);
 
 if (!nextSpawn) {
+
     return {
-        status: "INACTIVE",
+        status: "UPCOMING",
         spawn,
         nextSpawn: null,
         timeLeft: 0,
         nextSpawnIn: 0
     };
+
 }
 
  const aliveMinutes = Number(boss["Alive Duration (Min)"] || 0);
@@ -498,14 +518,14 @@ if (!nextSpawn) {
         // Auto finish boss
         if (now < endTime) {
         
-            return {
-                status: "LIVE",
-                spawn,
-                nextSpawn: getNextSpawn(boss),
-                timeLeft: endTime - now,
-                nextSpawnIn: 0
-            };
-        
+                 return {
+            status: "LIVE",
+            spawn,
+            nextSpawn,
+            timeLeft: endTime - now,
+            nextSpawnIn: nextSpawn - now
+        };
+                
         }
 
     return {
@@ -620,7 +640,9 @@ Object.keys(storageData).forEach(id => {
     const nextSpawn = getNextSpawn(boss);
 
     boss.state.nextSpawn = nextSpawn;
-    boss.state.nextSpawnIn = nextSpawn - getServerNow();
+    boss.state.nextSpawnIn = nextSpawn
+    ? nextSpawn - getGameNow()
+    : 0;
 
     defeatedBosses.push(boss);
 
