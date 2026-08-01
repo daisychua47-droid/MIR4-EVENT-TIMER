@@ -1131,23 +1131,37 @@ function showBossDetails(id){
 
         </div>
 
-        <div class="next-spawn">
-
-            Next Spawn
-
-            <br><br>
-
-            ${
-                nextSpawn
-                ? nextSpawn.toLocaleTimeString([],{
-                    hour:"2-digit",
-                    minute:"2-digit",
-                    hour12:false
-                })
-                : "-"
-            }
-
-        </div>
+          <div class="next-spawn">
+    
+                    Next Spawn
+                
+                    <br><br>
+                
+                    ${
+                        nextSpawn
+                        ? nextSpawn.toLocaleTimeString([],{
+                            hour:"2-digit",
+                            minute:"2-digit",
+                            hour12:false
+                        })
+                        : "-"
+                    }
+                
+                </div>
+                
+                ${
+                    String(boss["Auto Finish"]).toLowerCase() === "true"
+                    ? ""
+                    : `
+                        <div style="text-align:center;margin-top:20px;">
+                            <button
+                                class="btn-defeat"
+                                onclick="defeatBoss(${boss.ID}); closeBossModal();">
+                                ✔ Finish Boss
+                            </button>
+                        </div>
+                    `
+                }
 
     `;
 
