@@ -72,18 +72,29 @@ function defeatBoss(id) {
 
 
 function toggleFavorite(id) {
+
     const data = loadStorage();
+
     if (!data[id]) {
         data[id] = {
             favorite: false,
-            lastDefeated: null,
-            nextSpawn: null
+            lastDefeated: null
         };
     }
 
     data[id].favorite = !data[id].favorite;
+
     saveStorage(data);
-    renderBosses();
+
+    storageData = data;
+
+    categorizeBosses();
+
+    renderLiveBosses();
+    renderSoonBosses();
+    renderUpcomingBosses();
+    renderDefeatedBosses();
+
 }
 
 function renderFavoriteBoss(boss) {
