@@ -43,7 +43,8 @@ function getBossData(id) {
     if (!data[id]) {
         data[id] = {
             favorite: false,
-            lastDefeated: null
+            lastDefeated: null,
+            finishedSpawn: null
         };
         saveStorage(data);
     }
@@ -52,22 +53,42 @@ function getBossData(id) {
 
 function defeatBoss(id) {
 
-    const boss = bosses.find(b => String(b.ID) === String(id));
+    const boss = bosses.find(
+        b => String(b.ID) === String(id)
+    );
 
     if (!boss) return;
 
     const data = loadStorage();
 
     if (!data[id]) {
-        data[id] = {};
+        data[id] = {
+            favorite: false,
+            lastDefeated: null,
+            finishedSpawn: null
+        };
     }
 
     const now = getGameNow();
-    
+
+    // Current scheduled spawn
+    const currentSpawn = getCurrentSpawn(
+        boss,
+        now
+    );
+
+    // Save actual defeat time
     data[id].lastDefeated = now.toISOString();
 
+    // Save WHICH scheduled spawn was finished
+    data[id].finishedSpawn = currentSpawn
+        ? currentSpawn.toISOString()
+        : null;
+
     saveStorage(data);
+
     renderBosses();
+
 }
 
 
@@ -76,10 +97,11 @@ function toggleFavorite(id) {
     const data = loadStorage();
 
     if (!data[id]) {
-        data[id] = {
-            favorite: false,
-            lastDefeated: null
-        };
+           data[id] = {
+                favorite: false,
+                lastDefeated: null,
+                finishedSpawn: null
+            };
     }
 
     data[id].favorite = !data[id].favorite;
