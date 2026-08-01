@@ -30,12 +30,15 @@ const SOON_WINDOW = 60 * 60 * 1000;
 
 
 function loadStorage() {
-    return JSON.parse(
-        localStorage.getItem(STORAGE_KEY) || "{}"
-    );
+    storageData =
+        JSON.parse(
+            localStorage.getItem(STORAGE_KEY)
+        ) || {};
+    return storageData;
 }
 
 function saveStorage(data) {
+    storageData = data;
     localStorage.setItem(
         STORAGE_KEY,
         JSON.stringify(data)
@@ -43,7 +46,7 @@ function saveStorage(data) {
 }
 
 function getBossData(id) {
-    const data = loadStorage();
+    const data = storageData;
     if (!data[id]) {
         data[id] = {
             favorite: false,
@@ -59,7 +62,7 @@ function defeatBoss(id) {
     const boss = bossMap[id];
 
     if (!boss) return;
-    const data = loadStorage();
+    const data = storageData;
 
     if (!data[id]) {
         data[id] = {
@@ -94,7 +97,7 @@ function defeatBoss(id) {
 
 function toggleFavorite(id) {
 
-    const data = loadStorage();
+    const data = storageData;
 
     if (!data[id]) {
            data[id] = {
@@ -252,6 +255,9 @@ function renderUpcomingBosses() {
 
     html += `</div>`;
     container.innerHTML = html;
+
+    upcomingCountdownEls =
+    container.querySelectorAll(".upcoming-countdown");
 }
 
 
@@ -576,7 +582,7 @@ if (
     info.finishedSpawn !== spawn.toISOString()
 ) {
 
-    const data = loadStorage();
+    const data = storageData;
 
     if (!data[boss.ID]) {
 
@@ -642,6 +648,7 @@ function updateBossTimeline(boss) {
 
 async function loadBosses() {
    bosses = await getBosses();
+    storageData = loadStorage();
     bossMap = {};
     bosses.forEach(boss => {
         bossMap[boss.ID] = boss;
@@ -654,6 +661,11 @@ async function loadBosses() {
         clearInterval(countdownTimer);
     }
     countdownTimer = setInterval(updateCountdowns, 1000);
+    // Re-categorize every minute
+    setInterval(() => {
+        renderBosses();
+    }, 60000);
+    
     // Re-sync server time and boss data every minute
     setInterval(async () => {
             bosses = await getBosses();
@@ -915,18 +927,36 @@ function renderSoonRow(boss) {
 }
 
 function renderSoonBosses() {
+
     const container = document.getElementById("soonBossList");
+
     if (liveSoonBosses.length === 0) {
+
         container.innerHTML = `
             <div class="empty-state">
                 No bosses spawning soon.
             </div>
         `;
+
         document.getElementById("soonCount").textContent = "0 Bosses";
+        soonCountdownEls = [];
         return;
+
     }
 
-    soonCountdownEls = container.querySelectorAll(".countdown");
+    let html = renderSoonHeader();
+
+    liveSoonBosses.forEach(boss => {
+        html += renderSoonRow(boss);
+    });
+
+    html += "</div>";
+
+    container.innerHTML = html;
+
+    soonCountdownEls =
+        container.querySelectorAll(".countdown");
+
     document.getElementById("soonCount").textContent =
         `${liveSoonBosses.length} Bosses`;
 
@@ -1016,10 +1046,9 @@ function updateCountdowns() {
 
     // Re-render automatically when a boss changes state
     const needRefresh =
-        liveBosses.some(b => b.state.timeLeft <= 0) ||
-        liveSoonBosses.some(b => b.state.nextSpawnIn <= 0) ||
-        upcomingBosses.some(b => b.state.nextSpawnIn <= SOON_WINDOW);
-    
+    liveBosses.some(b => b.state.timeLeft <= 0) ||
+    liveSoonBosses.some(b => b.state.nextSpawnIn <= 0);
+
     if (needRefresh) {
         renderBosses();
     }
