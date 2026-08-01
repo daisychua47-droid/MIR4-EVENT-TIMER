@@ -587,11 +587,7 @@ if (
     }
 
     data[boss.ID].finishedSpawn = spawn.toISOString();
-
-    if (!data[boss.ID].lastDefeated) {
-        data[boss.ID].lastDefeated = now.toISOString();
-    }
-
+    data[boss.ID].lastDefeated = now.toISOString();
     saveStorage(data);
 
 }
