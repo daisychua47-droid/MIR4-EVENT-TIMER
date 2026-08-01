@@ -843,7 +843,14 @@ function renderLiveRow(boss) {
             ${formatCountdown(boss.state.timeLeft)}
         </div>
     
-       <div>
+       <div class="action-buttons">
+
+            <button
+                class="btn-info"
+                onclick="showBossDetails(${boss.ID})">
+                ℹ
+            </button>
+        
             ${
                 String(boss["Auto Finish"]).toLowerCase() === "true"
                 ? ""
@@ -855,6 +862,7 @@ function renderLiveRow(boss) {
                 </button>
                 `
             }
+        
         </div>
     </div>
     `;
@@ -1050,6 +1058,28 @@ function renderVisibleCountdowns() {
             }
 
         });
+
+}
+
+// ==========================
+// Boss Details Modal
+// ==========================
+
+function closeBossModal(){
+
+    document.getElementById("bossModal").style.display = "none";
+
+}
+
+function showBossDetails(id){
+
+    const boss = bosses.find(
+        b => String(b.ID) === String(id)
+    );
+
+    if(!boss) return;
+
+    document.getElementById("bossModal").style.display = "flex";
 
 }
 
