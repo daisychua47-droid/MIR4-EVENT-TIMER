@@ -11,6 +11,7 @@ let storageData = {};
 let serverTime = null;
 let serverSyncTime = null;
 let lastBossState = "";
+let spawnCache = {};
 
 const STORAGE_KEY = "mir4BossTracker";
 
@@ -340,7 +341,18 @@ function getCurrentSpawn(boss, now) {
             continue;
         }
 
-        const spawns = getSpawnTimes(boss, date);
+        let spawns;
+
+            // Use cache only for today
+            if (back === 0 && spawnCache[boss.ID]) {
+            
+                spawns = spawnCache[boss.ID];
+            
+            } else {
+            
+                spawns = getSpawnTimes(boss, date);
+            
+            }
 
         for (const spawn of spawns) {
 
@@ -383,7 +395,18 @@ function getNextSpawn(boss) {
             continue;
         }
 
-        const spawns = getSpawnTimes(boss, date);
+       let spawns;
+
+            // Use cache for today
+            if (forward === 0 && spawnCache[boss.ID]) {
+            
+                spawns = spawnCache[boss.ID];
+            
+            } else {
+            
+                spawns = getSpawnTimes(boss, date);
+            
+            }
 
         for (const spawn of spawns) {
 
@@ -540,24 +563,33 @@ if (!nextSpawn) {
 
 function updateBossTimeline(boss) {
 
-    boss.state = getBossState(boss);
+    if (!boss.state) return;
 
-    if (boss.state.status === "LIVE") {
+    switch (boss.state.status) {
 
-        boss.state.timeLeft -= 1000;
+        case "LIVE":
 
-        if (boss.state.timeLeft <= 0) {
-            boss.state = getBossState(boss);
-        }
+            boss.state.timeLeft -= 1000;
 
-    }
-    else if (boss.state.status === "UPCOMING") {
+            if (boss.state.timeLeft <= 0) {
 
-       boss.state.nextSpawnIn -= 1000;
+                boss.state = getBossState(boss);
 
-        if (boss.state.nextSpawnIn <= 0) {
-            boss.state = getBossState(boss);
-        }
+            }
+
+            break;
+
+        case "UPCOMING":
+
+            boss.state.nextSpawnIn -= 1000;
+
+            if (boss.state.nextSpawnIn <= 0) {
+
+                boss.state = getBossState(boss);
+
+            }
+
+            break;
 
     }
 
@@ -566,6 +598,22 @@ function updateBossTimeline(boss) {
 
 async function loadBosses() {
     bosses = await getBosses();
+
+        // =========================
+        // Build Spawn Cache
+        // =========================
+        
+        spawnCache = {};
+        
+        const today = getGameNow();
+        
+        bosses.forEach(boss => {
+        
+            spawnCache[boss.ID] = getSpawnTimes(boss, today);
+        
+        });
+
+    
     renderBosses();
 
     if (countdownTimer) {
