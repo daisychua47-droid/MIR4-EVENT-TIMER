@@ -1,5 +1,5 @@
 const API_URL = "https://script.google.com/macros/s/AKfycbwxJB8AX32wXqwVZq7l6RZXfGSUKqiGR0XbCjWFI6WTKQb12xInk3Ruf_u15wsLb_fQsQ/exec";
-
+const BOSS_CACHE_KEY = "mir4BossCache";
 
 async function getBosses() {
 
@@ -18,6 +18,10 @@ async function getBosses() {
         }
 
         const data = await response.json();
+        localStorage.setItem(
+            BOSS_CACHE_KEY,
+            JSON.stringify(data)
+        );
 
         console.timeLog("API Total", "JSON parsed");
 
