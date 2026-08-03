@@ -647,9 +647,37 @@ function updateBossTimeline(boss) {
  
 
 async function loadBosses() {
-   bosses = await getBosses();
+      // Load user storage
     storageData = loadStorage();
+    
+    // Try loading cached boss data first
+    const cached = localStorage.getItem(BOSS_CACHE_KEY);
+    
+    if (cached) {
+    
+        const data = JSON.parse(cached);
+    
+        bosses = data.bosses || [];
+    
+        serverTime = new Date(data.serverTime);
+        serverSyncTime = Date.now();
+    
+        bossMap = {};
+    
+        bosses.forEach(boss => {
+            bossMap[boss.ID] = boss;
+        });
+    
+        rebuildSpawnCache();
+        renderBosses();
+    
+    }
+    
+    // Fetch latest data in background
+    bosses = await getBosses();
+    
     bossMap = {};
+    
     bosses.forEach(boss => {
         bossMap[boss.ID] = boss;
     });
