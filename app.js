@@ -671,7 +671,7 @@ async function loadBosses() {
             bosses = await getBosses();
             rebuildSpawnCache();
             renderBosses();
-        }, 60000);
+        }, 300000);
 }
 
 function rebuildSpawnCache(){
