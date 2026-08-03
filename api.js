@@ -1,20 +1,5 @@
 const API_URL = "https://script.google.com/macros/s/AKfycbwxJB8AX32wXqwVZq7l6RZXfGSUKqiGR0XbCjWFI6WTKQb12xInk3Ruf_u15wsLb_fQsQ/exec";
 
-const cache = CacheService.getScriptCache();
-
-const cached = cache.get("Bosses");
-
-if (cached) {
-  const json = JSON.stringify(response);
-
-// Cache the JSON for 60 seconds
-cache.put("bosses", json, 60);
-
-return ContentService
-    .createTextOutput(json)
-    .setMimeType(ContentService.MimeType.JSON);
-}
-
 
 async function getBosses() {
 
