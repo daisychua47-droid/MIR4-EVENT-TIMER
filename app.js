@@ -706,6 +706,51 @@ function updateBossTimeline(boss) {
 }
  
 
+function populateWorldFilter() {
+
+    const select = document.getElementById("world");
+
+    if (!select) return;
+
+    const currentValue = select.value;
+
+    const worlds = [...new Set(
+        bosses
+            .map(boss => String(boss.World || "").trim())
+            .filter(Boolean)
+    )];
+
+    worlds.sort((a, b) => {
+
+        const numA = parseInt(a.replace(/\D/g, "")) || 999;
+        const numB = parseInt(b.replace(/\D/g, "")) || 999;
+
+        return numA - numB;
+
+    });
+
+    select.innerHTML = `
+        <option value="">All Worlds</option>
+    `;
+
+    worlds.forEach(world => {
+
+        const option = document.createElement("option");
+
+        option.value = world;
+        option.textContent = world;
+
+        select.appendChild(option);
+
+    });
+
+    if (worlds.includes(currentValue)) {
+        select.value = currentValue;
+    }
+
+}
+
+
 async function loadBosses() {
       // Load user storage
     storageData = loadStorage();
