@@ -1330,15 +1330,40 @@ function showBossDetails(id){
 }
 
 
-const searchInput = document.querySelector('input[placeholder="Search boss..."]');
+const searchInput = document.getElementById("search");
+const clearSearch = document.getElementById("clearSearch");
 
 if (searchInput) {
 
     searchInput.addEventListener("input", function () {
 
-        searchKeyword = this.value.trim().toLowerCase();
+        searchKeyword =
+            this.value.trim().toLowerCase();
 
-        console.log("Search:", searchKeyword);
+        if (clearSearch) {
+            clearSearch.style.display =
+                searchKeyword ? "block" : "none";
+        }
+
+        renderLiveBosses();
+        renderSoonBosses();
+        renderUpcomingBosses();
+        renderDefeatedBosses();
+
+    });
+
+}
+
+if (clearSearch) {
+
+    clearSearch.addEventListener("click", function () {
+
+        searchInput.value = "";
+        searchKeyword = "";
+
+        clearSearch.style.display = "none";
+
+        searchInput.focus();
 
         renderLiveBosses();
         renderSoonBosses();
