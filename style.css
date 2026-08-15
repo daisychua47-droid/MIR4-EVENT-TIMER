@@ -819,3 +819,28 @@ body{
     }
 
 }
+
+/* ======================================================
+   SEARCH
+====================================================== */
+
+.search-box {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+.search-box input {
+    padding-right: 36px;
+}
+
+.clear-search {
+    position: absolute;
+    right: 8px;
+    border: none;
+    background: transparent;
+    font-size: 20px;
+    cursor: pointer;
+    display: none;
+    line-height: 1;
+}
