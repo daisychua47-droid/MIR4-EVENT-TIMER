@@ -5,6 +5,7 @@ let liveSoonBosses = [];
 let upcomingBosses = [];
 let defeatedBosses = [];
 let bossMap = {};
+let searchKeyword = "";
 let liveCountdownEls = [];
 let soonCountdownEls = [];
 let upcomingCountdownEls = [];
@@ -233,9 +234,12 @@ function renderUpcomingBosses() {
 
     const container = document.getElementById("upcomingList");
 
-    const list = upcomingBosses.filter(
-        boss => !liveSoonBosses.some(x => x.ID == boss.ID)
-    );
+   const list = upcomingBosses
+        .filter(
+            boss => !liveSoonBosses.some(x => x.ID == boss.ID)
+        )
+        .filter(matchesSearch);
+    
 
     if (list.length === 0) {
 
@@ -863,6 +867,24 @@ Object.keys(storageData).forEach(id => {
 
 }
 
+function matchesSearch(boss) {
+
+    if (!searchKeyword) {
+        return true;
+    }
+
+    const text = [
+        boss.Boss,
+        boss.World,
+        boss.Map,
+        boss.Layer
+    ]
+    .join(" ")
+    .toLowerCase();
+
+    return text.includes(searchKeyword);
+}
+
 function renderLiveHeader() {
 
     return `
@@ -957,8 +979,10 @@ function renderSoonRow(boss) {
 function renderSoonBosses() {
 
     const container = document.getElementById("soonBossList");
+    const filteredSoonBosses =
+        liveSoonBosses.filter(matchesSearch);
 
-    if (liveSoonBosses.length === 0) {
+    if (filteredSoonBosses.length === 0) {
 
         container.innerHTML = `
             <div class="empty-state">
@@ -974,7 +998,7 @@ function renderSoonBosses() {
 
     let html = renderSoonHeader();
 
-    liveSoonBosses.forEach(boss => {
+    filteredSoonBosses.forEach(boss => {
         html += renderSoonRow(boss);
     });
 
@@ -986,7 +1010,7 @@ function renderSoonBosses() {
         container.querySelectorAll(".countdown");
 
     document.getElementById("soonCount").textContent =
-        `${liveSoonBosses.length} Bosses`;
+        `${filteredSoonBosses.length} Bosses`
 
 }
 
@@ -1003,10 +1027,14 @@ function renderSoonDivider() {
 }
 
 function renderLiveBosses() {
+
     const container = document.getElementById("liveBossList");
     container.innerHTML = "";
 
-    if (liveBosses.length === 0) {
+    const filteredLiveBosses =
+        liveBosses.filter(matchesSearch);
+
+    if (filteredLiveBosses.length === 0) {
         container.innerHTML = `
             <div class="empty-state">
                 No bosses are currently alive.
@@ -1018,7 +1046,7 @@ function renderLiveBosses() {
     let html = renderLiveHeader();
     let currentWorld = "";
     
-    liveBosses.forEach(boss => {
+    filteredLiveBosses.forEach(boss => {
     
         if (boss.World !== currentWorld) {
     
@@ -1236,6 +1264,21 @@ function showBossDetails(id){
     `;
 
     document.getElementById("bossModal").style.display="flex";
+
+}
+
+
+const searchInput = document.getElementById("searchBoss");
+
+if (searchInput) {
+
+    searchInput.addEventListener("input", function () {
+
+        searchKeyword = this.value.trim().toLowerCase();
+
+        renderBosses();
+
+    });
 
 }
 
