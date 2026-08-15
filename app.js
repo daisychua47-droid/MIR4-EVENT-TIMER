@@ -982,8 +982,12 @@ function renderSoonRow(boss) {
 function renderSoonBosses() {
 
     const container = document.getElementById("soonBossList");
+
     const filteredSoonBosses =
         liveSoonBosses.filter(matchesSearch);
+
+    document.getElementById("soonCount").textContent =
+        `${filteredSoonBosses.length} Bosses`;
 
     if (filteredSoonBosses.length === 0) {
 
