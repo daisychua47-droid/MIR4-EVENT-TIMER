@@ -11,6 +11,7 @@ let showAllUpcoming = false;
 const MAX_BOTTOM_BOSSES = 10;
 
 let searchKeyword = "";
+let selectedWorld = "";
 let liveCountdownEls = [];
 let soonCountdownEls = [];
 let upcomingCountdownEls = [];
@@ -717,6 +718,7 @@ async function loadBosses() {
         const data = JSON.parse(cached);
     
         bosses = data.bosses || [];
+        populateWorldFilter();
     
         serverTime = new Date(data.serverTime);
         serverSyncTime = Date.now();
@@ -734,6 +736,7 @@ async function loadBosses() {
     
     // Fetch latest data in background
     bosses = await getBosses();
+    populateWorldFilter();
     
     bossMap = {};
     
@@ -924,6 +927,15 @@ Object.keys(storageData).forEach(id => {
 
 function matchesSearch(boss) {
 
+    // World filter
+    if (
+        selectedWorld &&
+        String(boss.World).trim() !== selectedWorld
+    ) {
+        return false;
+    }
+
+    // Search filter
     if (!searchKeyword) {
         return true;
     }
@@ -1374,6 +1386,23 @@ if (clearSearch) {
 
 }
 
+
+const worldFilter = document.getElementById("world");
+
+if (worldFilter) {
+
+    worldFilter.addEventListener("change", function () {
+
+        selectedWorld = this.value;
+
+        renderLiveBosses();
+        renderSoonBosses();
+        renderUpcomingBosses();
+        renderDefeatedBosses();
+
+    });
+
+}
 
 
 loadBosses();
