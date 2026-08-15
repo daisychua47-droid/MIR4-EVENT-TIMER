@@ -273,7 +273,11 @@ function renderUpcomingBosses() {
             boss => !liveSoonBosses.some(x => x.ID == boss.ID)
         )
         .filter(matchesSearch);
-    
+
+        const displayedUpcomingBosses =
+        showAllUpcoming
+            ? list
+            : list.slice(0, MAX_BOTTOM_BOSSES);
 
     if (list.length === 0) {
 
@@ -287,18 +291,35 @@ function renderUpcomingBosses() {
     }
 
    let html = renderUpcomingHeader();
-         list.forEach(boss => {
+        displayedUpcomingBosses.forEach(boss => {
             html += renderUpcomingRow(boss);
         });
 
     html += `</div>`;
-    container.innerHTML = html;
+
+        if (list.length > MAX_BOTTOM_BOSSES) {
+        
+            html += `
+                <div class="show-more-container">
+                    <button
+                        class="btn-show-more"
+                        onclick="toggleUpcomingList()">
+                        ${showAllUpcoming ? "Show Less" : "Show More"}
+                    </button>
+                </div>
+            `;
+        }
+        
+        container.innerHTML = html;
 
     upcomingCountdownEls =
     container.querySelectorAll(".upcoming-countdown");
 }
 
-
+function toggleUpcomingList() {
+    showAllUpcoming = !showAllUpcoming;
+    renderUpcomingBosses();
+}
 
 function timeAgo(date) {
       const seconds =
