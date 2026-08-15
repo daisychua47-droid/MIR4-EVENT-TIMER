@@ -1268,7 +1268,7 @@ function showBossDetails(id){
 }
 
 
-const searchInput = document.getElementById("searchBoss");
+const searchInput = document.querySelector('input[placeholder="Search boss..."]');
 
 if (searchInput) {
 
@@ -1276,7 +1276,12 @@ if (searchInput) {
 
         searchKeyword = this.value.trim().toLowerCase();
 
-        renderBosses();
+        console.log("Search:", searchKeyword);
+
+        renderLiveBosses();
+        renderSoonBosses();
+        renderUpcomingBosses();
+        renderDefeatedBosses();
 
     });
 
