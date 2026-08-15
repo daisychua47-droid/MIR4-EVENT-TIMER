@@ -1075,8 +1075,11 @@ function renderBosses() {
     renderSoonBosses();
     renderDefeatedBosses();
     renderUpcomingBosses();
+    const filteredLiveCount =
+    liveBosses.filter(matchesSearch).length;
+
     document.getElementById("aliveCount").textContent =
-        `${liveBosses.length} Bosses`;
+        `${filteredLiveCount} Bosses`;
 
     lastBossState =
     liveBosses.length + "|" +
