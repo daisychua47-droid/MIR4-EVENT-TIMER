@@ -1037,6 +1037,9 @@ function renderLiveBosses() {
     const filteredLiveBosses =
         liveBosses.filter(matchesSearch);
 
+        document.getElementById("aliveCount").textContent =
+        `${filteredLiveBosses.length} Bosses`;
+
     if (filteredLiveBosses.length === 0) {
         container.innerHTML = `
             <div class="empty-state">
@@ -1077,9 +1080,6 @@ function renderBosses() {
     renderUpcomingBosses();
     const filteredLiveCount =
     liveBosses.filter(matchesSearch).length;
-
-    document.getElementById("aliveCount").textContent =
-        `${filteredLiveCount} Bosses`;
 
     lastBossState =
     liveBosses.length + "|" +
