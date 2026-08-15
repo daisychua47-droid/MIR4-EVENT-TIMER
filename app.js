@@ -5,6 +5,11 @@ let liveSoonBosses = [];
 let upcomingBosses = [];
 let defeatedBosses = [];
 let bossMap = {};
+
+let showAllDefeated = false;
+let showAllUpcoming = false;
+const MAX_BOTTOM_BOSSES = 10;
+
 let searchKeyword = "";
 let liveCountdownEls = [];
 let soonCountdownEls = [];
@@ -184,6 +189,12 @@ function renderDefeatedBosses() {
     const filteredDefeatedBosses =
         defeatedBosses.filter(matchesSearch);
 
+    const displayedDefeatedBosses =
+        showAllDefeated
+            ? filteredDefeatedBosses
+            : filteredDefeatedBosses.slice(0, MAX_BOTTOM_BOSSES);
+    
+
     if (filteredDefeatedBosses.length === 0) {
 
         container.innerHTML = `
@@ -196,13 +207,33 @@ function renderDefeatedBosses() {
     }
 
      let html = renderDefeatedHeader();
-        filteredDefeatedBosses.forEach(boss => {
+        displayedDefeatedBosses.forEach(boss => {
             html += renderDefeatedRow(boss);
         });
+   
     html += `
         </div>
     `;
+
+    if (filteredDefeatedBosses.length > MAX_BOTTOM_BOSSES) {
+    
+        html += `
+            <div class="show-more-container">
+                <button
+                    class="btn-show-more"
+                    onclick="toggleDefeatedList()">
+                    ${showAllDefeated ? "Show Less" : "Show More"}
+                </button>
+            </div>
+        `;
+    }
+    
     container.innerHTML = html;
+}
+
+function toggleDefeatedList() {
+    showAllDefeated = !showAllDefeated;
+    renderDefeatedBosses();
 }
 
 function renderUpcomingHeader() {
