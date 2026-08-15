@@ -181,7 +181,10 @@ function renderDefeatedBosses() {
 
     const container = document.getElementById("defeatedList");
 
-    if (defeatedBosses.length === 0) {
+    const filteredDefeatedBosses =
+        defeatedBosses.filter(matchesSearch);
+
+    if (filteredDefeatedBosses.length === 0) {
 
         container.innerHTML = `
             <div class="empty-state">
@@ -193,7 +196,7 @@ function renderDefeatedBosses() {
     }
 
      let html = renderDefeatedHeader();
-        defeatedBosses.forEach(boss => {
+        filteredDefeatedBosses.forEach(boss => {
             html += renderDefeatedRow(boss);
         });
     html += `
