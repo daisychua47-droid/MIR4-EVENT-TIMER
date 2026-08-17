@@ -12,6 +12,7 @@ const MAX_BOTTOM_BOSSES = 10;
 
 let searchKeyword = "";
 let selectedWorld = "";
+let selectedMap = "";
 let liveCountdownEls = [];
 let soonCountdownEls = [];
 let upcomingCountdownEls = [];
