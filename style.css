@@ -746,44 +746,55 @@ body{
 
 @media (max-width:480px){
 
-    /* ==========================
-       LIVE NOW
-    ========================== */
+    /* =================================
+       LIVE TABLE - MOBILE
+    ================================= */
+
+    .boss-list{
+        overflow-x:hidden;
+        padding:8px 0;
+    }
+
+    .boss-table{
+        width:100%;
+        min-width:0;
+    }
 
     .boss-head,
     .boss-row{
         grid-template-columns:
-            28px
-            minmax(75px, 1.5fr)
-            55px
-            minmax(70px, 1.2fr)
-            28px
-            65px
-            52px;
+            24px
+            minmax(70px, 1.6fr)
+            48px
+            minmax(55px, 1.2fr)
+            25px
+            58px
+            48px;
     }
 
     .boss-head{
-        padding:10px 6px;
-        font-size:9px;
+        padding:9px 4px;
+        font-size:8px;
     }
 
     .boss-row{
-        padding:11px 6px;
-        font-size:10px;
-        min-height:52px;
+        padding:10px 4px;
+        min-height:50px;
+        font-size:9px;
     }
 
 
-    /* ==========================
+    /* =================================
        BOSS NAME
-    ========================== */
+    ================================= */
 
     .favorite-name{
         min-width:0;
 
-        font-size:10px;
+        display:flex;
+        align-items:center;
 
-        gap:4px;
+        gap:3px;
 
         white-space:nowrap;
         overflow:hidden;
@@ -793,27 +804,26 @@ body{
     .favorite-icon{
         width:12px;
         min-width:12px;
-
         font-size:10px;
     }
 
 
-    /* ==========================
+    /* =================================
        WORLD
-    ========================== */
+    ================================= */
 
     .boss-row > div:nth-child(3){
+        text-align:center;
+
         white-space:nowrap;
         overflow:hidden;
         text-overflow:ellipsis;
-
-        text-align:center;
     }
 
 
-    /* ==========================
+    /* =================================
        MAP
-    ========================== */
+    ================================= */
 
     .boss-row > div:nth-child(4){
         white-space:nowrap;
@@ -822,86 +832,81 @@ body{
     }
 
 
-    /* ==========================
+    /* =================================
        LAYER
-    ========================== */
+    ================================= */
 
     .boss-row > div:nth-child(5){
         text-align:center;
     }
 
 
-    /* ==========================
-       TIME LEFT
-    ========================== */
+    /* =================================
+       TIME
+    ================================= */
 
     .boss-row .countdown{
-        width:65px;
-
-        font-size:10px;
-
-        white-space:nowrap;
-
-        text-align:center;
-
-        overflow:hidden;
-    }
-
-
-    /* ==========================
-       ACTION
-    ========================== */
-
-    .action-buttons{
-        width:52px;
-
-        display:flex;
-
-        justify-content:center;
-        align-items:center;
-
-        gap:3px;
-    }
-
-
-    /* Finish button */
-
-    .action-buttons .btn-defeat{
-
-        width:52px;
-        min-width:52px;
-
-        height:32px;
-
-        padding:4px 3px;
+        width:58px;
 
         font-size:9px;
 
         white-space:nowrap;
+
+        text-align:center;
     }
 
 
-    /* Hide Info on very small screen */
+    /* =================================
+       ACTION
+    ================================= */
+
+    .action-buttons{
+        width:48px;
+
+        display:flex;
+
+        align-items:center;
+        justify-content:center;
+
+        gap:3px;
+    }
 
     .action-buttons .btn-info{
         display:none;
     }
 
+    .action-buttons .btn-defeat{
+        display:block;
 
-    /* ==========================
-       WORLD DIVIDER
-    ========================== */
+        width:48px;
+        min-width:48px;
 
-    .world-divider{
-        padding:10px 10px;
+        height:30px;
 
-        font-size:12px;
+        padding:3px 2px;
+
+        font-size:8px;
+
+        white-space:nowrap;
     }
 
 
-    /* ==========================
+    /* =================================
+       WORLD DIVIDER
+    ================================= */
+
+    .world-divider{
+        width:100%;
+
+        padding:9px 8px;
+
+        font-size:11px;
+    }
+
+
+    /* =================================
        UPCOMING
-    ========================== */
+    ================================= */
 
     .upcoming-head,
     .upcoming-row{
@@ -917,25 +922,33 @@ body{
     }
 
 
-    /* ==========================
+    /* =================================
        DEFEATED
-    ========================== */
+    ================================= */
 
     .defeated-head,
     .defeated-row{
         grid-template-columns:
-            42%
-            28%
-            30%;
+            minmax(0,1fr)
+            70px
+            75px
+            55px;
     }
 
     .defeated-head{
         font-size:9px;
+        padding:10px 6px;
     }
 
     .defeated-row{
-        font-size:10px;
-        padding:10px 8px;
+        font-size:9px;
+        padding:10px 6px;
+    }
+
+    .btn-undo{
+        height:28px;
+        padding:0 5px;
+        font-size:9px;
     }
 
 }
