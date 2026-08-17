@@ -149,14 +149,13 @@ body{
 
 :root{
     --boss-grid:
-        70px
+        55px
         2.4fr
         1.3fr
         2.4fr
         .8fr
         1.3fr
-        1.2fr
-        .5fr;
+        1.2fr;
 
     --upcoming-grid:
         2.3fr
@@ -746,17 +745,168 @@ body{
     }
 
 }
-
 /* ======================================================
    PHONE
 ====================================================== */
 
 @media (max-width:480px){
 
-    /* LIVE NOW */
+    /* ==========================
+       LIVE NOW
+    ========================== */
+
+    .boss-head,
+    .boss-row{
+        grid-template-columns:
+            28px
+            minmax(75px, 1.5fr)
+            55px
+            minmax(70px, 1.2fr)
+            28px
+            65px
+            52px;
+    }
+
+    .boss-head{
+        padding:10px 6px;
+        font-size:9px;
+    }
+
+    .boss-row{
+        padding:11px 6px;
+        font-size:10px;
+        min-height:52px;
+    }
 
 
-    /* UPCOMING */
+    /* ==========================
+       BOSS NAME
+    ========================== */
+
+    .favorite-name{
+        min-width:0;
+
+        font-size:10px;
+
+        gap:4px;
+
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+    }
+
+    .favorite-icon{
+        width:12px;
+        min-width:12px;
+
+        font-size:10px;
+    }
+
+
+    /* ==========================
+       WORLD
+    ========================== */
+
+    .boss-row > div:nth-child(3){
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+
+        text-align:center;
+    }
+
+
+    /* ==========================
+       MAP
+    ========================== */
+
+    .boss-row > div:nth-child(4){
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+    }
+
+
+    /* ==========================
+       LAYER
+    ========================== */
+
+    .boss-row > div:nth-child(5){
+        text-align:center;
+    }
+
+
+    /* ==========================
+       TIME LEFT
+    ========================== */
+
+    .boss-row .countdown{
+        width:65px;
+
+        font-size:10px;
+
+        white-space:nowrap;
+
+        text-align:center;
+
+        overflow:hidden;
+    }
+
+
+    /* ==========================
+       ACTION
+    ========================== */
+
+    .action-buttons{
+        width:52px;
+
+        display:flex;
+
+        justify-content:center;
+        align-items:center;
+
+        gap:3px;
+    }
+
+
+    /* Finish button */
+
+    .action-buttons .btn-defeat{
+
+        width:52px;
+        min-width:52px;
+
+        height:32px;
+
+        padding:4px 3px;
+
+        font-size:9px;
+
+        white-space:nowrap;
+    }
+
+
+    /* Hide Info on very small screen */
+
+    .action-buttons .btn-info{
+        display:none;
+    }
+
+
+    /* ==========================
+       WORLD DIVIDER
+    ========================== */
+
+    .world-divider{
+        padding:10px 10px;
+
+        font-size:12px;
+    }
+
+
+    /* ==========================
+       UPCOMING
+    ========================== */
 
     .upcoming-head,
     .upcoming-row{
@@ -766,14 +916,15 @@ body{
             30%;
     }
 
-    /* hide World */
-
     .upcoming-head > div:nth-child(2),
     .upcoming-row > div:nth-child(2){
         display:none;
     }
 
-    /* DEFEATED */
+
+    /* ==========================
+       DEFEATED
+    ========================== */
 
     .defeated-head,
     .defeated-row{
@@ -783,40 +934,13 @@ body{
             30%;
     }
 
-    /* fonts */
-
-    .boss-head,
-    .upcoming-head,
     .defeated-head{
         font-size:9px;
     }
 
-    .boss-row,
-    .upcoming-row,
     .defeated-row{
         font-size:10px;
         padding:10px 8px;
-    }
-
-    .favorite-name{
-        font-size:10px;
-        gap:4px;
-    }
-
-    .favorite-icon{
-        width:10px;
-        min-width:10px;
-        font-size:10px;
-    }
-
-    .countdown{
-        font-size:12px;
-        font-weight:700;
-    }
-
-    .btn-defeat{
-        font-size:9px;
-        padding:4px 8px;
     }
 
 }
