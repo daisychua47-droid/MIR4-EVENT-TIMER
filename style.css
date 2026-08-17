@@ -844,3 +844,71 @@ body{
     display: none;
     line-height: 1;
 }
+
+
+
+/* ==========================
+   BOTTOM ADVERTISEMENT
+========================== */
+
+.bottom-ad {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9999;
+
+    background: linear-gradient(90deg, #198754, #27ae60);
+    color: #fff;
+
+    min-height: 58px;
+    padding: 8px 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 35px;
+
+    box-shadow: 0 -3px 12px rgba(0, 0, 0, 0.20);
+}
+
+.bottom-ad-title {
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+}
+
+.bottom-ad-links {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    font-size: 13px;
+}
+
+.bottom-ad-links b {
+    font-weight: 600;
+    opacity: 0.85;
+}
+
+
+/* MOBILE */
+@media (max-width: 600px) {
+
+    .bottom-ad {
+        min-height: 52px;
+        padding: 7px 10px;
+        gap: 10px;
+        flex-direction: column;
+    }
+
+    .bottom-ad-title {
+        font-size: 14px;
+        line-height: 16px;
+    }
+
+    .bottom-ad-links {
+        gap: 15px;
+        font-size: 11px;
+    }
+
+}
