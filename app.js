@@ -752,6 +752,46 @@ function populateWorldFilter() {
 }
 
 
+function populateMapFilter() {
+
+    const select = document.getElementById("map");
+
+    if (!select) return;
+
+    const currentValue = select.value;
+
+    const maps = [...new Set(
+        bosses
+            .map(boss => String(boss.Map || "").trim())
+            .filter(Boolean)
+    )];
+
+    maps.sort((a, b) =>
+        a.localeCompare(b)
+    );
+
+    select.innerHTML = `
+        <option value="">All Maps</option>
+    `;
+
+    maps.forEach(map => {
+
+        const option = document.createElement("option");
+
+        option.value = map;
+        option.textContent = map;
+
+        select.appendChild(option);
+
+    });
+
+    if (maps.includes(currentValue)) {
+        select.value = currentValue;
+    }
+
+}
+
+
 async function loadBosses() {
       // Load user storage
     storageData = loadStorage();
@@ -765,6 +805,7 @@ async function loadBosses() {
     
         bosses = data.bosses || [];
         populateWorldFilter();
+        populateMapFilter();
     
         serverTime = new Date(data.serverTime);
         serverSyncTime = Date.now();
@@ -783,6 +824,7 @@ async function loadBosses() {
     // Fetch latest data in background
     bosses = await getBosses();
     populateWorldFilter();
+    populateMapFilter();
     
     bossMap = {};
     
@@ -977,6 +1019,14 @@ function matchesSearch(boss) {
     if (
         selectedWorld &&
         String(boss.World).trim() !== selectedWorld
+    ) {
+        return false;
+    }
+
+     // Map filter
+    if (
+        selectedMap &&
+        String(boss.Map).trim() !== selectedMap
     ) {
         return false;
     }
@@ -1440,6 +1490,23 @@ if (worldFilter) {
     worldFilter.addEventListener("change", function () {
 
         selectedWorld = this.value;
+
+        renderLiveBosses();
+        renderSoonBosses();
+        renderUpcomingBosses();
+        renderDefeatedBosses();
+
+    });
+
+}
+
+const mapFilter = document.getElementById("map");
+
+if (mapFilter) {
+
+    mapFilter.addEventListener("change", function () {
+
+        selectedMap = this.value;
 
         renderLiveBosses();
         renderSoonBosses();
