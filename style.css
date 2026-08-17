@@ -163,10 +163,11 @@ body{
         2.3fr
         1.3fr;
 
-    --defeated-grid:
-       220px
-       110px
-       110px;
+   --defeated-grid:
+         220px
+         110px
+         110px
+         90px;
 }
 
 .upcoming-head > div:nth-child(2),
@@ -1219,4 +1220,41 @@ body{
         font-size: 9px;
     }
 
+}
+
+
+
+
+/* ==========================
+   DEFEATED UNDO BUTTON
+========================== */
+
+.defeated-action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-undo {
+    background: #374151;
+    color: #d1d5db;
+
+    border: 1px solid #4b5563;
+    border-radius: 7px;
+
+    padding: 6px 10px;
+
+    font-size: 11px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+.btn-undo:hover {
+    background: #4b5563;
+    color: #fff;
+
+    border-color: #6b7280;
 }
