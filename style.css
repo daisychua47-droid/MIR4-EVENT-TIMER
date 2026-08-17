@@ -1022,3 +1022,77 @@ body{
     }
 
 }
+
+
+/* ==========================
+   GAME CLOCK
+========================== */
+
+.game-clock {
+    margin-left: auto;
+    min-width: 145px;
+    text-align: left;
+    line-height: 1.1;
+}
+
+.clock-zone {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+
+    font-size: 12px;
+    color: #aeb9c8;
+
+    margin-bottom: 4px;
+}
+
+.clock-dot {
+    width: 9px;
+    height: 9px;
+
+    border-radius: 50%;
+
+    background: #00d95f;
+
+    box-shadow:
+        0 0 6px rgba(0, 217, 95, 0.8);
+}
+
+.clock-time {
+    font-size: 19px;
+    font-weight: 800;
+
+    color: #ffffff;
+
+    letter-spacing: 0.3px;
+}
+
+.clock-date {
+    margin-top: 3px;
+
+    font-size: 11px;
+    color: #7f8b9c;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 700px) {
+
+    .game-clock {
+        min-width: auto;
+    }
+
+    .clock-zone {
+        font-size: 10px;
+    }
+
+    .clock-time {
+        font-size: 15px;
+    }
+
+    .clock-date {
+        font-size: 9px;
+    }
+
+}
