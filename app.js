@@ -1438,6 +1438,36 @@ function showBossDetails(id){
 }
 
 
+
+function updateGameClock() {
+
+    const now = getGameNow();
+
+    const timeEl = document.getElementById("gameClock");
+    const dateEl = document.getElementById("gameDate");
+
+    if (!timeEl || !dateEl) return;
+
+    timeEl.textContent = now.toLocaleTimeString("en-US", {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: true
+    });
+
+    dateEl.textContent = now.toLocaleDateString("en-US", {
+        month: "short",
+        day: "2-digit",
+        year: "numeric"
+    });
+
+}
+
+updateGameClock();
+
+setInterval(updateGameClock, 1000);
+
+
 const searchInput = document.getElementById("search");
 const clearSearch = document.getElementById("clearSearch");
 
