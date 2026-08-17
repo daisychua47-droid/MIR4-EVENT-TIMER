@@ -67,7 +67,7 @@ body{
 
 .bottom-grid{
     display:grid;
-    grid-template-columns:38% 62%;
+    grid-template-columns:45% 55%;
     gap:20px;
     margin-top:20px;
 }
@@ -163,11 +163,11 @@ body{
         2.3fr
         1.3fr;
 
-     --defeated-grid:
+    --defeated-grid:
        minmax(0, 1fr)
-       90px
-       100px
-       80px;
+       85px
+       95px
+       75px;
 }
 
 .upcoming-head > div:nth-child(2),
@@ -381,13 +381,10 @@ body{
 }
 
 .defeated-row{
-
-    padding:14px 20px;
-
+    padding:12px 10px;
     border-top:1px solid #2d333b;
-
     font-size:13px;
-
+    min-height:50px;
 }
 
 .defeated-head>div,
@@ -1232,24 +1229,23 @@ body{
     justify-content: center;
 }
 
-.btn-undo {
-    background: #374151;
-    color: #e5e7eb;
+.btn-undo{
+    background:#374151;
+    color:#e5e7eb;
 
-    border: 1px solid #4b5563;
-    border-radius: 6px;
+    border:1px solid #4b5563;
+    border-radius:6px;
 
-    height: 30px;
-    padding: 0 8px;
+    height:28px;
+    padding:0 7px;
 
-    font-size: 10px;
-    font-weight: 600;
+    font-size:10px;
+    font-weight:600;
 
-    cursor: pointer;
+    cursor:pointer;
+    white-space:nowrap;
 
-    white-space: nowrap;
-
-    transition: .2s;
+    transition:.2s;
 }
 
 .btn-undo:hover {
