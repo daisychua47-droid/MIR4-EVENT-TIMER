@@ -163,11 +163,11 @@ body{
         2.3fr
         1.3fr;
 
-   --defeated-grid:
-         220px
-         110px
-         110px
-         90px;
+     --defeated-grid:
+       minmax(0, 1fr)
+       90px
+       100px
+       80px;
 }
 
 .upcoming-head > div:nth-child(2),
@@ -359,14 +359,11 @@ body{
 ====================================================== */
 
 .defeated-head,
-.defeated-row{
-
-    display:grid;
-
-    grid-template-columns:var(--defeated-grid);
-
-    align-items:center;
-
+.defeated-row {
+    display: grid;
+    grid-template-columns: var(--defeated-grid);
+    align-items: center;
+    width: 100%;
 }
 
 .defeated-head{
@@ -1226,7 +1223,7 @@ body{
 
 
 /* ==========================
-   DEFEATED UNDO BUTTON
+   DEFEATED UNDO
 ========================== */
 
 .defeated-action {
@@ -1237,12 +1234,51 @@ body{
 
 .btn-undo {
     background: #374151;
-    color: #d1d5db;
+    color: #e5e7eb;
 
     border: 1px solid #4b5563;
-    border-radius: 7px;
+    border-radius: 6px;
 
-    padding: 6px 10px;
+    height: 30px;
+    padding: 0 8px;
+
+    font-size: 10px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    white-space: nowrap;
+
+    transition: .2s;
+}
+
+.btn-undo:hover {
+    background: #4b5563;
+    border-color: #6b7280;
+    color: #fff;
+}
+
+/* ==========================
+   SHOW MORE
+========================== */
+
+.show-more-container {
+    display: flex;
+    justify-content: center;
+
+    padding: 12px 0 4px;
+}
+
+.btn-show-more {
+    background: #1f2937;
+
+    color: #9ca3af;
+
+    border: 1px solid #374151;
+
+    border-radius: 6px;
+
+    padding: 6px 14px;
 
     font-size: 11px;
     font-weight: 600;
@@ -1252,9 +1288,9 @@ body{
     transition: .2s;
 }
 
-.btn-undo:hover {
-    background: #4b5563;
+.btn-show-more:hover {
+    background: #273449;
     color: #fff;
 
-    border-color: #6b7280;
+    border-color: #4b5563;
 }
