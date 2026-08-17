@@ -165,21 +165,36 @@ function renderDefeatedHeader() {
                 <div>Boss</div>
                 <div>Defeated</div>
                 <div>Next Spawn</div>
+                <div>Action</div>
             </div>
     `;
 }
 
 function renderDefeatedRow(boss) {
+
     const data = storageData[boss.ID];
+
     return `
         <div class="boss-row defeated-row">
-           ${renderFavoriteBoss(boss)}
+
+            ${renderFavoriteBoss(boss)}
+
             <div>
                 ${timeAgo(data.lastDefeated)}
             </div>
+
             <div>
                 ${formatCountdown(boss.state.nextSpawnIn)}
             </div>
+
+            <div class="defeated-action">
+                <button
+                    class="btn-undo"
+                    onclick="undoDefeatBoss(${boss.ID})">
+                    ↩ Undo
+                </button>
+            </div>
+
         </div>
     `;
 }
@@ -1462,10 +1477,60 @@ function updateGameClock() {
     });
 
 }
-
 updateGameClock();
-
 setInterval(updateGameClock, 1000);
+
+
+function undoDefeatBoss(id) {
+
+    const boss = bossMap[id];
+
+    if (!boss) return;
+
+    const data = storageData[id];
+
+    if (!data || !data.finishedSpawn) return;
+
+    const now = getGameNow();
+
+    // The spawn that was manually finished
+    const spawn = new Date(data.finishedSpawn);
+
+    // Boss alive duration
+    const aliveMinutes =
+        Number(boss["Alive Duration (Min)"] || 0);
+
+    const endTime = new Date(
+        spawn.getTime() + aliveMinutes * 60000
+    );
+
+    // Undo is only allowed while the boss
+    // is still within its original alive duration
+    if (now >= endTime) {
+
+        alert("This boss can no longer be restored because its alive time has expired.");
+
+        return;
+    }
+
+    // Remove manual finish
+    data.finishedSpawn = null;
+    data.lastDefeated = null;
+
+    saveStorage(storageData);
+
+    // Recalculate everything
+    renderBosses();
+}
+
+
+
+
+
+
+
+
+
 
 
 const searchInput = document.getElementById("search");
