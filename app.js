@@ -25,6 +25,8 @@ let serverSyncTime = null;
 let lastBossState = "";
 let spawnCache = {};
 
+let notifiedBossStates = {};
+
 const STORAGE_KEY = "mir4BossTracker";
 
 // ===========================
@@ -881,6 +883,66 @@ function rebuildSpawnCache(){
 
 }
 
+
+
+function notifyBossStatus(boss, status) {
+
+    if (!notificationsEnabled) return;
+
+    if (!("Notification" in window)) return;
+
+    if (Notification.permission !== "granted") return;
+
+    const key = boss.ID + "_" + status;
+
+    // Already notified for this state
+    if (notifiedBossStates[key]) return;
+
+    let title = "";
+    let message = "";
+
+    if (status === "LIVE") {
+
+        title = "🔴 MIR4 Boss LIVE";
+
+        message =
+            `${boss.Boss} is now LIVE!\n` +
+            `${boss.World} • ${boss.Map} • Layer ${boss.Layer}`;
+
+    }
+
+    if (status === "SOON") {
+
+        title = "🟡 MIR4 Boss Spawning Soon";
+
+        message =
+            `${boss.Boss} will spawn soon.\n` +
+            `${boss.World} • ${boss.Map} • Layer ${boss.Layer}`;
+
+    }
+
+    if (!title) return;
+
+    try {
+
+        new Notification(title, {
+            body: message,
+            icon: "assets/images/GAMETOPUPZONE logo.png"
+        });
+
+        notifiedBossStates[key] = true;
+
+    } catch (err) {
+
+        console.error(
+            "Notification error:",
+            err
+        );
+
+    }
+
+}
+
 function categorizeBosses(){
     liveBosses = [];
     liveSoonBosses = [];
@@ -891,26 +953,36 @@ function categorizeBosses(){
 
     boss.state = getBossState(boss);
 
-    if (boss.state.status === "LIVE") {
+   if (boss.state.status === "LIVE") {
 
         liveBosses.push(boss);
-
+    
+        notifyBossStatus(
+            boss,
+            "LIVE"
+        );
+    
     }
     else if (boss.state.status === "UPCOMING") {
-
+    
         if (
             boss.state.nextSpawnIn > 0 &&
             boss.state.nextSpawnIn <= SOON_WINDOW
         ) {
-
+    
             liveSoonBosses.push(boss);
-
+    
+            notifyBossStatus(
+                boss,
+                "SOON"
+            );
+    
         } else {
-
+    
             upcomingBosses.push(boss);
-
+    
         }
-
+    
     }
 
 });
