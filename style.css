@@ -1609,3 +1609,136 @@ body.light-mode .clock-dot {
     background: #16a34a;
     box-shadow: 0 0 6px rgba(22, 163, 74, 0.6);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ======================================================
+   MOBILE LIGHT MODE - MATCH DESKTOP LIGHT MODE
+====================================================== */
+
+@media (max-width:480px){
+
+    /* LIVE TABLE */
+
+    body.light-mode .boss-row{
+        background:#ffffff;
+        color:#1f2937;
+    }
+
+    body.light-mode .boss-row:hover{
+        background:#f4f7fa;
+    }
+
+
+    /* TABLE HEADER */
+
+    body.light-mode .boss-head{
+        background:#e8eef5;
+        color:#526173;
+        border-bottom:1px solid #d5dde7;
+    }
+
+
+    /* STICKY ACTION COLUMN */
+
+    body.light-mode .boss-row > div:nth-child(7){
+        background:#ffffff;
+
+        box-shadow:
+            -6px 0 10px rgba(0,0,0,.08);
+    }
+
+    body.light-mode .boss-head > div:nth-child(7){
+        background:#e8eef5;
+
+        box-shadow:
+            -6px 0 10px rgba(0,0,0,.06);
+    }
+
+
+    /* BOSS NAME */
+
+    body.light-mode .boss-name,
+    body.light-mode .favorite-name{
+        color:#1f2937;
+    }
+
+
+    /* WORLD */
+
+    body.light-mode .boss-row > div:nth-child(3){
+        color:#334155;
+    }
+
+
+    /* MAP */
+
+    body.light-mode .boss-row > div:nth-child(4){
+        color:#334155;
+    }
+
+
+    /* LAYER */
+
+    body.light-mode .boss-row > div:nth-child(5){
+        color:#475569;
+    }
+
+
+    /* TIME */
+
+    body.light-mode .boss-row .countdown{
+        color:#16a34a;
+    }
+
+
+    /* ACTION BUTTONS */
+
+    body.light-mode .action-buttons .btn-info{
+        background:#3498db;
+        color:#fff;
+    }
+
+    body.light-mode .action-buttons .btn-defeat{
+        background:#ff5252;
+        color:#fff;
+    }
+
+
+    /* WORLD DIVIDER */
+
+    body.light-mode .world-divider{
+        background:#e8f1fb;
+
+        color:#1683d8;
+
+        border-top:1px solid #cbdbea;
+        border-bottom:1px solid #cbdbea;
+    }
+
+
+    /* SOON */
+
+    body.light-mode .soon-row{
+        background:rgba(255,193,7,.08);
+    }
+
+}
