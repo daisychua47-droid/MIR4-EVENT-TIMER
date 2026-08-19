@@ -741,114 +741,132 @@ body{
 
 }
 /* ======================================================
-   PHONE
+   PHONE - LIVE TABLE
 ====================================================== */
 
 @media (max-width:480px){
 
-    /* =================================
-       LIVE TABLE - MOBILE
-    ================================= */
-
     .boss-list{
-        overflow-x:hidden;
+        overflow-x:auto;
+        overflow-y:hidden;
         padding:8px 0;
+        -webkit-overflow-scrolling:touch;
     }
 
     .boss-table{
-        width:100%;
-        min-width:0;
+        width:680px;
+        min-width:680px;
     }
 
     .boss-head,
     .boss-row{
         grid-template-columns:
-            24px
-            minmax(70px, 1.6fr)
-            48px
-            minmax(55px, 1.2fr)
-            25px
-            58px
-            48px;
+            35px
+            145px
+            65px
+            130px
+            40px
+            75px
+            85px;
     }
 
     .boss-head{
-        padding:9px 4px;
-        font-size:8px;
-    }
-
-    .boss-row{
-        padding:10px 4px;
-        min-height:50px;
+        padding:10px 6px;
         font-size:9px;
     }
 
+    .boss-row{
+        padding:10px 6px;
+        min-height:55px;
+        font-size:10px;
+    }
 
-    /* =================================
-       BOSS NAME
-    ================================= */
+
+    /* ==========================
+       BOSS NAME - 2 LINES
+    ========================== */
 
     .favorite-name{
         min-width:0;
 
         display:flex;
-        align-items:center;
+        align-items:flex-start;
 
-        gap:3px;
+        gap:5px;
 
-        white-space:nowrap;
+        white-space:normal;
+
+        line-height:14px;
+
+        max-height:28px;
+
         overflow:hidden;
-        text-overflow:ellipsis;
+
+        word-break:normal;
+        overflow-wrap:anywhere;
     }
 
     .favorite-icon{
-        width:12px;
-        min-width:12px;
-        font-size:10px;
+        width:14px;
+        min-width:14px;
+
+        font-size:11px;
+
+        margin-top:1px;
     }
 
 
-    /* =================================
+    /* ==========================
        WORLD
-    ================================= */
+    ========================== */
 
     .boss-row > div:nth-child(3){
+
         text-align:center;
 
         white-space:nowrap;
+
         overflow:hidden;
+
         text-overflow:ellipsis;
     }
 
 
-    /* =================================
+    /* ==========================
        MAP
-    ================================= */
+    ========================== */
 
     .boss-row > div:nth-child(4){
+
         white-space:nowrap;
+
         overflow:hidden;
+
         text-overflow:ellipsis;
     }
 
 
-    /* =================================
+    /* ==========================
        LAYER
-    ================================= */
+    ========================== */
 
     .boss-row > div:nth-child(5){
+
         text-align:center;
+
+        white-space:nowrap;
     }
 
 
-    /* =================================
+    /* ==========================
        TIME
-    ================================= */
+    ========================== */
 
     .boss-row .countdown{
-        width:58px;
 
-        font-size:9px;
+        width:auto;
+
+        font-size:10px;
 
         white-space:nowrap;
 
@@ -856,102 +874,105 @@ body{
     }
 
 
-    /* =================================
+    /* ==========================
        ACTION
-    ================================= */
+    ========================== */
+
+    .boss-row > div:nth-child(7),
+    .boss-head > div:nth-child(7){
+
+        position:sticky;
+
+        right:0;
+
+        z-index:10;
+
+        background:#161b22;
+
+        box-shadow:-6px 0 10px rgba(0,0,0,.35);
+    }
+
+    .boss-head > div:nth-child(7){
+        background:#1f2937;
+    }
+
 
     .action-buttons{
-        width:48px;
+
+        width:85px;
 
         display:flex;
 
         align-items:center;
+
         justify-content:center;
 
-        gap:3px;
+        gap:4px;
     }
+
 
     .action-buttons .btn-info{
-        display:none;
+
+        display:block;
+
+        width:30px;
+
+        min-width:30px;
+
+        height:30px;
+
+        padding:0;
+
+        font-size:13px;
     }
 
+
     .action-buttons .btn-defeat{
+
         display:block;
 
         width:48px;
+
         min-width:48px;
 
         height:30px;
 
-        padding:3px 2px;
+        padding:3px 5px;
 
-        font-size:8px;
+        font-size:9px;
 
         white-space:nowrap;
     }
 
 
-    /* =================================
+    /* ==========================
        WORLD DIVIDER
-    ================================= */
+    ========================== */
 
     .world-divider{
-        width:100%;
 
-        padding:9px 8px;
+        width:680px;
 
-        font-size:11px;
-    }
+        padding:10px;
 
-
-    /* =================================
-       UPCOMING
-    ================================= */
-
-    .upcoming-head,
-    .upcoming-row{
-        grid-template-columns:
-            48%
-            22%
-            30%;
-    }
-
-    .upcoming-head > div:nth-child(2),
-    .upcoming-row > div:nth-child(2){
-        display:none;
-    }
-
-
-    /* =================================
-       DEFEATED
-    ================================= */
-
-    .defeated-head,
-    .defeated-row{
-        grid-template-columns:
-            minmax(0,1fr)
-            70px
-            75px
-            55px;
-    }
-
-    .defeated-head{
-        font-size:9px;
-        padding:10px 6px;
-    }
-
-    .defeated-row{
-        font-size:9px;
-        padding:10px 6px;
-    }
-
-    .btn-undo{
-        height:28px;
-        padding:0 5px;
-        font-size:9px;
+        font-size:12px;
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* ======================================================
    SEARCH
