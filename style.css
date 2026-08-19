@@ -1566,3 +1566,25 @@ body.light-mode #themeButton:hover {
     }
 
 }
+
+
+/* ==========================
+   LIGHT MODE - GAME CLOCK
+========================== */
+
+body.light-mode .clock-zone {
+    color: #64748b;
+}
+
+body.light-mode .clock-time {
+    color: #1e293b;
+}
+
+body.light-mode .clock-date {
+    color: #64748b;
+}
+
+body.light-mode .clock-dot {
+    background: #16a34a;
+    box-shadow: 0 0 6px rgba(22, 163, 74, 0.6);
+}
