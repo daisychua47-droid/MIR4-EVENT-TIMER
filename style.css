@@ -1506,3 +1506,63 @@ body.light-mode .btn-show-more:hover {
     background: #e2e8f0;
     color: #111827;
 }
+
+
+/* ======================================================
+   THEME BUTTON
+====================================================== */
+
+.theme-toggle {
+    display: flex;
+    align-items: center;
+}
+
+#themeButton {
+    height: 44px;
+
+    padding: 0 14px;
+
+    border: 1px solid #374151;
+    border-radius: 8px;
+
+    background: #1f2937;
+    color: #ffffff;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+#themeButton:hover {
+    background: #273449;
+}
+
+
+/* LIGHT */
+
+body.light-mode #themeButton {
+    background: #f1f5f9;
+    color: #334155;
+
+    border-color: #d5dde7;
+}
+
+body.light-mode #themeButton:hover {
+    background: #e2e8f0;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 700px) {
+
+    #themeButton {
+        height: 40px;
+        padding: 0 10px;
+        font-size: 11px;
+    }
+
+}
