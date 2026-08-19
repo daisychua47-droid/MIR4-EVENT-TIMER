@@ -1612,5 +1612,51 @@ if (mapFilter) {
 
 }
 
+function applyTheme(theme) {
+
+    const button = document.getElementById("themeButton");
+
+    if (theme === "light") {
+
+        document.body.classList.add("light-mode");
+
+        if (button) {
+            button.textContent = "🌙 Dark";
+        }
+
+    } else {
+
+        document.body.classList.remove("light-mode");
+
+        if (button) {
+            button.textContent = "☀️ Light";
+        }
+
+    }
+
+    localStorage.setItem("bossTrackerTheme", theme);
+}
+
+
+function toggleTheme() {
+
+    const isLight =
+        document.body.classList.contains("light-mode");
+
+    applyTheme(
+        isLight ? "dark" : "light"
+    );
+
+}
+
+
+/* ==========================
+   LOAD SAVED THEME
+========================== */
+
+const savedTheme =
+    localStorage.getItem("bossTrackerTheme") || "dark";
+
+applyTheme(savedTheme);
 
 loadBosses();
