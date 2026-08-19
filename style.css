@@ -1303,3 +1303,206 @@ body{
 
     border-color: #4b5563;
 }
+
+
+/* ======================================================
+   LIGHT MODE
+====================================================== */
+
+body.light-mode {
+    background: #f3f6f9;
+    color: #1f2937;
+}
+
+
+/* ==========================
+   TOP BAR
+========================== */
+
+body.light-mode .topbar {
+    background: #ffffff;
+    border-bottom: 1px solid #d9e0e7;
+}
+
+body.light-mode .topbar input,
+body.light-mode .topbar select {
+    background: #f1f5f9;
+    color: #1f2937;
+    border: 1px solid #d8dee6;
+}
+
+
+/* ==========================
+   CARDS
+========================== */
+
+body.light-mode .card {
+    background: #ffffff;
+    box-shadow: 0 2px 10px rgba(0,0,0,.06);
+}
+
+body.light-mode .card-header {
+    border-bottom-color: #e2e8f0;
+}
+
+
+/* ==========================
+   TABLE HEADER
+========================== */
+
+body.light-mode .boss-head,
+body.light-mode .upcoming-head,
+body.light-mode .defeated-head {
+    background: #e8eef5;
+    color: #526173;
+    border-bottom-color: #d5dde7;
+}
+
+
+/* ==========================
+   BOSS ROW
+========================== */
+
+body.light-mode .boss-row,
+body.light-mode .upcoming-row,
+body.light-mode .defeated-row {
+    border-top-color: #e2e8f0;
+}
+
+body.light-mode .boss-row:hover,
+body.light-mode .upcoming-row:hover {
+    background: #f4f7fa;
+}
+
+
+/* ==========================
+   BOSS NAME
+========================== */
+
+body.light-mode .boss-name,
+body.light-mode .favorite-name {
+    color: #1f2937;
+}
+
+
+/* ==========================
+   WORLD DIVIDER
+========================== */
+
+body.light-mode .world-divider {
+    background: #e8f1fb;
+    color: #1683d8;
+    border-top-color: #cbdbea;
+    border-bottom-color: #cbdbea;
+}
+
+
+/* ==========================
+   COUNTDOWN
+========================== */
+
+body.light-mode .countdown {
+    color: #16a34a;
+}
+
+body.light-mode .upcoming-row .countdown {
+    color: #0284c7 !important;
+}
+
+
+/* ==========================
+   DEFEATED
+========================== */
+
+body.light-mode .defeated-head {
+    background: #e8eef5;
+    color: #526173;
+}
+
+
+/* ==========================
+   SOON
+========================== */
+
+body.light-mode .boss-divider {
+    background: #fff8dc;
+    border-top-color: #ead48a;
+    border-bottom-color: #ead48a;
+}
+
+body.light-mode .divider-title {
+    color: #b77900;
+}
+
+body.light-mode .soon-row {
+    background: rgba(255,193,7,.08);
+}
+
+
+/* ==========================
+   MODAL
+========================== */
+
+body.light-mode .boss-modal {
+    background: rgba(0,0,0,.45);
+}
+
+body.light-mode .boss-modal-content {
+    background: #ffffff;
+    color: #1f2937;
+    border-color: #d8dee6;
+}
+
+body.light-mode .boss-close {
+    color: #6b7280;
+}
+
+body.light-mode .spawn-time {
+    background: #eef4fa;
+    color: #0284c7;
+}
+
+body.light-mode .next-spawn {
+    color: #16a34a;
+}
+
+
+/* ==========================
+   EMPTY STATE
+========================== */
+
+body.light-mode .empty-state {
+    color: #6b7280;
+}
+
+
+/* ==========================
+   UNDO
+========================== */
+
+body.light-mode .btn-undo {
+    background: #eef2f7;
+    color: #374151;
+    border-color: #cbd5e1;
+}
+
+body.light-mode .btn-undo:hover {
+    background: #e2e8f0;
+    color: #111827;
+}
+
+
+/* ==========================
+   SHOW MORE
+========================== */
+
+body.light-mode .btn-show-more {
+    background: #eef2f7;
+    color: #475569;
+    border-color: #cbd5e1;
+}
+
+body.light-mode .btn-show-more:hover {
+    background: #e2e8f0;
+    color: #111827;
+}
