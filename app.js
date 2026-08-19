@@ -1659,4 +1659,110 @@ const savedTheme =
 
 applyTheme(savedTheme);
 
+
+
+
+// ======================================================
+// NOTIFICATIONS
+// ======================================================
+
+let notificationsEnabled =
+    localStorage.getItem("bossTrackerNotifications") !== "off";
+
+
+function updateNotificationButton() {
+
+    const button =
+        document.getElementById("notificationButton");
+
+    if (!button) return;
+
+    if (notificationsEnabled) {
+
+        button.textContent = "🔔 Notifications ON";
+
+    } else {
+
+        button.textContent = "🔕 Notifications OFF";
+
+    }
+
+}
+
+
+function toggleNotifications() {
+
+    if (!notificationsEnabled) {
+
+        // Ask browser permission when turning ON
+        if ("Notification" in window) {
+
+            if (Notification.permission === "default") {
+
+                Notification.requestPermission().then(permission => {
+
+                    if (permission === "granted") {
+
+                        notificationsEnabled = true;
+
+                        localStorage.setItem(
+                            "bossTrackerNotifications",
+                            "on"
+                        );
+
+                        updateNotificationButton();
+
+                    }
+
+                });
+
+                return;
+            }
+
+            if (Notification.permission === "denied") {
+
+                alert(
+                    "Browser notifications are blocked. Please allow notifications in your browser settings."
+                );
+
+                return;
+            }
+
+        }
+
+        notificationsEnabled = true;
+
+        localStorage.setItem(
+            "bossTrackerNotifications",
+            "on"
+        );
+
+    } else {
+
+        notificationsEnabled = false;
+
+        localStorage.setItem(
+            "bossTrackerNotifications",
+            "off"
+        );
+
+    }
+
+    updateNotificationButton();
+
+}
+
+
+// Load saved setting
+updateNotificationButton();
+
+
+
+
+
+
+
+
+
+
 loadBosses();
